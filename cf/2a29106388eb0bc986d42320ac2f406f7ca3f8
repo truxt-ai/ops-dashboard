@@ -1,0 +1,41 @@
+test/smoke.test.js
+  s_43de5465ef00e7::t_13e45c382e58b6 1-13
+.eslintignore
+  s_43de5465ef00e7::t_1fd114a8bb53a8 1-2
+views/dashboard.ejs
+  s_43de5465ef00e7::t_c7e4d55e0a2941 1-41
+package.json
+  s_43de5465ef00e7::t_a1f3b139a6b78a 1-22
+README.md
+  s_43de5465ef00e7::t_ed0630c9ae2c35 1-34
+.github/workflows/ci.yml
+  s_43de5465ef00e7::t_8c6c2e6a878d53 1-26
+.github/workflows/axiom-audit-on-merge.yml
+  s_43de5465ef00e7::t_239af43a4ee392 1-30
+.eslintrc.json
+  s_43de5465ef00e7::t_559af8b7841d2a 1-15
+.gitignore
+  s_43de5465ef00e7::t_6551907097620c 1-4
+src/server.js
+  s_43de5465ef00e7::t_a8c32111edd8c0 1-51
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "cf2a29106388eb0bc986d42320ac2f406f7ca3f8",
+  "prompts": {},
+  "sessions": {
+    "s_43de5465ef00e7": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e9faaccd-9e02-439a-9920-854fd12d8c45",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "raunakTruxt <raunak@truxt.ai>",
+      "total_additions": 238,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    }
+  }
+}
