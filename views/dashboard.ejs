@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Truxt Demo Dashboard</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; color: #1a1a2e; }
+    h1 { margin-bottom: 0.25rem; }
+    .sub { color: #6b7280; margin-top: 0; }
+    table { border-collapse: collapse; margin-top: 1.5rem; min-width: 480px; }
+    th, td { text-align: left; padding: 0.5rem 1rem; border-bottom: 1px solid #e5e7eb; }
+    th { background: #f3f4f6; }
+    .pill { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px; background: #eef2ff; color: #4338ca; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <h1>Truxt Demo Dashboard</h1>
+  <p class="sub">Service health overview</p>
+
+  <p>
+    <span class="pill">Total requests: <%= metrics.totalRequests.toLocaleString() %></span>
+    <span class="pill">Total errors: <%= metrics.totalErrors %></span>
+    <span class="pill">Error rate: <%= metrics.errorRate %>%</span>
+  </p>
+
+  <table>
+    <thead>
+      <tr><th>Service</th><th>Requests</th><th>Errors</th></tr>
+    </thead>
+    <tbody>
+      <% metrics.services.forEach(function (s) { %>
+        <tr>
+          <td><%= s.name %></td>
+          <td><%= s.requests.toLocaleString() %></td>
+          <td><%= s.errors %></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</body>
+</html>

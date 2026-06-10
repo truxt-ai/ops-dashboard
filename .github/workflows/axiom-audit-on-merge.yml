@@ -1,0 +1,30 @@
+name: Axiom Audit on Merge
+
+# Notifies the Axiom autopilot when a pull request is merged, so it can scan the
+# merged state and open remediation PRs for any vulnerable dependencies.
+#
+# The webhook URL lives in the repo secret AXIOM_AUTOPILOT_WEBHOOK, which is
+# configured separately (it points at the stage autopilot webhook). Until that
+# secret is set the job is skipped entirely, so this workflow is a safe no-op.
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  notify-axiom:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && secrets.AXIOM_AUTOPILOT_WEBHOOK != ''
+    steps:
+      - name: Notify Axiom autopilot
+        env:
+          AXIOM_WEBHOOK: ${{ secrets.AXIOM_AUTOPILOT_WEBHOOK }}
+        run: |
+          curl -sS -X POST "$AXIOM_WEBHOOK" \
+            -H 'Content-Type: application/json' \
+            -d '{
+              "repo": "${{ github.repository }}",
+              "pr_number": ${{ github.event.pull_request.number }},
+              "merge_commit_sha": "${{ github.event.pull_request.merge_commit_sha }}",
+              "base_ref": "${{ github.event.pull_request.base.ref }}"
+            }'

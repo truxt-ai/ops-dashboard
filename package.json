@@ -1,0 +1,22 @@
+{
+  "name": "axiom-demo-dashboard",
+  "version": "1.0.0",
+  "description": "Truxt demo dashboard - a small Express + EJS metrics dashboard used to demonstrate the Axiom vulnerability-remediation autopilot.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test",
+    "lint": "eslint ."
+  },
+  "license": "MIT",
+  "dependencies": {
+    "axios": "0.21.1",
+    "ejs": "2.5.7",
+    "express": "4.18.2",
+    "lodash": "4.17.4",
+    "minimist": "1.2.0"
+  },
+  "devDependencies": {
+    "eslint": "8.57.0"
+  }
+}
