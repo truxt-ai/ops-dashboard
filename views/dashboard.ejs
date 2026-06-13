@@ -33,19 +33,79 @@
   </p>
 
   <%
-    const serviceHealthSummary = metrics.serviceHealthSummary
-      || (typeof summarizeServiceHealth === 'function'
-        ? summarizeServiceHealth(metrics.services)
-        : require(process.cwd() + '/src/lib/service-health-summary').summarizeServiceHealth(metrics.services));
+    function normalizeStatus(service) {
+      if (!service || typeof service !== 'object') {
+        return 'offline';
+      }
+
+      const rawStatus = service.status || service.health || service.state;
+      const normalized = String(rawStatus || '').trim().toLowerCase();
+      const statusBuckets = {
+        healthy: 'healthy',
+        ok: 'healthy',
+        operational: 'healthy',
+        online: 'healthy',
+        up: 'healthy',
+        passing: 'healthy',
+        green: 'healthy',
+        degraded: 'degraded',
+        warning: 'degraded',
+        warn: 'degraded',
+        partial: 'degraded',
+        impaired: 'degraded',
+        unstable: 'degraded',
+        yellow: 'degraded',
+        offline: 'offline',
+        down: 'offline',
+        outage: 'offline',
+        critical: 'offline',
+        unavailable: 'offline',
+        failed: 'offline',
+        red: 'offline',
+      };
+
+      if (statusBuckets[normalized]) {
+        return statusBuckets[normalized];
+      }
+
+      return Number(service.errors) > 0 ? 'degraded' : 'healthy';
+    }
+
+    function summarizeServices(services) {
+      const counts = { healthy: 0, degraded: 0, offline: 0 };
+      (Array.isArray(services) ? services : []).forEach(function (service) {
+        counts[normalizeStatus(service)] += 1;
+      });
+      return {
+        healthy: counts.healthy,
+        degraded: counts.degraded,
+        offline: counts.offline,
+        total: counts.healthy + counts.degraded + counts.offline,
+        hasProblems: counts.degraded > 0 || counts.offline > 0,
+      };
+    }
+
+    const serviceHealthSummary = metrics.serviceHealthSummary || summarizeServices(metrics.services);
+    const healthyCount = Number(serviceHealthSummary.healthy) || 0;
+    const degradedCount = Number(serviceHealthSummary.degraded) || 0;
+    const offlineCount = Number(serviceHealthSummary.offline) || 0;
+    const hasProblems = typeof serviceHealthSummary.hasProblems === 'boolean'
+      ? serviceHealthSummary.hasProblems
+      : degradedCount > 0 || offlineCount > 0;
+    const serviceHealthItems = [
+      { bucket: 'healthy', count: healthyCount, label: 'Healthy' },
+      { bucket: 'degraded', count: degradedCount, label: 'Degraded' },
+      { bucket: 'offline', count: offlineCount, label: 'Offline' },
+    ];
   %>
 
   <section class="health-summary" data-testid="service-health-summary" aria-labelledby="service-health-heading">
     <h2 id="service-health-heading">Service health</h2>
-    <% if (serviceHealthSummary.allClear) { %>
+    <% if (!hasProblems) { %>
       <p class="all-clear" data-testid="service-health-all-clear">All services healthy.</p>
     <% } %>
     <ul class="health-counts" aria-label="Service health counts">
-      <% serviceHealthSummary.items.forEach(function (item) { %>
+      <% serviceHealthItems.forEach(function (item) { %>
         <li class="health-count health-count--<%= item.bucket %>" data-testid="service-health-count-<%= item.bucket %>">
           <strong><%= item.count %></strong>
           <span><%= item.label %></span>

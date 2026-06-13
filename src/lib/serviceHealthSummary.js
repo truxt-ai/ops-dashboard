@@ -51,22 +51,13 @@ function summarizeServiceHealth(services) {
     counts[normalizeServiceStatus(service)] += 1;
   });
 
-  const summary = {
+  return {
     healthy: counts.healthy,
     degraded: counts.degraded,
     offline: counts.offline,
-    counts,
     total: PUBLIC_BUCKETS.reduce((sum, bucket) => sum + counts[bucket], 0),
-    allClear: counts.degraded === 0 && counts.offline === 0,
+    hasProblems: counts.degraded > 0 || counts.offline > 0,
   };
-
-  summary.items = PUBLIC_BUCKETS.map((bucket) => ({
-    bucket,
-    count: counts[bucket],
-    label: bucket.charAt(0).toUpperCase() + bucket.slice(1),
-  }));
-
-  return summary;
 }
 
 function ServiceHealthSummary(services) {
