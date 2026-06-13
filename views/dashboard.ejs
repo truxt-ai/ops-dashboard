@@ -30,25 +30,195 @@
     .status-healthy { background: #dcfce7; color: #166534; }
     .status-degraded { background: #fef3c7; color: #92400e; }
     .status-offline { background: #fee2e2; color: #991b1b; }
+    .status-unknown { background: #f3f4f6; color: #374151; }
   </style>
 </head>
 <body>
+  <%
+    var dashboardMetrics = metrics || {};
+    var serviceHealthStates = [
+      { key: 'healthy', label: 'Healthy', description: 'Operating normally' },
+      { key: 'degraded', label: 'Degraded', description: 'Needs attention' },
+      { key: 'offline', label: 'Offline', description: 'Unavailable' },
+    ];
+
+    function pluralizeService(count) {
+      return count === 1 ? 'service' : 'services';
+    }
+
+    function normalizeStatus(service) {
+      var rawStatus = typeof service === 'string'
+        ? service
+        : service && (service.status || service.health || service.healthStatus);
+
+      if (typeof rawStatus !== 'string') {
+        return null;
+      }
+
+      var normalizedStatus = rawStatus.trim().toLowerCase();
+      for (var i = 0; i < serviceHealthStates.length; i += 1) {
+        if (serviceHealthStates[i].key === normalizedStatus) {
+          return normalizedStatus;
+        }
+      }
+
+      return null;
+    }
+
+    function statusLabel(status) {
+      var normalizedStatus = normalizeStatus(status);
+
+      for (var i = 0; i < serviceHealthStates.length; i += 1) {
+        if (serviceHealthStates[i].key === normalizedStatus) {
+          return serviceHealthStates[i].label;
+        }
+      }
+
+      return 'Unknown';
+    }
+
+    function serviceKey(service, index) {
+      if (!service || typeof service !== 'object') {
+        return 'status:' + index;
+      }
+
+      var rawKey = service.id || service.serviceId || service.serviceName || service.name || service.slug || service.service;
+      if (rawKey === undefined || rawKey === null || rawKey === '') {
+        return 'service:' + index;
+      }
+
+      return String(rawKey).trim().toLowerCase();
+    }
+
+    function uniqueServices(services) {
+      var list = Array.isArray(services) ? services : [];
+      var seen = {};
+      var unique = [];
+
+      list.forEach(function (service, index) {
+        var key = serviceKey(service, index);
+
+        if (!seen[key]) {
+          seen[key] = true;
+          unique.push(service);
+        }
+      });
+
+      return unique;
+    }
+
+    function countLabel(count, label) {
+      return count + ' ' + label.toLowerCase() + ' ' + pluralizeService(count);
+    }
+
+    function joinCountParts(parts) {
+      if (parts.length <= 1) {
+        return parts[0] || '';
+      }
+
+      return parts.slice(0, -1).join(', ') + ' and ' + parts[parts.length - 1];
+    }
+
+    function problemMessage(counts) {
+      var parts = [];
+
+      if (counts.degraded > 0) {
+        parts.push(countLabel(counts.degraded, 'degraded'));
+      }
+
+      if (counts.offline > 0) {
+        parts.push(countLabel(counts.offline, 'offline'));
+      }
+
+      if (counts.unknown > 0) {
+        parts.push(counts.unknown + ' ' + pluralizeService(counts.unknown) + ' with unknown health');
+      }
+
+      return 'Attention needed: ' + joinCountParts(parts) + '.';
+    }
+
+    function buildSummary(services) {
+      var list = uniqueServices(services);
+      var counts = { healthy: 0, degraded: 0, offline: 0, unknown: 0 };
+
+      list.forEach(function (service) {
+        var status = normalizeStatus(service);
+
+        if (status) {
+          counts[status] += 1;
+        } else {
+          counts.unknown += 1;
+        }
+      });
+
+      var total = list.length;
+      var problemCount = counts.degraded + counts.offline + counts.unknown;
+      var hasServices = total > 0;
+      var isAllHealthy = hasServices && problemCount === 0;
+      var state = !hasServices ? 'empty' : isAllHealthy ? 'healthy' : 'attention';
+      var message = !hasServices
+        ? 'Service health data unavailable.'
+        : isAllHealthy
+          ? 'All services healthy.'
+          : problemMessage(counts);
+      var items = serviceHealthStates.map(function (item) {
+        return {
+          key: item.key,
+          label: item.label,
+          description: item.description,
+          count: counts[item.key],
+          countLabel: countLabel(counts[item.key], item.label),
+          ariaLabel: item.label + ': ' + counts[item.key] + ' ' + pluralizeService(counts[item.key]),
+        };
+      });
+
+      return {
+        total: total,
+        counts: counts,
+        items: items,
+        state: state,
+        message: message,
+        hasServices: hasServices,
+        hasProblems: problemCount > 0,
+        isAllHealthy: isAllHealthy,
+      };
+    }
+
+    var healthSource = Array.isArray(dashboardMetrics.serviceHealth)
+      ? dashboardMetrics.serviceHealth
+      : dashboardMetrics.services;
+    var serviceHealthSummary = dashboardMetrics.serviceHealthSummary || buildSummary(healthSource);
+    var serviceRows = Array.isArray(dashboardMetrics.serviceRows)
+      ? dashboardMetrics.serviceRows
+      : (Array.isArray(dashboardMetrics.services) ? dashboardMetrics.services : []).map(function (service) {
+        var row = service || {};
+        var normalizedStatus = normalizeStatus(row);
+
+        return {
+          name: row.name || row.id || 'unknown-service',
+          requests: row.requests || 0,
+          errors: row.errors || 0,
+          status: normalizedStatus || 'unknown',
+          statusLabel: statusLabel(normalizedStatus),
+        };
+      });
+  %>
   <h1>Truxt Demo Dashboard</h1>
   <p class="sub">Service health overview</p>
 
   <p>
-    <span class="pill">Total requests: <%= metrics.totalRequests.toLocaleString() %></span>
-    <span class="pill">Total errors: <%= metrics.totalErrors %></span>
-    <span class="pill">Error rate: <%= metrics.errorRate %>%</span>
+    <span class="pill">Total requests: <%= (dashboardMetrics.totalRequests || 0).toLocaleString() %></span>
+    <span class="pill">Total errors: <%= dashboardMetrics.totalErrors || 0 %></span>
+    <span class="pill">Error rate: <%= dashboardMetrics.errorRate || 0 %>%</span>
   </p>
 
   <section class="service-health-summary" data-testid="service-health-summary" aria-labelledby="service-health-summary-title">
     <h2 id="service-health-summary-title">Service health</h2>
-    <p class="health-message health-message-<%= metrics.serviceHealthSummary.state %>" data-testid="service-health-message">
-      <%= metrics.serviceHealthSummary.message %>
+    <p class="health-message health-message-<%= serviceHealthSummary.state %>" data-testid="service-health-message">
+      <%= serviceHealthSummary.message %>
     </p>
     <div class="health-grid" role="list" aria-label="Service health counts">
-      <% metrics.serviceHealthSummary.items.forEach(function (item) { %>
+      <% serviceHealthSummary.items.forEach(function (item) { %>
         <div class="health-card health-<%= item.key %>" role="listitem" aria-label="<%= item.ariaLabel %>" data-testid="service-health-<%= item.key %>">
           <span class="health-label"><%= item.label %></span>
           <strong data-testid="service-health-<%= item.key %>-count"><%= item.count %></strong>
@@ -63,12 +233,12 @@
       <tr><th>Service</th><th>Status</th><th>Requests</th><th>Errors</th></tr>
     </thead>
     <tbody>
-      <% metrics.serviceRows.forEach(function (s) { %>
+      <% serviceRows.forEach(function (s) { %>
         <tr>
           <td><%= s.name %></td>
-          <td><span class="status status-<%= s.status %>"><%= s.statusLabel %></span></td>
-          <td><%= s.requests.toLocaleString() %></td>
-          <td><%= s.errors %></td>
+          <td><span class="status status-<%= s.status || 'unknown' %>"><%= s.statusLabel || 'Unknown' %></span></td>
+          <td><%= (s.requests || 0).toLocaleString() %></td>
+          <td><%= s.errors || 0 %></td>
         </tr>
       <% }); %>
     </tbody>

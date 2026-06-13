@@ -76,8 +76,38 @@ function buildProblemMessage(counts) {
   return `Attention needed: ${joinCountParts(parts)}.`;
 }
 
-function buildServiceHealthSummary(services) {
+function getServiceHealthKey(service, index) {
+  if (!service || typeof service !== 'object') {
+    return `status:${index}`;
+  }
+
+  const rawKey = service.id || service.serviceId || service.serviceName || service.name || service.slug || service.service;
+  if (rawKey === undefined || rawKey === null || rawKey === '') {
+    return `service:${index}`;
+  }
+
+  return String(rawKey).trim().toLowerCase();
+}
+
+function uniqueServicesByStableId(services) {
   const serviceList = Array.isArray(services) ? services : [];
+  const seen = new Set();
+  const uniqueServices = [];
+
+  serviceList.forEach((service, index) => {
+    const key = getServiceHealthKey(service, index);
+
+    if (!seen.has(key)) {
+      seen.add(key);
+      uniqueServices.push(service);
+    }
+  });
+
+  return uniqueServices;
+}
+
+function buildServiceHealthSummary(services) {
+  const serviceList = uniqueServicesByStableId(services);
   const counts = {
     healthy: 0,
     degraded: 0,
@@ -130,7 +160,9 @@ function buildServiceHealthSummary(services) {
 module.exports = {
   SERVICE_HEALTH_STATES,
   buildServiceHealthSummary,
+  getServiceHealthKey,
   getServiceHealthLabel,
   normalizeServiceHealthStatus,
   summarizeServiceHealth: buildServiceHealthSummary,
+  uniqueServicesByStableId,
 };
