@@ -12,20 +12,27 @@
     th, td { text-align: left; padding: 0.5rem 1rem; border-bottom: 1px solid #e5e7eb; }
     th { background: #f3f4f6; }
     .pill { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px; background: #eef2ff; color: #4338ca; font-size: 0.85rem; }
-    .dependency-card { border: 1px solid #d1d5db; border-radius: 8px; margin-top: 1.5rem; max-width: 640px; padding: 1rem; }
+    .dependency-card { border: 1px solid #d1d5db; border-radius: 8px; margin-top: 1.5rem; max-width: 760px; padding: 1rem; }
     .dependency-card header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
     .dependency-summary { margin: 0; color: #374151; }
+    .dependency-meta { color: #6b7280; font-size: 0.85rem; margin: 0.35rem 0 0; }
+    .dependency-status { font-weight: 700; margin: 0 0 0.35rem; }
     .dependency-card details { margin-top: 0.9rem; }
     .dependency-card summary { cursor: pointer; font-weight: 600; }
     .dependency-card ul { margin: 0.75rem 0 0; padding-left: 1.25rem; }
     .dependency-card li { margin: 0.25rem 0; }
+    .dependency-card table { margin-top: 0.75rem; min-width: 100%; }
   </style>
 </head>
 <body>
-  <% const dependencyHealth = metrics.dependencyHealth || { text: 'No known dependency vulnerabilities.', items: [], total: 0, isClean: true }; %>
+  <% const dependencyHealth = metrics.dependencyHealth || { status: 'clean', statusLabel: 'Clean', text: 'No known dependency vulnerabilities.', items: [], dependencies: [], total: 0, isClean: true, sourceLabel: 'Dependency audit', generatedAt: null }; %>
   <% const dependencyHealthItems = Array.isArray(dependencyHealth.items) ? dependencyHealth.items : []; %>
+  <% const dependencyRows = Array.isArray(dependencyHealth.dependencies) ? dependencyHealth.dependencies : []; %>
   <% const dependencyHealthTotal = Number(dependencyHealth.total) || 0; %>
   <% const dependencyHealthText = dependencyHealth.text || 'No known dependency vulnerabilities.'; %>
+  <% const dependencyHealthStatus = dependencyHealth.status || (dependencyHealthTotal ? 'at-risk' : 'clean'); %>
+  <% const dependencyHealthStatusLabel = dependencyHealth.statusLabel || (dependencyHealthTotal ? 'At risk' : 'Clean'); %>
+  <% const dependencyHealthSource = dependencyHealth.sourceLabel || 'Dependency audit'; %>
 
   <h1>Truxt Demo Dashboard</h1>
   <p class="sub">Service health overview</p>
@@ -40,14 +47,35 @@
     <header>
       <div>
         <h2 id="dependency-health-title">Dependency health</h2>
+        <p class="dependency-status" data-testid="dependency-health-status" data-status="<%= dependencyHealthStatus %>"><%= dependencyHealthStatusLabel %></p>
         <p class="dependency-summary"><%= dependencyHealthText %></p>
+        <p class="dependency-meta">Source: <%= dependencyHealthSource %><% if (dependencyHealth.generatedAt) { %>; Generated: <%= dependencyHealth.generatedAt %><% } %></p>
       </div>
       <span class="pill"><%= dependencyHealthTotal %> known <%= dependencyHealthTotal === 1 ? 'vulnerability' : 'vulnerabilities' %></span>
     </header>
 
     <details data-testid="dependency-health-details">
-      <summary>Severity breakdown</summary>
-      <% if (dependencyHealthItems.length) { %>
+      <summary>Dependency details</summary>
+      <% if (dependencyRows.length) { %>
+        <table aria-label="Dependency vulnerability details">
+          <thead>
+            <tr><th>Dependency</th><th>Risk</th><th>Version</th><th>Remediation</th></tr>
+          </thead>
+          <tbody>
+            <% dependencyRows.forEach(function (dependency) { %>
+              <% const dependencyVersion = dependency.currentVersion || dependency.version || dependency.versionLabel || 'Version unavailable'; %>
+              <% const dependencyRisk = dependency.riskLabel || ((dependency.severity || dependency.risk || 'unknown') + ' risk'); %>
+              <% const dependencyRemediation = dependency.remediation || 'Review dependency advisory.'; %>
+              <tr data-testid="dependency-health-dependency" data-name="<%= dependency.name %>" data-risk="<%= dependencyRisk %>" data-version="<%= dependencyVersion %>" data-remediation="<%= dependencyRemediation %>" data-severity="<%= dependency.severity || dependency.risk %>" aria-label="<%= dependency.name %> <%= dependencyRisk %>">
+                <td><%= dependency.name %></td>
+                <td><%= dependencyRisk %></td>
+                <td><%= dependencyVersion %><% if (dependency.fixedVersion) { %> -> <%= dependency.fixedVersion %><% } %></td>
+                <td><%= dependencyRemediation %></td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      <% } else if (dependencyHealthItems.length) { %>
         <ul>
           <% dependencyHealthItems.forEach(function (item) { %>
             <li data-severity="<%= item.severity %>"><%= item.label %></li>
