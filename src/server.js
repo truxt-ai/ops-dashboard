@@ -5,7 +5,7 @@ const express = require('express');
 const axios = require('axios');
 const _ = require('lodash');
 const minimist = require('minimist');
-const { summarizeServiceHealth } = require('./lib/serviceHealthSummary');
+const { summarizeServiceHealth } = require('./lib/service-health-summary');
 
 const args = minimist(process.argv.slice(2));
 const PORT = args.port || process.env.PORT || 3000;

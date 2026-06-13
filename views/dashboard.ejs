@@ -32,13 +32,20 @@
     <span class="pill">Error rate: <%= metrics.errorRate %>%</span>
   </p>
 
+  <%
+    const serviceHealthSummary = metrics.serviceHealthSummary
+      || (typeof summarizeServiceHealth === 'function'
+        ? summarizeServiceHealth(metrics.services)
+        : require(process.cwd() + '/src/lib/service-health-summary').summarizeServiceHealth(metrics.services));
+  %>
+
   <section class="health-summary" data-testid="service-health-summary" aria-labelledby="service-health-heading">
     <h2 id="service-health-heading">Service health</h2>
-    <% if (metrics.serviceHealthSummary.allClear) { %>
+    <% if (serviceHealthSummary.allClear) { %>
       <p class="all-clear" data-testid="service-health-all-clear">All services healthy.</p>
     <% } %>
     <ul class="health-counts" aria-label="Service health counts">
-      <% metrics.serviceHealthSummary.items.forEach(function (item) { %>
+      <% serviceHealthSummary.items.forEach(function (item) { %>
         <li class="health-count health-count--<%= item.bucket %>" data-testid="service-health-count-<%= item.bucket %>">
           <strong><%= item.count %></strong>
           <span><%= item.label %></span>
