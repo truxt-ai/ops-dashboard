@@ -39,12 +39,33 @@ function textForTestId(html, testId) {
   return element[1].replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
+function openingTagForTestId(html, testId) {
+  const element = new RegExp(
+    `<[^>]*data-testid=["']${testId}["'][^>]*>`,
+  ).exec(html);
+  assert.ok(element, `expected ${testId} to be rendered`);
+  return element[0];
+}
+
 function assertCountHook(html, testId, expectedCount) {
   const text = textForTestId(html, testId);
   assert.match(
     text,
     new RegExp(`(^|\\D)${expectedCount}(\\D|$)`),
     `expected ${testId} to expose count ${expectedCount}, got "${text}"`,
+  );
+}
+
+function assertNoProblemStyling(html, testId) {
+  const openingTag = openingTagForTestId(html, testId);
+  const stylingAttributes = ['class', 'style']
+    .map((attribute) => new RegExp(`\\b${attribute}=["']([^"']*)["']`, 'i').exec(openingTag)?.[1] ?? '')
+    .join(' ');
+
+  assert.doesNotMatch(
+    stylingAttributes,
+    /\b(degraded|offline|warning|error|danger|problem|alert|incident)\b/i,
+    `expected ${testId} to avoid problem-state styling in all-clear mode`,
   );
 }
 
@@ -112,6 +133,8 @@ test('dashboard view renders all-healthy state without an active problem alert',
   assertCountHook(html, 'service-health-count-healthy', 3);
   assertCountHook(html, 'service-health-count-degraded', 0);
   assertCountHook(html, 'service-health-count-offline', 0);
+  assertNoProblemStyling(html, 'service-health-count-degraded');
+  assertNoProblemStyling(html, 'service-health-count-offline');
   assert.doesNotMatch(html, /role=["']alert["']/);
 });
 
