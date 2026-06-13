@@ -5,6 +5,7 @@ const express = require('express');
 const axios = require('axios');
 const _ = require('lodash');
 const minimist = require('minimist');
+const { summarizeServiceHealth } = require('./lib/service-health-summary');
 
 const args = minimist(process.argv.slice(2));
 const PORT = args.port || process.env.PORT || 3000;
@@ -17,14 +18,21 @@ app.set('views', path.join(__dirname, '..', 'views'));
 // renders the same numbers every time.
 function buildMetrics() {
   const services = [
-    { name: 'api-gateway', requests: 18420, errors: 12 },
-    { name: 'auth-service', requests: 9310, errors: 3 },
-    { name: 'billing', requests: 4502, errors: 0 },
+    { name: 'api-gateway', requests: 18420, errors: 12, status: 'degraded' },
+    { name: 'auth-service', requests: 9310, errors: 3, status: 'offline' },
+    { name: 'billing', requests: 4502, errors: 0, status: 'healthy' },
   ];
   const totalRequests = _.sumBy(services, 'requests');
   const totalErrors = _.sumBy(services, 'errors');
   const errorRate = _.round((totalErrors / totalRequests) * 100, 3);
-  return { services, totalRequests, totalErrors, errorRate };
+  const serviceHealthSummary = summarizeServiceHealth(services);
+  return {
+    services,
+    totalRequests,
+    totalErrors,
+    errorRate,
+    serviceHealthSummary,
+  };
 }
 
 app.get('/', (req, res) => {
