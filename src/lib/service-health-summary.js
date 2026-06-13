@@ -131,7 +131,7 @@ function buildServiceHealthSummary(services) {
   const isAllHealthy = hasServices && problemCount === 0;
   const state = !hasServices ? 'empty' : isAllHealthy ? 'healthy' : 'attention';
   const message = !hasServices
-    ? 'Service health data unavailable.'
+    ? 'No service health data.'
     : isAllHealthy
       ? 'All services healthy.'
       : buildProblemMessage(counts);

@@ -157,7 +157,7 @@
       var isAllHealthy = hasServices && problemCount === 0;
       var state = !hasServices ? 'empty' : isAllHealthy ? 'healthy' : 'attention';
       var message = !hasServices
-        ? 'Service health data unavailable.'
+        ? 'No service health data.'
         : isAllHealthy
           ? 'All services healthy.'
           : problemMessage(counts);
