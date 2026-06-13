@@ -5,6 +5,10 @@ const express = require('express');
 const axios = require('axios');
 const _ = require('lodash');
 const minimist = require('minimist');
+const {
+  buildServiceHealthSummary,
+  getServiceHealthLabel,
+} = require('./lib/service-health-summary');
 
 const args = minimist(process.argv.slice(2));
 const PORT = args.port || process.env.PORT || 3000;
@@ -21,10 +25,36 @@ function buildMetrics() {
     { name: 'auth-service', requests: 9310, errors: 3 },
     { name: 'billing', requests: 4502, errors: 0 },
   ];
+  const serviceHealth = [
+    { id: 'api-gateway', name: 'api-gateway', status: 'healthy' },
+    { id: 'auth-service', name: 'auth-service', status: 'degraded' },
+    { id: 'billing', name: 'billing', status: 'offline' },
+  ];
   const totalRequests = _.sumBy(services, 'requests');
   const totalErrors = _.sumBy(services, 'errors');
   const errorRate = _.round((totalErrors / totalRequests) * 100, 3);
-  return { services, totalRequests, totalErrors, errorRate };
+  const serviceHealthSummary = buildServiceHealthSummary(serviceHealth);
+  const serviceHealthByName = new Map(serviceHealth.map((service) => [service.name, service]));
+  const serviceRows = services.map((service) => {
+    const health = serviceHealthByName.get(service.name) || {};
+
+    return {
+      ...service,
+      id: health.id || service.name,
+      status: health.status || null,
+      statusLabel: getServiceHealthLabel(health.status),
+    };
+  });
+
+  return {
+    services,
+    serviceRows,
+    serviceHealth,
+    serviceHealthSummary,
+    totalRequests,
+    totalErrors,
+    errorRate,
+  };
 }
 
 app.get('/', (req, res) => {
