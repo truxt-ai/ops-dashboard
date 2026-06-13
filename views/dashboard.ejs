@@ -25,13 +25,18 @@
   </style>
 </head>
 <body>
-  <% const dependencyHealth = metrics.dependencyHealth || { status: 'clean', statusLabel: 'Clean', text: 'No known dependency vulnerabilities.', items: [], dependencies: [], total: 0, isClean: true, sourceLabel: 'Dependency audit', generatedAt: null }; %>
+  <% const fallbackDependencyHealth = { status: 'clean', statusLabel: 'Clean', text: 'No known dependency vulnerabilities.', items: [], dependencies: [], total: 0, isClean: true, sourceLabel: 'Dependency audit', generatedAt: null }; %>
+  <% const topLevelDependencyHealth = typeof locals === 'object' && locals.dependencyHealth ? locals.dependencyHealth : null; %>
+  <% const topLevelDependencyAudit = typeof locals === 'object' && locals.dependencyAudit ? locals.dependencyAudit : null; %>
+  <% const rawDependencyHealth = metrics.dependencyHealth || metrics.dependencyAudit || metrics.dependencyHealthSource || topLevelDependencyHealth || topLevelDependencyAudit || null; %>
+  <% const normalizeDependencyHealth = typeof normalizeDependencyAudit === 'function' ? normalizeDependencyAudit : null; %>
+  <% const dependencyHealth = normalizeDependencyHealth ? normalizeDependencyHealth(rawDependencyHealth) : (rawDependencyHealth || fallbackDependencyHealth); %>
   <% const dependencyHealthItems = Array.isArray(dependencyHealth.items) ? dependencyHealth.items : []; %>
   <% const dependencyRows = Array.isArray(dependencyHealth.dependencies) ? dependencyHealth.dependencies : []; %>
   <% const dependencyHealthTotal = Number(dependencyHealth.total) || 0; %>
   <% const dependencyHealthText = dependencyHealth.text || 'No known dependency vulnerabilities.'; %>
-  <% const dependencyHealthStatus = dependencyHealth.status || (dependencyHealthTotal ? 'at-risk' : 'clean'); %>
-  <% const dependencyHealthStatusLabel = dependencyHealth.statusLabel || (dependencyHealthTotal ? 'At risk' : 'Clean'); %>
+  <% const dependencyHealthStatus = dependencyHealth.status || (dependencyHealthTotal ? 'risk' : 'clean'); %>
+  <% const dependencyHealthStatusLabel = dependencyHealth.statusLabel || (dependencyHealthTotal ? 'Risk' : 'Clean'); %>
   <% const dependencyHealthSource = dependencyHealth.sourceLabel || 'Dependency audit'; %>
 
   <h1>Truxt Demo Dashboard</h1>
@@ -63,11 +68,12 @@
           </thead>
           <tbody>
             <% dependencyRows.forEach(function (dependency) { %>
-              <% const dependencyVersion = dependency.currentVersion || dependency.version || dependency.versionLabel || 'Version unavailable'; %>
+              <% const dependencyName = dependency.name || dependency.packageName || dependency.package || dependency.dependency || dependency.moduleName || dependency.module_name || 'unknown dependency'; %>
+              <% const dependencyVersion = dependency.currentVersion || dependency.version || dependency.versionLabel || dependency.current || 'Version unavailable'; %>
               <% const dependencyRisk = dependency.riskLabel || ((dependency.severity || dependency.risk || 'unknown') + ' risk'); %>
-              <% const dependencyRemediation = dependency.remediation || 'Review dependency advisory.'; %>
-              <tr data-testid="dependency-health-dependency" data-name="<%= dependency.name %>" data-risk="<%= dependencyRisk %>" data-version="<%= dependencyVersion %>" data-remediation="<%= dependencyRemediation %>" data-severity="<%= dependency.severity || dependency.risk %>" aria-label="<%= dependency.name %> <%= dependencyRisk %>">
-                <td><%= dependency.name %></td>
+              <% const dependencyRemediation = dependency.remediation || dependency.recommendation || 'Review dependency advisory.'; %>
+              <tr data-testid="dependency-health-dependency" data-name="<%= dependencyName %>" data-risk="<%= dependencyRisk %>" data-version="<%= dependencyVersion %>" data-remediation="<%= dependencyRemediation %>" data-severity="<%= dependency.severity || dependency.risk %>" aria-label="<%= dependencyName %> <%= dependencyRisk %>">
+                <td><%= dependencyName %></td>
                 <td><%= dependencyRisk %></td>
                 <td><%= dependencyVersion %><% if (dependency.fixedVersion) { %> -> <%= dependency.fixedVersion %><% } %></td>
                 <td><%= dependencyRemediation %></td>

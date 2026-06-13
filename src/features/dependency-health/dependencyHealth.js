@@ -628,7 +628,7 @@ function normalizeDependencyAudit(input) {
   const total = items.reduce((sum, item) => sum + item.count, 0);
   const isClean = total === 0;
   const highestSeverity = highestSeverityFromCounts(counts);
-  const status = isClean ? 'clean' : 'at-risk';
+  const status = isClean ? 'clean' : 'risk';
   const statusLabel = isClean ? 'Clean' : `${capitalize(highestSeverity)} risk`;
 
   return {

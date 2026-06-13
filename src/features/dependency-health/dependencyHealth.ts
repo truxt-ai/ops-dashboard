@@ -7,7 +7,7 @@ export type DependencySeverity =
   | 'low'
   | 'info';
 
-export type DependencyHealthStatus = 'clean' | 'at-risk';
+export type DependencyHealthStatus = 'clean' | 'risk';
 
 export type DependencySeverityCounts = Record<DependencySeverity, number>;
 

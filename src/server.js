@@ -5,6 +5,7 @@ const express = require('express');
 const axios = require('axios');
 const _ = require('lodash');
 const minimist = require('minimist');
+const { normalizeDependencyAudit } = require('./features/dependency-health/dependencyHealth');
 const { getDependencyHealthSummary } = require('./features/dependency-health/dependencyHealthData');
 
 const args = minimist(process.argv.slice(2));
@@ -13,6 +14,7 @@ const PORT = args.port || process.env.PORT || 3000;
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '..', 'views'));
+app.locals.normalizeDependencyAudit = normalizeDependencyAudit;
 
 // Compute a few fake metrics for the dashboard. Kept deterministic so the demo
 // renders the same numbers every time.
