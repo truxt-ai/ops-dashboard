@@ -6,14 +6,27 @@
   <style>
     body { font-family: system-ui, sans-serif; margin: 2rem; color: #1a1a2e; }
     h1 { margin-bottom: 0.25rem; }
+    h2 { margin: 0 0 0.35rem; font-size: 1.15rem; }
     .sub { color: #6b7280; margin-top: 0; }
     table { border-collapse: collapse; margin-top: 1.5rem; min-width: 480px; }
     th, td { text-align: left; padding: 0.5rem 1rem; border-bottom: 1px solid #e5e7eb; }
     th { background: #f3f4f6; }
     .pill { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px; background: #eef2ff; color: #4338ca; font-size: 0.85rem; }
+    .dependency-card { border: 1px solid #d1d5db; border-radius: 8px; margin-top: 1.5rem; max-width: 640px; padding: 1rem; }
+    .dependency-card header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+    .dependency-summary { margin: 0; color: #374151; }
+    .dependency-card details { margin-top: 0.9rem; }
+    .dependency-card summary { cursor: pointer; font-weight: 600; }
+    .dependency-card ul { margin: 0.75rem 0 0; padding-left: 1.25rem; }
+    .dependency-card li { margin: 0.25rem 0; }
   </style>
 </head>
 <body>
+  <% const dependencyHealth = metrics.dependencyHealth || { text: 'No known dependency vulnerabilities.', items: [], total: 0, isClean: true }; %>
+  <% const dependencyHealthItems = Array.isArray(dependencyHealth.items) ? dependencyHealth.items : []; %>
+  <% const dependencyHealthTotal = Number(dependencyHealth.total) || 0; %>
+  <% const dependencyHealthText = dependencyHealth.text || 'No known dependency vulnerabilities.'; %>
+
   <h1>Truxt Demo Dashboard</h1>
   <p class="sub">Service health overview</p>
 
@@ -22,6 +35,29 @@
     <span class="pill">Total errors: <%= metrics.totalErrors %></span>
     <span class="pill">Error rate: <%= metrics.errorRate %>%</span>
   </p>
+
+  <section class="dependency-card" data-testid="dependency-health-card" aria-labelledby="dependency-health-title">
+    <header>
+      <div>
+        <h2 id="dependency-health-title">Dependency health</h2>
+        <p class="dependency-summary"><%= dependencyHealthText %></p>
+      </div>
+      <span class="pill"><%= dependencyHealthTotal %> known <%= dependencyHealthTotal === 1 ? 'vulnerability' : 'vulnerabilities' %></span>
+    </header>
+
+    <details data-testid="dependency-health-details">
+      <summary>Severity breakdown</summary>
+      <% if (dependencyHealthItems.length) { %>
+        <ul>
+          <% dependencyHealthItems.forEach(function (item) { %>
+            <li data-severity="<%= item.severity %>"><%= item.label %></li>
+          <% }); %>
+        </ul>
+      <% } else { %>
+        <p><%= dependencyHealthText %></p>
+      <% } %>
+    </details>
+  </section>
 
   <table>
     <thead>

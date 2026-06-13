@@ -5,6 +5,7 @@ const express = require('express');
 const axios = require('axios');
 const _ = require('lodash');
 const minimist = require('minimist');
+const { getDependencyHealthSummary } = require('./features/dependency-health/dependencyHealthData');
 
 const args = minimist(process.argv.slice(2));
 const PORT = args.port || process.env.PORT || 3000;
@@ -24,7 +25,13 @@ function buildMetrics() {
   const totalRequests = _.sumBy(services, 'requests');
   const totalErrors = _.sumBy(services, 'errors');
   const errorRate = _.round((totalErrors / totalRequests) * 100, 3);
-  return { services, totalRequests, totalErrors, errorRate };
+  return {
+    services,
+    totalRequests,
+    totalErrors,
+    errorRate,
+    dependencyHealth: getDependencyHealthSummary(),
+  };
 }
 
 app.get('/', (req, res) => {
