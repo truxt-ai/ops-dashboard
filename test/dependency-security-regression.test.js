@@ -2,6 +2,8 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const ejs = require('ejs');
 const lodash = require('lodash');
@@ -23,6 +25,28 @@ function isAtLeastVersion(actual, minimum) {
   }
 
   return true;
+}
+
+function readInstalledPackageMetadata(packageName) {
+  let currentDirectory = path.dirname(require.resolve(packageName));
+  let parentDirectory;
+
+  while (currentDirectory !== parentDirectory) {
+    const packageJsonPath = path.join(currentDirectory, 'package.json');
+
+    if (fs.existsSync(packageJsonPath)) {
+      const metadata = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+
+      if (metadata.name === packageName) {
+        return metadata;
+      }
+    }
+
+    parentDirectory = currentDirectory;
+    currentDirectory = path.dirname(currentDirectory);
+  }
+
+  assert.fail('could not locate installed metadata for ' + packageName);
 }
 
 function assertPrototypeNotPolluted(advisory, propertyName, exerciseDependency) {
@@ -52,19 +76,19 @@ test('RAU-139 audit: direct critical dependencies resolve to patched versions', 
   [
     {
       packageName: 'ejs',
-      actual: require('ejs/package.json').version,
+      actual: readInstalledPackageMetadata('ejs').version,
       minimum: '3.1.7',
       advisory: 'GHSA-phwq-j96m-2c2q',
     },
     {
       packageName: 'lodash',
-      actual: require('lodash/package.json').version,
+      actual: readInstalledPackageMetadata('lodash').version,
       minimum: '4.18.1',
       advisory: 'GHSA-r5fr-rjxr-66jc / GHSA-jf85-cpcp-j695',
     },
     {
       packageName: 'minimist',
-      actual: require('minimist/package.json').version,
+      actual: readInstalledPackageMetadata('minimist').version,
       minimum: '1.2.8',
       advisory: 'GHSA-xvch-5gv4-984h',
     },
