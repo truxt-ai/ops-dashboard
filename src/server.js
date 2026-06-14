@@ -5,6 +5,8 @@ const express = require('express');
 const axios = require('axios');
 const _ = require('lodash');
 const minimist = require('minimist');
+const { version } = require('../package.json');
+const { buildStatusPayload } = require('./lib/status-payload');
 
 const args = minimist(process.argv.slice(2));
 const PORT = args.port || process.env.PORT || 3000;
@@ -29,6 +31,10 @@ function buildMetrics() {
 
 app.get('/', (req, res) => {
   res.render('dashboard', { metrics: buildMetrics() });
+});
+
+app.get('/status', (req, res) => {
+  res.json(buildStatusPayload({ uptimeSeconds: process.uptime(), version }));
 });
 
 // Proxy a health probe through axios so the dependency is genuinely exercised.
