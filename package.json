@@ -6,12 +6,13 @@
   "scripts": {
     "start": "node src/server.js",
     "test": "node --test",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "postinstall": "node -e \"const fs=require(\\\"fs\\\");const p=\\\"node_modules/ejs/package.json\\\";if(fs.existsSync(p)){const pkg=JSON.parse(fs.readFileSync(p,\\\"utf8\\\"));if(pkg.exports&&pkg.exports[\\\"./package.json\\\"]===undefined){pkg.exports=pkg.exports[\\\".\\\"]?pkg.exports:{\\\".\\\":pkg.exports};pkg.exports[\\\"./package.json\\\"]=\\\"./package.json\\\";fs.writeFileSync(p,JSON.stringify(pkg,null,2)+\\\"\\\\n\\\");}}\""
   },
   "license": "MIT",
   "dependencies": {
     "axios": "1.17.0",
-    "ejs": "3.1.10",
+    "ejs": "6.0.1",
     "express": "4.22.2",
     "lodash": "4.18.1",
     "minimist": "1.2.8"
