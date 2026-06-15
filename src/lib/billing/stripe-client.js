@@ -48,7 +48,7 @@ function makeStripeClient(options = {}) {
 
     return {
       id: `cs_test_${reference}`,
-      url: `https://checkout.stripe.test/session/${encodeURIComponent(reference)}`,
+      url: `https://checkout.stripe.test/${encodeURIComponent(reference)}`,
       currency: config.currency,
     };
   }
