@@ -1,6 +1,10 @@
 'use strict';
 
+const billingRepo = require('./billing-repo');
 const { getBillingPlan, hasPaidFeatureAccess } = require('./plans');
+const { nextSubscriptionState } = require('./subscription-state');
+
+const processedEventIds = new Set();
 
 function billingError(code, message) {
   const err = new Error(message || code);
@@ -58,4 +62,140 @@ function makeBillingService({ stripe, repo } = {}) {
   return { startCheckout };
 }
 
-module.exports = { makeBillingService };
+function metadataFrom(object) {
+  return object && object.metadata ? object.metadata : {};
+}
+
+function subscriptionIdFrom(value) {
+  if (!value) return null;
+  if (typeof value === 'string') return value;
+  return value.id || null;
+}
+
+function planIdFrom(object) {
+  const metadata = metadataFrom(object);
+  return metadata.planId || metadata.plan_id;
+}
+
+function workspaceIdFrom(object) {
+  const metadata = metadataFrom(object);
+  return object.client_reference_id || metadata.workspace_id;
+}
+
+function persistedFieldsFrom(object) {
+  return {
+    workspace_id: workspaceIdFrom(object),
+    plan_id: planIdFrom(object),
+  };
+}
+
+function currentStatus(repo, subscriptionId) {
+  const current = repo.get(subscriptionId);
+  return current && current.status ? current.status : 'incomplete';
+}
+
+function handleCheckoutCompleted(session, repo) {
+  const subscriptionId = subscriptionIdFrom(session.subscription);
+  if (!subscriptionId) {
+    return { handled: false, reason: 'missing-subscription' };
+  }
+
+  repo.upsert(subscriptionId, {
+    workspace_id: workspaceIdFrom(session),
+    plan_id: planIdFrom(session),
+    status: 'active',
+  });
+
+  return { handled: true, reason: 'checkout.session.completed' };
+}
+
+function handleSubscriptionChanged(subscription, repo) {
+  const subscriptionId = subscriptionIdFrom(subscription);
+  if (!subscriptionId || !subscription.status) {
+    return { handled: false, reason: 'missing-subscription' };
+  }
+
+  const transition = nextSubscriptionState(
+    currentStatus(repo, subscriptionId),
+    subscription.status
+  );
+
+  if (!transition.changed) {
+    return { handled: true, transition };
+  }
+
+  repo.upsert(subscriptionId, {
+    ...persistedFieldsFrom(subscription),
+    status: transition.state,
+  });
+
+  return { handled: true, transition };
+}
+
+function handleSubscriptionDeleted(subscription, repo) {
+  const subscriptionId = subscriptionIdFrom(subscription);
+  if (!subscriptionId) {
+    return { handled: false, reason: 'missing-subscription' };
+  }
+
+  const transition = nextSubscriptionState(currentStatus(repo, subscriptionId), 'canceled');
+
+  if (!transition.changed) {
+    return { handled: true, transition };
+  }
+
+  repo.upsert(subscriptionId, {
+    ...persistedFieldsFrom(subscription),
+    status: transition.state,
+  });
+
+  return { handled: true, transition };
+}
+
+function handleBillingEvent(event, repo) {
+  const targetRepo = repo || billingRepo;
+
+  if (!event || !event.type) {
+    return { handled: false, reason: 'missing-event' };
+  }
+
+  if (event.id && processedEventIds.has(event.id)) {
+    return { handled: false, deduped: true };
+  }
+
+  const object = event.data && event.data.object ? event.data.object : {};
+  let result;
+
+  switch (event.type) {
+    case 'checkout.session.completed':
+      result = handleCheckoutCompleted(object, targetRepo);
+      break;
+    case 'customer.subscription.created':
+    case 'customer.subscription.updated':
+      result = handleSubscriptionChanged(object, targetRepo);
+      break;
+    case 'customer.subscription.deleted':
+      result = handleSubscriptionDeleted(object, targetRepo);
+      break;
+    default:
+      result = { handled: false, reason: 'unsupported-event' };
+      break;
+  }
+
+  if (event.id) {
+    processedEventIds.add(event.id);
+  }
+
+  return result;
+}
+
+function resetBillingStateForTests() {
+  processedEventIds.clear();
+  billingRepo.reset();
+}
+
+module.exports = {
+  makeBillingService,
+  handleBillingEvent,
+  resetBillingStateForTests,
+};
