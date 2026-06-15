@@ -11,6 +11,17 @@
     th, td { text-align: left; padding: 0.5rem 1rem; border-bottom: 1px solid #e5e7eb; }
     th { background: #f3f4f6; }
     .pill { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px; background: #eef2ff; color: #4338ca; font-size: 0.85rem; }
+    .plans { margin-top: 2rem; max-width: 980px; }
+    .plan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 1rem; margin-top: 1rem; }
+    .plan-card { border: 1px solid #d1d5db; border-radius: 8px; padding: 1rem; background: #fff; }
+    .plan-card h3 { margin: 0 0 0.35rem; }
+    .plan-card p { margin: 0.35rem 0; }
+    .plan-price { font-weight: 700; color: #065f46; }
+    .plan-card ul { margin: 0.75rem 0 1rem; padding-left: 1.2rem; }
+    .plan-card li { margin: 0.25rem 0; }
+    .plan-card button { width: 100%; min-height: 2.4rem; border: 0; border-radius: 6px; background: #1f2937; color: white; font-weight: 700; cursor: pointer; }
+    .plan-card button:disabled { background: #e5e7eb; color: #6b7280; cursor: not-allowed; }
+    .plan-note { color: #6b7280; font-size: 0.9rem; }
   </style>
 </head>
 <body>
@@ -37,5 +48,39 @@
       <% }); %>
     </tbody>
   </table>
+
+  <section class="plans" aria-labelledby="plan-selection-heading" data-test="plan-selection" data-testid="plan-selection">
+    <h2 id="plan-selection-heading">Subscription plans</h2>
+    <p class="sub">Choose a workspace plan to start Stripe Checkout.</p>
+
+    <div class="plan-grid">
+      <% const dashboardPlans = typeof plans !== 'undefined' && Array.isArray(plans) ? plans : []; %>
+      <% dashboardPlans.forEach(function (plan) { %>
+        <article class="plan-card" aria-labelledby="plan-heading-<%= plan.id %>" data-test="plan-card-<%= plan.id %>" data-testid="plan-card-<%= plan.id %>">
+          <h3 id="plan-heading-<%= plan.id %>"><%= plan.name %></h3>
+          <p class="plan-price" data-test="plan-price-<%= plan.id %>" data-testid="plan-price-<%= plan.id %>"><%= plan.monthlyLabel %></p>
+          <p><%= plan.summary %></p>
+
+          <ul aria-label="<%= plan.name %> plan features">
+            <% plan.features.forEach(function (feature) { %>
+              <li><%= feature %></li>
+            <% }); %>
+          </ul>
+
+          <% if (plan.requiresCheckout) { %>
+            <form method="post" action="/billing/checkout" data-test="checkout-form-<%= plan.id %>" data-testid="checkout-form-<%= plan.id %>">
+              <input type="hidden" name="planId" value="<%= plan.id %>">
+              <input type="hidden" name="workspaceId" value="demo-workspace">
+              <button type="submit" aria-label="Choose <%= plan.name %> plan" data-test="checkout-plan-<%= plan.id %>" data-testid="checkout-plan-<%= plan.id %>" <%= plan.checkoutEnabled ? '' : 'disabled' %>>
+                <%= plan.checkoutEnabled ? 'Start checkout' : 'Price not configured' %>
+              </button>
+            </form>
+          <% } else { %>
+            <p class="plan-note" data-test="checkout-plan-free" data-testid="checkout-plan-free">Included for every workspace</p>
+          <% } %>
+        </article>
+      <% }); %>
+    </div>
+  </section>
 </body>
 </html>
