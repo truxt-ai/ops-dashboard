@@ -71,8 +71,8 @@
             <form method="post" action="/api/billing/checkout/session" data-test="billing-checkout-form-<%= plan.id %>" data-testid="billing-checkout-form-<%= plan.id %>">
               <input type="hidden" name="planId" value="<%= plan.id %>">
               <input type="hidden" name="workspaceId" value="demo-workspace">
-              <button type="submit" aria-label="Choose <%= plan.name %> plan" data-test="billing-plan-select-<%= plan.id %>" data-testid="billing-plan-select-<%= plan.id %>" <%= plan.checkoutEnabled ? '' : 'disabled' %>>
-                <%= plan.checkoutEnabled ? 'Start checkout' : 'Price not configured' %>
+              <button type="submit" aria-label="Choose <%= plan.name %> plan" data-test="start-checkout-<%= plan.id %>" data-testid="start-checkout-<%= plan.id %>">
+                Start checkout
               </button>
             </form>
           <% } else { %>

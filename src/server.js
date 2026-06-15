@@ -45,6 +45,25 @@ function headerValue(req, name) {
   return String(req.get(name) || '').trim();
 }
 
+function workspaceRole(req) {
+  const appUser = req.app.locals.currentUser || req.app.locals.user || {};
+  const appWorkspace = req.app.locals.workspace || {};
+
+  return String(
+    headerValue(req, 'x-workspace-role') ||
+    headerValue(req, 'x-user-role') ||
+    headerValue(req, 'x-role') ||
+    requestField(req, 'workspaceRole') ||
+    requestField(req, 'role') ||
+    (req.user && (req.user.workspaceRole || req.user.role)) ||
+    (req.workspace && req.workspace.role) ||
+    appUser.workspaceRole ||
+    appUser.role ||
+    appWorkspace.role ||
+    ''
+  ).trim().toLowerCase();
+}
+
 function isWorkspaceAdmin(req) {
   if (req.app.locals.isWorkspaceAdmin === true) {
     return true;
@@ -62,22 +81,8 @@ function isWorkspaceAdmin(req) {
     return true;
   }
 
-  const appUser = req.app.locals.currentUser || req.app.locals.user || {};
   const appWorkspace = req.app.locals.workspace || {};
-  const role =
-    headerValue(req, 'x-workspace-role') ||
-    headerValue(req, 'x-user-role') ||
-    headerValue(req, 'x-role') ||
-    requestField(req, 'workspaceRole') ||
-    requestField(req, 'role') ||
-    (req.user && (req.user.workspaceRole || req.user.role)) ||
-    (req.workspace && req.workspace.role) ||
-    appUser.workspaceRole ||
-    appUser.role ||
-    appWorkspace.role ||
-    '';
-
-  return ['admin', 'owner'].includes(String(role).trim().toLowerCase()) || Boolean(req.workspace && req.workspace.isAdmin) || Boolean(appWorkspace.isAdmin);
+  return ['admin', 'owner'].includes(workspaceRole(req)) || Boolean(req.workspace && req.workspace.isAdmin) || Boolean(appWorkspace.isAdmin);
 }
 
 function requestField(req, fieldName) {
@@ -111,6 +116,32 @@ function getRequestStripeClient(req) {
   return req.app.locals.stripe || req.app.locals.stripeClient || getStripeClient();
 }
 
+function hasWorkspacePrincipal(req) {
+  const appUser = req.app.locals.currentUser || req.app.locals.user || {};
+  return Boolean(
+    workspaceRole(req) ||
+    headerValue(req, 'x-user-id') ||
+    requestField(req, 'userId') ||
+    requestField(req, 'memberId') ||
+    appUser.id ||
+    appUser.email ||
+    req.user
+  );
+}
+
+function getBillingEnv(req) {
+  const locals = req.app.locals || {};
+  const config = locals.billingConfig || locals.billing || locals.config || {};
+  const localEnv = locals.env || {};
+  const prices = locals.stripePrices || config.stripePrices || config.prices || config.priceIds || {};
+
+  const env = { ...process.env, ...localEnv, ...config };
+  env.STRIPE_PRICE_STARTER_MONTHLY = env.STRIPE_PRICE_STARTER_MONTHLY || prices.starter || prices.STRIPE_PRICE_STARTER_MONTHLY;
+  env.STRIPE_PRICE_PRO_MONTHLY = env.STRIPE_PRICE_PRO_MONTHLY || prices.pro || prices.STRIPE_PRICE_PRO_MONTHLY;
+  env.STRIPE_PRICE_BUSINESS_MONTHLY = env.STRIPE_PRICE_BUSINESS_MONTHLY || prices.business || prices.STRIPE_PRICE_BUSINESS_MONTHLY;
+  return env;
+}
+
 function shouldRedirectToCheckout(req) {
   return !req.path.startsWith('/api/') && req.accepts(['html', 'json']) === 'html' && !req.is('application/json');
 }
@@ -129,7 +160,8 @@ function stripeStatusCode(err) {
 
 async function handleCheckoutSession(req, res) {
   if (!isWorkspaceAdmin(req)) {
-    return res.status(401).json({
+    const statusCode = hasWorkspacePrincipal(req) ? 403 : 401;
+    return res.status(statusCode).json({
       error: 'workspace_admin_required',
       message: 'Only workspace admins can start subscription checkout.',
     });
@@ -138,7 +170,7 @@ async function handleCheckoutSession(req, res) {
   try {
     const session = await createWorkspaceCheckoutSession({
       getStripe: () => getRequestStripeClient(req),
-      env: process.env,
+      env: getBillingEnv(req),
       ...getWorkspaceContext(req),
     });
 
@@ -224,7 +256,7 @@ function handleStripeWebhook(req, res) {
     });
   }
 
-  const result = handleStripeWebhookEvent(event, process.env);
+  const result = handleStripeWebhookEvent(event, getBillingEnv(req));
   return res.json({ received: true, ...result });
 }
 
@@ -249,8 +281,10 @@ module.exports = {
   app,
   buildMetrics,
   buildPlanCatalog,
+  getBillingEnv,
   getWebhookEvent,
   getWorkspaceContext,
+  hasWorkspacePrincipal,
   handleCheckoutSession,
   handleStripeWebhook,
   isWorkspaceAdmin,

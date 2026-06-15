@@ -24,16 +24,46 @@ function stripeId(value) {
   return cleanValue(value.id);
 }
 
+function nestedBilling(input) {
+  if (!input || typeof input !== 'object') {
+    return null;
+  }
+
+  return input.billing || input.billingRecord || input.subscription || (input.workspace && (input.workspace.billing || input.workspace.subscription || input.workspace)) || null;
+}
+
+function firstValue(input, keys) {
+  if (!input || typeof input !== 'object') {
+    return null;
+  }
+
+  const direct = keys.find((key) => cleanValue(input[key]));
+  if (direct) {
+    return input[direct];
+  }
+
+  const nested = nestedBilling(input);
+  if (nested && nested !== input) {
+    return firstValue(nested, keys);
+  }
+
+  return null;
+}
+
 function subscriptionStatus(input) {
   if (typeof input === 'string') {
     return cleanValue(input);
   }
 
-  if (!input) {
-    return null;
-  }
-
-  return cleanValue(input.subscriptionStatus || input.status || input.stripeSubscriptionStatus || input.billingStatus);
+  return cleanValue(firstValue(input, [
+    'subscriptionStatus',
+    'status',
+    'stripeSubscriptionStatus',
+    'billingStatus',
+    'subscription_state',
+    'subscription_status',
+    'state',
+  ]));
 }
 
 function subscriptionPlan(input) {
@@ -41,11 +71,18 @@ function subscriptionPlan(input) {
     return input;
   }
 
-  if (!input) {
-    return null;
-  }
-
-  return input.plan || input.planId || input.billingPlan || input.subscriptionPlan;
+  return firstValue(input, [
+    'plan',
+    'planId',
+    'billingPlan',
+    'subscriptionPlan',
+    'billingPlanId',
+    'subscriptionPlanId',
+    'currentPlan',
+    'currentPlanId',
+    'pricingPlan',
+    'tier',
+  ]);
 }
 
 function hasPaidFeatureAccess(input, maybeStatus) {
@@ -122,9 +159,10 @@ function resetBillingState() {
 module.exports = {
   ACTIVE_SUBSCRIPTION_STATUSES: PAID_FEATURE_STATUSES,
   PAID_FEATURE_STATUSES,
+  billingRecords: workspaceBillingRecords,
   customerWorkspaceIds,
-  getCustomerWorkspaceId,
   getBillingForWorkspace: getWorkspaceBilling,
+  getCustomerWorkspaceId,
   getWorkspaceBilling,
   hasPaidFeatureAccess,
   hasProcessedStripeEvent,
@@ -133,8 +171,8 @@ module.exports = {
   processedStripeEventIds,
   rememberWorkspaceCustomer,
   resetBillingState,
+  resetBillingStateForTests: resetBillingState,
   stripeId,
   upsertWorkspaceBilling,
-  billingRecords: workspaceBillingRecords,
   workspaceBillingRecords,
 };

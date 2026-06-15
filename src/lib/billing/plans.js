@@ -8,6 +8,12 @@ const PRICE_ENV_BY_PLAN = Object.freeze({
   business: 'STRIPE_PRICE_BUSINESS_MONTHLY',
 });
 
+const PRICE_ENV_ALIASES_BY_PLAN = Object.freeze({
+  starter: Object.freeze(['STRIPE_PRICE_STARTER_MONTHLY', 'STRIPE_STARTER_PRICE_ID', 'STRIPE_PRICE_STARTER', 'STARTER_PRICE_ID']),
+  pro: Object.freeze(['STRIPE_PRICE_PRO_MONTHLY', 'STRIPE_PRO_PRICE_ID', 'STRIPE_PRICE_PRO', 'PRO_PRICE_ID']),
+  business: Object.freeze(['STRIPE_PRICE_BUSINESS_MONTHLY', 'STRIPE_BUSINESS_PRICE_ID', 'STRIPE_PRICE_BUSINESS', 'BUSINESS_PRICE_ID']),
+});
+
 const PLAN_COPY = Object.freeze({
   free: Object.freeze({
     id: 'free',
@@ -44,6 +50,10 @@ const PLAN_COPY = Object.freeze({
 });
 
 function normalizePlanId(planId) {
+  if (planId && typeof planId === 'object') {
+    return normalizePlanId(planId.id || planId.key || planId.name || planId.plan || planId.planId);
+  }
+
   return String(planId || '').trim().toLowerCase();
 }
 
@@ -59,10 +69,16 @@ function billingError(code, statusCode, message) {
   return err;
 }
 
+function findStripePriceId(planId, env = process.env) {
+  const aliases = PRICE_ENV_ALIASES_BY_PLAN[normalizePlanId(planId)] || [];
+  const matchingEnv = aliases.find((name) => cleanConfigValue(env[name]));
+  return matchingEnv ? cleanConfigValue(env[matchingEnv]) : null;
+}
+
 function requireStripePrice(planId, env = process.env) {
   const id = normalizePlanId(planId);
   const priceEnv = PRICE_ENV_BY_PLAN[id];
-  const priceId = priceEnv ? cleanConfigValue(env[priceEnv]) : null;
+  const priceId = findStripePriceId(id, env);
 
   if (!priceEnv) {
     return null;
@@ -80,12 +96,12 @@ function buildPlan(planId, env = process.env, options = {}) {
   const definition = PLAN_COPY[id];
 
   if (!definition) {
-    throw billingError('invalid_plan', 400, 'Select a valid subscription plan.');
+    throw billingError('invalid_plan', 404, 'Select a valid subscription plan.');
   }
 
   const priceEnv = PRICE_ENV_BY_PLAN[id] || null;
   const isPaid = Boolean(priceEnv);
-  const priceId = isPaid && options.requireConfiguredPrices ? requireStripePrice(id, env) : cleanConfigValue(env[priceEnv]);
+  const priceId = isPaid && options.requireConfiguredPrices ? requireStripePrice(id, env) : findStripePriceId(id, env);
 
   return {
     id,
@@ -112,8 +128,12 @@ function buildPlanCatalog(env = process.env, options = {}) {
   return PLAN_ORDER.map((id) => buildPlan(id, env, options));
 }
 
-function getBillingPlans(env = process.env) {
+function listBillingPlans(env = process.env) {
   return buildPlanCatalog(env, { requireConfiguredPrices: true });
+}
+
+function getBillingPlans(env = process.env) {
+  return listBillingPlans(env);
 }
 
 function findPlan(planId, env = process.env, options = {}) {
@@ -144,7 +164,7 @@ function planIdForPriceId(priceId, env = process.env) {
     return null;
   }
 
-  const match = PLAN_ORDER.find((id) => cleanConfigValue(env[PRICE_ENV_BY_PLAN[id]]) === cleanPriceId);
+  const match = PLAN_ORDER.find((id) => findStripePriceId(id, env) === cleanPriceId);
   return match || null;
 }
 
@@ -172,16 +192,19 @@ const exported = {
   PLAN_COPY,
   PLAN_DEFINITIONS: PLAN_COPY,
   PLAN_ORDER,
+  PRICE_ENV_ALIASES_BY_PLAN,
   PRICE_ENV_BY_PLAN,
   STRIPE_PRICE_ENV_BY_PLAN: PRICE_ENV_BY_PLAN,
   buildPlan,
   buildPlanCatalog,
+  findStripePriceId,
   findPlan,
   getBillingPlan,
   getBillingPlans,
   getPlans: getBillingPlans,
   getCheckoutUrls,
   isPaidPlan,
+  listBillingPlans,
   normalizePlanId,
   planIdForPriceId,
   requireCheckoutPlan,
