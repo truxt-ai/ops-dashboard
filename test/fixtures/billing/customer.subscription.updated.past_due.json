@@ -1,0 +1,17 @@
+{
+  "id": "evt_subscription_updated_past_due_contract",
+  "object": "event",
+  "type": "customer.subscription.updated",
+  "data": {
+    "object": {
+      "id": "sub_checkout_contract",
+      "object": "subscription",
+      "customer": "cus_checkout_contract",
+      "status": "past_due",
+      "metadata": {
+        "workspace_id": "workspace_checkout_contract",
+        "planId": "pro"
+      }
+    }
+  }
+}

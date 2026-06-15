@@ -1,0 +1,17 @@
+{
+  "id": "evt_subscription_created_contract",
+  "object": "event",
+  "type": "customer.subscription.created",
+  "data": {
+    "object": {
+      "id": "sub_created_contract",
+      "object": "subscription",
+      "customer": "cus_created_contract",
+      "status": "trialing",
+      "metadata": {
+        "workspace_id": "workspace_created_contract",
+        "planId": "starter"
+      }
+    }
+  }
+}

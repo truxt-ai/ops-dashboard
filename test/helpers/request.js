@@ -5,7 +5,7 @@ const http = require('node:http');
 function listen(server) {
   return new Promise((resolve, reject) => {
     server.once('error', reject);
-    server.listen(0, () => {
+    server.listen(0, '127.0.0.1', () => {
       server.off('error', reject);
       resolve(server.address().port);
     });
@@ -30,14 +30,15 @@ async function request(app, options) {
     headers['content-type'] = headers['content-type'] || 'application/json';
   }
 
-  if (body) {
-    headers['content-length'] = Buffer.byteLength(body);
+  if (body && !headers['content-length'] && !headers['Content-Length']) {
+    headers['content-length'] = Buffer.isBuffer(body) ? body.length : Buffer.byteLength(body);
   }
 
   try {
     return await new Promise((resolve, reject) => {
       const req = http.request(
         {
+          host: '127.0.0.1',
           port,
           method,
           path: options.path,
@@ -45,6 +46,7 @@ async function request(app, options) {
         },
         (res) => {
           const chunks = [];
+
           res.on('data', (chunk) => chunks.push(chunk));
           res.on('end', () => {
             const text = Buffer.concat(chunks).toString('utf8');
@@ -52,18 +54,20 @@ async function request(app, options) {
 
             try {
               json = text ? JSON.parse(text) : undefined;
-            } catch (err) {
+            } catch (_) {
               json = undefined;
             }
 
             resolve({
               statusCode: res.statusCode,
+              status: res.statusCode,
               headers: res.headers,
               text,
               json,
+              body: json === undefined ? null : json,
             });
           });
-        },
+        }
       );
 
       req.on('error', reject);
@@ -77,4 +81,22 @@ async function request(app, options) {
   }
 }
 
-module.exports = { request };
+function postJson(app, path, body, headers = {}) {
+  return request(app, {
+    method: 'POST',
+    path,
+    headers: Object.assign({ 'content-type': 'application/json' }, headers),
+    body,
+  });
+}
+
+function postRaw(app, path, body, headers = {}) {
+  return request(app, {
+    method: 'POST',
+    path,
+    headers: Object.assign({ 'content-type': 'application/json' }, headers),
+    body,
+  });
+}
+
+module.exports = { request, postJson, postRaw };

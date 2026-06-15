@@ -1,0 +1,19 @@
+{
+  "id": "evt_checkout_completed_contract",
+  "object": "event",
+  "type": "checkout.session.completed",
+  "data": {
+    "object": {
+      "id": "cs_checkout_completed_contract",
+      "object": "checkout.session",
+      "mode": "subscription",
+      "customer": "cus_checkout_contract",
+      "subscription": "sub_checkout_contract",
+      "client_reference_id": "workspace_checkout_contract",
+      "metadata": {
+        "workspace_id": "workspace_checkout_contract",
+        "planId": "pro"
+      }
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "evt_subscription_updated_active_contract",
+  "object": "event",
+  "type": "customer.subscription.updated",
+  "data": {
+    "object": {
+      "id": "sub_updated_active_contract",
+      "object": "subscription",
+      "customer": "cus_updated_active_contract",
+      "status": "active",
+      "metadata": {
+        "workspace_id": "workspace_updated_active_contract",
+        "planId": "pro"
+      }
+    }
+  }
+}
