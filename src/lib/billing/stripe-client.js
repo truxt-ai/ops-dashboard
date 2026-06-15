@@ -28,11 +28,23 @@ function payloadToString(rawBody) {
   return JSON.stringify(rawBody || {});
 }
 
+function checkoutReference(params) {
+  const metadata = params.metadata || {};
+  if (metadata.planId) return metadata.planId;
+
+  const firstLineItem = params.line_items && params.line_items[0];
+  if (firstLineItem && typeof firstLineItem.price === 'string') {
+    return firstLineItem.price.replace(/^price_/, '');
+  }
+
+  return params.client_reference_id || 'workspace';
+}
+
 function makeStripeClient(options = {}) {
   const config = readConfig(options);
 
   async function createCheckoutSession(params) {
-    const reference = params.client_reference_id || 'workspace';
+    const reference = checkoutReference(params || {});
 
     return {
       id: `cs_test_${reference}`,

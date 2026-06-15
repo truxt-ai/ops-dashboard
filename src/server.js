@@ -7,7 +7,7 @@ const _ = require('lodash');
 const minimist = require('minimist');
 const { listBillingPlans, getBillingPlan, hasPaidFeatureAccess } = require('./lib/billing/plans');
 const { renderPlanSelector } = require('./lib/billing/plan-selector-view');
-const { makeBillingService, handleBillingEvent } = require('./lib/billing/billing-service');
+const { makeBillingService } = require('./lib/billing/billing-service');
 const {
   DEFAULT_STRIPE_WEBHOOK_SECRET,
   makeStripeClient,
@@ -36,7 +36,7 @@ function createApp(options) {
   const stripe = config.stripe || makeStripeClient(config.stripeOptions);
   const billingService = config.billingService || makeBillingService({
     stripe,
-    repo: config.billingRepo || {},
+    repo: config.billingRepo,
   });
   const webhookSecret = config.webhookSecret
     || process.env.STRIPE_WEBHOOK_SECRET
@@ -50,7 +50,7 @@ function createApp(options) {
 
     try {
       const event = stripe.constructWebhookEvent(req.body, signature, webhookSecret);
-      handleBillingEvent(event, config.billingRepo);
+      billingService.handleWebhookEvent(event);
       res.json({ received: true });
     } catch (err) {
       res.status(400).json({ error: 'invalid_signature' });

@@ -5,7 +5,7 @@ const subscriptions = new Map();
 function cloneRecord(record) {
   if (!record) return undefined;
   return {
-    id: record.id,
+    stripe_subscription_id: record.stripe_subscription_id,
     workspace_id: record.workspace_id,
     plan_id: record.plan_id,
     status: record.status,
@@ -16,7 +16,7 @@ function normalizeUpsertArgs(subscriptionId, data) {
   if (subscriptionId && typeof subscriptionId === 'object') {
     const record = subscriptionId;
     return {
-      subscriptionId: record.id || record.subscription_id,
+      subscriptionId: record.stripe_subscription_id || record.id || record.subscription_id,
       data: record,
     };
   }
@@ -43,7 +43,7 @@ function upsert(subscriptionId, data) {
 
   const existing = subscriptions.get(args.subscriptionId) || {};
   const record = {
-    id: args.subscriptionId,
+    stripe_subscription_id: args.subscriptionId,
     workspace_id: nextValue(args.data, existing, 'workspace_id'),
     plan_id: nextValue(args.data, existing, 'plan_id'),
     status: nextValue(args.data, existing, 'status'),

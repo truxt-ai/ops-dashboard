@@ -12,14 +12,18 @@ function billingError(code, message) {
   return err;
 }
 
-function makeBillingService({ stripe, repo } = {}) {
+function requireCheckoutStripe(stripe) {
   if (!stripe || typeof stripe.createCheckoutSession !== 'function') {
     throw new Error('stripe.createCheckoutSession is required');
   }
+}
 
-  void repo;
+function makeBillingService({ stripe, repo } = {}) {
+  const serviceRepo = repo || billingRepo;
 
   async function startCheckout({ planId, workspaceId } = {}) {
+    requireCheckoutStripe(stripe);
+
     if (!planId) {
       throw billingError('invalid_plan', 'planId is required');
     }
@@ -59,7 +63,11 @@ function makeBillingService({ stripe, repo } = {}) {
     };
   }
 
-  return { startCheckout };
+  function handleWebhookEvent(event) {
+    return handleBillingEvent(event, serviceRepo);
+  }
+
+  return { startCheckout, handleWebhookEvent };
 }
 
 function metadataFrom(object) {
@@ -69,7 +77,7 @@ function metadataFrom(object) {
 function subscriptionIdFrom(value) {
   if (!value) return null;
   if (typeof value === 'string') return value;
-  return value.id || null;
+  return value.id || value.stripe_subscription_id || value.subscription_id || null;
 }
 
 function planIdFrom(object) {

@@ -1,6 +1,6 @@
 'use strict';
 
-const VALID_STATES = new Set([
+const STATES = Object.freeze([
   'incomplete',
   'trialing',
   'active',
@@ -9,6 +9,7 @@ const VALID_STATES = new Set([
   'incomplete_expired',
 ]);
 
+const VALID_STATES = new Set(STATES);
 const TERMINAL_STATES = new Set(['canceled', 'incomplete_expired']);
 
 const LEGAL_TRANSITIONS = {
@@ -41,5 +42,6 @@ function nextSubscriptionState(current, incoming) {
 }
 
 module.exports = {
+  STATES,
   nextSubscriptionState,
 };
