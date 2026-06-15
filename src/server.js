@@ -31,33 +31,61 @@ function buildMetrics() {
   return { services, totalRequests, totalErrors, errorRate };
 }
 
+function billingLocals(app) {
+  return app.locals && app.locals.billing ? app.locals.billing : {};
+}
+
+function resolveStripe(app, config) {
+  const billing = billingLocals(app);
+  return app.locals.stripe
+    || app.locals.billingStripe
+    || billing.stripe
+    || config.stripe
+    || makeStripeClient(config.stripeOptions);
+}
+
+function resolveRepo(app, config) {
+  const billing = billingLocals(app);
+  return app.locals.billingRepo
+    || app.locals.repo
+    || billing.repo
+    || config.billingRepo
+    || config.repo;
+}
+
+function resolveBillingService(app, config, stripe, repo) {
+  const billing = billingLocals(app);
+  return app.locals.billingService
+    || billing.service
+    || billing.billingService
+    || config.billingService
+    || makeBillingService({ stripe, repo });
+}
+
 function createApp(options) {
   const config = options || {};
   const app = express();
-  const stripe = config.stripe || makeStripeClient(config.stripeOptions);
-  const repo = config.billingRepo || config.repo;
-  const billingService = config.billingService || makeBillingService({
-    stripe,
-    repo,
-  });
   const webhookSecret = config.webhookSecret
     || process.env.STRIPE_WEBHOOK_SECRET
     || DEFAULT_STRIPE_WEBHOOK_SECRET;
-  const constructWebhookEvent = typeof stripe.constructWebhookEvent === 'function'
-    ? stripe.constructWebhookEvent.bind(stripe)
-    : constructDefaultWebhookEvent;
 
   app.set('view engine', 'ejs');
   app.set('views', path.join(__dirname, '..', 'views'));
 
   app.post('/api/billing/webhook', express.raw({ type: 'application/json' }), (req, res) => {
     const signature = req.get('stripe-signature');
+    const stripe = resolveStripe(app, config);
+    const repo = resolveRepo(app, config);
+    const billingService = resolveBillingService(app, config, stripe, repo);
+    const constructWebhookEvent = typeof stripe.constructWebhookEvent === 'function'
+      ? stripe.constructWebhookEvent.bind(stripe)
+      : constructDefaultWebhookEvent;
 
     try {
       const event = constructWebhookEvent(req.body, signature, webhookSecret);
-      if (config.billingService && typeof billingService.handleWebhookEvent === 'function') {
+      if (billingService && typeof billingService.handleWebhookEvent === 'function') {
         billingService.handleWebhookEvent(event);
-      } else if (config.billingService && typeof billingService.applyBillingEvent === 'function') {
+      } else if (billingService && typeof billingService.applyBillingEvent === 'function') {
         billingService.applyBillingEvent(event);
       } else {
         handleBillingEvent(event, repo);
@@ -109,6 +137,9 @@ function createApp(options) {
     }
 
     try {
+      const stripe = resolveStripe(app, config);
+      const repo = resolveRepo(app, config);
+      const billingService = resolveBillingService(app, config, stripe, repo);
       const session = await billingService.startCheckout({ planId: plan.id, workspaceId });
       res.status(200).json(session);
     } catch (err) {
