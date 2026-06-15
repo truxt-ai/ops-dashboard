@@ -1,0 +1,18 @@
+{
+  "id": "evt_subscription_updated_past_due_1",
+  "object": "event",
+  "type": "customer.subscription.updated",
+  "api_version": "2024-06-20",
+  "data": {
+    "object": {
+      "id": "sub_update_pro",
+      "object": "subscription",
+      "customer": "cus_update",
+      "status": "past_due",
+      "metadata": {
+        "workspace_id": "ws_update_alpha",
+        "plan_id": "pro"
+      }
+    }
+  }
+}

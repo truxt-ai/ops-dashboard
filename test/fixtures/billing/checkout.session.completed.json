@@ -1,0 +1,20 @@
+{
+  "id": "evt_checkout_completed_1",
+  "object": "event",
+  "type": "checkout.session.completed",
+  "api_version": "2024-06-20",
+  "data": {
+    "object": {
+      "id": "cs_test_pro",
+      "object": "checkout.session",
+      "mode": "subscription",
+      "subscription": "sub_checkout_pro",
+      "customer": "cus_checkout",
+      "client_reference_id": "ws_checkout_alpha",
+      "metadata": {
+        "workspace_id": "ws_checkout_alpha",
+        "plan_id": "pro"
+      }
+    }
+  }
+}

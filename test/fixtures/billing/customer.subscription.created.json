@@ -1,0 +1,18 @@
+{
+  "id": "evt_subscription_created_1",
+  "object": "event",
+  "type": "customer.subscription.created",
+  "api_version": "2024-06-20",
+  "data": {
+    "object": {
+      "id": "sub_created_pro",
+      "object": "subscription",
+      "customer": "cus_created",
+      "status": "active",
+      "metadata": {
+        "workspace_id": "ws_created_alpha",
+        "plan_id": "pro"
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "id": "evt_subscription_deleted_1",
+  "object": "event",
+  "type": "customer.subscription.deleted",
+  "api_version": "2024-06-20",
+  "data": {
+    "object": {
+      "id": "sub_deleted_pro",
+      "object": "subscription",
+      "customer": "cus_deleted",
+      "status": "canceled",
+      "canceled_at": 1716239022,
+      "metadata": {
+        "workspace_id": "ws_deleted_alpha",
+        "plan_id": "pro"
+      }
+    }
+  }
+}
