@@ -15,6 +15,7 @@ npm start          # http://localhost:3000
 ```
 
 - `/` renders the dashboard with a few fake service metrics.
+- `/status` returns a lightweight JSON liveness and version payload.
 - `/health/upstream` runs a trivial upstream health probe via axios.
 
 ## Develop
