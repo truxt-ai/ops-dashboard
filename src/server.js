@@ -5,6 +5,7 @@ const express = require('express');
 const axios = require('axios');
 const _ = require('lodash');
 const minimist = require('minimist');
+const { getAvailablePromoCodes } = require('./lib/promo-codes');
 
 const args = minimist(process.argv.slice(2));
 const PORT = args.port || process.env.PORT || 3000;
@@ -29,6 +30,10 @@ function buildMetrics() {
 
 app.get('/', (req, res) => {
   res.render('dashboard', { metrics: buildMetrics() });
+});
+
+app.get('/api/billing/promo-codes', (req, res) => {
+  res.json({ promoCodes: getAvailablePromoCodes() });
 });
 
 // Proxy a health probe through axios so the dependency is genuinely exercised.
