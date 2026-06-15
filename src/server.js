@@ -10,6 +10,7 @@ const { renderPlanSelector } = require('./lib/billing/plan-selector-view');
 const { makeBillingService, handleBillingEvent } = require('./lib/billing/billing-service');
 const {
   DEFAULT_STRIPE_WEBHOOK_SECRET,
+  constructWebhookEvent: constructDefaultWebhookEvent,
   makeStripeClient,
 } = require('./lib/billing/stripe-client');
 
@@ -42,6 +43,9 @@ function createApp(options) {
   const webhookSecret = config.webhookSecret
     || process.env.STRIPE_WEBHOOK_SECRET
     || DEFAULT_STRIPE_WEBHOOK_SECRET;
+  const constructWebhookEvent = typeof stripe.constructWebhookEvent === 'function'
+    ? stripe.constructWebhookEvent.bind(stripe)
+    : constructDefaultWebhookEvent;
 
   app.set('view engine', 'ejs');
   app.set('views', path.join(__dirname, '..', 'views'));
@@ -50,9 +54,11 @@ function createApp(options) {
     const signature = req.get('stripe-signature');
 
     try {
-      const event = stripe.constructWebhookEvent(req.body, signature, webhookSecret);
+      const event = constructWebhookEvent(req.body, signature, webhookSecret);
       if (config.billingService && typeof billingService.handleWebhookEvent === 'function') {
         billingService.handleWebhookEvent(event);
+      } else if (config.billingService && typeof billingService.applyBillingEvent === 'function') {
+        billingService.applyBillingEvent(event);
       } else {
         handleBillingEvent(event, repo);
       }

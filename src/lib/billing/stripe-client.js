@@ -30,7 +30,7 @@ function payloadToString(rawBody) {
 
 function checkoutReference(params) {
   const metadata = params.metadata || {};
-  if (metadata.planId) return metadata.planId;
+  if (metadata.planId || metadata.plan_id) return metadata.planId || metadata.plan_id;
 
   const firstLineItem = params.line_items && params.line_items[0];
   if (firstLineItem && typeof firstLineItem.price === 'string') {

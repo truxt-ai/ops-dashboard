@@ -16,7 +16,7 @@ function normalizeUpsertArgs(subscriptionId, data) {
   if (subscriptionId && typeof subscriptionId === 'object') {
     const record = subscriptionId;
     return {
-      subscriptionId: record.stripe_subscription_id || record.id || record.subscription_id,
+      subscriptionId: record.stripe_subscription_id || record.id || record.subscription_id || record.subscriptionId,
       data: record,
     };
   }
@@ -28,8 +28,13 @@ function normalizeUpsertArgs(subscriptionId, data) {
 }
 
 function nextValue(data, existing, key) {
-  if (Object.prototype.hasOwnProperty.call(data, key) && data[key] !== undefined) {
-    return data[key];
+  const aliases = {
+    workspace_id: ['workspaceId'],
+    plan_id: ['planId'],
+  };
+
+  for (const candidate of [key].concat(aliases[key] || [])) {
+    if (Object.prototype.hasOwnProperty.call(data, candidate) && data[candidate] !== undefined) return data[candidate];
   }
 
   return existing[key];
@@ -57,6 +62,18 @@ function get(subscriptionId) {
   return cloneRecord(subscriptions.get(subscriptionId));
 }
 
+function findBySubscriptionId(subscriptionId) {
+  return get(subscriptionId);
+}
+
+function list() {
+  return Array.from(subscriptions.values()).map(cloneRecord);
+}
+
+function all() {
+  return list();
+}
+
 function has(subscriptionId) {
   return subscriptions.has(subscriptionId);
 }
@@ -73,11 +90,20 @@ function resetBillingStateForTests() {
   reset();
 }
 
+function resetTestState() {
+  reset();
+}
+
 module.exports = {
   upsert,
   get,
+  findBySubscriptionId,
+  getBySubscriptionId: findBySubscriptionId,
+  list,
+  all,
   has,
   size,
   reset,
   resetBillingStateForTests,
+  resetTestState,
 };

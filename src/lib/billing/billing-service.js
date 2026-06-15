@@ -67,7 +67,12 @@ function makeBillingService({ stripe, repo } = {}) {
     return handleBillingEvent(event, serviceRepo);
   }
 
-  return { startCheckout, handleWebhookEvent };
+  return {
+    startCheckout,
+    handleWebhookEvent,
+    applyBillingEvent: handleWebhookEvent,
+    handleBillingEvent: handleWebhookEvent,
+  };
 }
 
 function metadataFrom(object) {

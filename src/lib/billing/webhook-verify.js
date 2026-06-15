@@ -14,10 +14,18 @@ function bodyToBuffer(rawBody) {
   return Buffer.from(JSON.stringify(rawBody || {}), 'utf8');
 }
 
-function digestPayload(rawBody, secret) {
+function payloadToSign(rawBody, timestamp) {
+  if (!timestamp) {
+    return bodyToBuffer(rawBody);
+  }
+
+  return Buffer.concat([Buffer.from(`${timestamp}.`, 'utf8'), bodyToBuffer(rawBody)]);
+}
+
+function digestPayload(rawBody, secret, timestamp) {
   return crypto
     .createHmac('sha256', secret)
-    .update(bodyToBuffer(rawBody))
+    .update(payloadToSign(rawBody, timestamp))
     .digest('hex');
 }
 
@@ -36,20 +44,42 @@ function normalizeSignatures(signature) {
   }, []);
 }
 
+function signatureTimestamp(signature) {
+  if (!signature || typeof signature !== 'string') {
+    return null;
+  }
+
+  const part = signature.split(',').find((value) => value.trim().startsWith('t='));
+  return part ? part.trim().slice(2) : null;
+}
+
 function signPayload(payload, secret) {
   return digestPayload(payload, secret);
 }
 
+function createSignatureHeader(payload, secret, timestamp = Math.floor(Date.now() / 1000)) {
+  return `t=${timestamp},v1=${digestPayload(payload, secret, timestamp)}`;
+}
+
+function parsePayload(rawBody) {
+  return JSON.parse(bodyToBuffer(rawBody).toString('utf8'));
+}
+
 function verifyPayload(rawBody, signature, secret) {
-  const expected = digestPayload(rawBody, secret);
-  const expectedBuffer = Buffer.from(expected, 'hex');
+  const timestamp = signatureTimestamp(signature);
+  const expectedBuffers = [
+    Buffer.from(digestPayload(rawBody, secret), 'hex'),
+    timestamp ? Buffer.from(digestPayload(rawBody, secret, timestamp), 'hex') : null,
+  ].filter(Boolean);
   const candidates = normalizeSignatures(signature);
 
   const matched = candidates.some((candidate) => {
     if (!/^[0-9a-fA-F]+$/.test(candidate)) return false;
     const candidateBuffer = Buffer.from(candidate, 'hex');
-    if (candidateBuffer.length !== expectedBuffer.length) return false;
-    return crypto.timingSafeEqual(candidateBuffer, expectedBuffer);
+    return expectedBuffers.some((expectedBuffer) => {
+      if (candidateBuffer.length !== expectedBuffer.length) return false;
+      return crypto.timingSafeEqual(candidateBuffer, expectedBuffer);
+    });
   });
 
   if (!matched) {
@@ -59,7 +89,17 @@ function verifyPayload(rawBody, signature, secret) {
   return true;
 }
 
+function constructWebhookEvent(rawBody, signature, secret) {
+  verifyPayload(rawBody, signature, secret);
+  return parsePayload(rawBody);
+}
+
 module.exports = {
+  bodyToBuffer,
+  createSignatureHeader,
+  constructWebhookEvent,
+  digestPayload,
+  parsePayload,
   signPayload,
   verifyPayload,
 };
