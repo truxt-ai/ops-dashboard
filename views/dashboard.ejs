@@ -49,14 +49,14 @@
     </tbody>
   </table>
 
-  <section class="plans" aria-labelledby="plan-selection-heading" data-test="plan-selection" data-testid="plan-selection">
+  <section class="plans" aria-labelledby="plan-selection-heading" data-test="billing-plans" data-testid="billing-plans">
     <h2 id="plan-selection-heading">Subscription plans</h2>
     <p class="sub">Choose a workspace plan to start Stripe Checkout.</p>
 
     <div class="plan-grid">
       <% const dashboardPlans = typeof plans !== 'undefined' && Array.isArray(plans) ? plans : []; %>
       <% dashboardPlans.forEach(function (plan) { %>
-        <article class="plan-card" aria-labelledby="plan-heading-<%= plan.id %>" data-test="plan-card-<%= plan.id %>" data-testid="plan-card-<%= plan.id %>">
+        <article class="plan-card" aria-labelledby="plan-heading-<%= plan.id %>" data-test="billing-plan-card-<%= plan.id %>" data-testid="billing-plan-card-<%= plan.id %>">
           <h3 id="plan-heading-<%= plan.id %>"><%= plan.name %></h3>
           <p class="plan-price" data-test="plan-price-<%= plan.id %>" data-testid="plan-price-<%= plan.id %>"><%= plan.monthlyLabel %></p>
           <p><%= plan.summary %></p>
@@ -68,15 +68,15 @@
           </ul>
 
           <% if (plan.requiresCheckout) { %>
-            <form method="post" action="/billing/checkout" data-test="checkout-form-<%= plan.id %>" data-testid="checkout-form-<%= plan.id %>">
+            <form method="post" action="/api/billing/checkout/session" data-test="billing-checkout-form-<%= plan.id %>" data-testid="billing-checkout-form-<%= plan.id %>">
               <input type="hidden" name="planId" value="<%= plan.id %>">
               <input type="hidden" name="workspaceId" value="demo-workspace">
-              <button type="submit" aria-label="Choose <%= plan.name %> plan" data-test="checkout-plan-<%= plan.id %>" data-testid="checkout-plan-<%= plan.id %>" <%= plan.checkoutEnabled ? '' : 'disabled' %>>
+              <button type="submit" aria-label="Choose <%= plan.name %> plan" data-test="billing-plan-select-<%= plan.id %>" data-testid="billing-plan-select-<%= plan.id %>" <%= plan.checkoutEnabled ? '' : 'disabled' %>>
                 <%= plan.checkoutEnabled ? 'Start checkout' : 'Price not configured' %>
               </button>
             </form>
           <% } else { %>
-            <p class="plan-note" data-test="checkout-plan-free" data-testid="checkout-plan-free">Included for every workspace</p>
+            <p class="plan-note" data-test="billing-plan-current-free" data-testid="billing-plan-current-free">Included for every workspace</p>
           <% } %>
         </article>
       <% }); %>

@@ -1,6 +1,7 @@
 'use strict';
 
-const { getCheckoutUrls, requireCheckoutPlan } = require('./billing-plans');
+const { getCheckoutUrls, requireCheckoutPlan } = require('./billing/plans');
+const { getWorkspaceBilling, rememberWorkspaceCustomer, upsertWorkspaceBilling } = require('./billing/subscriptions');
 
 const workspaceCustomerIds = new Map();
 
@@ -17,6 +18,11 @@ function cleanValue(value) {
 }
 
 function getCachedCustomerId(customerStore, workspaceId) {
+  const billingRecord = getWorkspaceBilling(workspaceId);
+  if (billingRecord && billingRecord.stripeCustomerId) {
+    return cleanValue(billingRecord.stripeCustomerId);
+  }
+
   if (!customerStore || typeof customerStore.get !== 'function') {
     return null;
   }
@@ -28,6 +34,9 @@ function cacheCustomerId(customerStore, workspaceId, customerId) {
   if (customerStore && typeof customerStore.set === 'function' && customerId) {
     customerStore.set(workspaceId, customerId);
   }
+
+  rememberWorkspaceCustomer(workspaceId, customerId);
+  upsertWorkspaceBilling(workspaceId, { stripeCustomerId: customerId });
 }
 
 async function getOrCreateWorkspaceCustomer(options) {
