@@ -100,7 +100,12 @@ async function createWorkspaceCheckoutSession(options) {
     throw checkoutError('workspace_required', 400, 'A workspace id is required for checkout.');
   }
 
-  const plan = requireCheckoutPlan(planId, env);
+  const cleanPlanId = cleanValue(planId);
+  if (!cleanPlanId) {
+    throw checkoutError('plan_required', 400, 'Select a subscription plan.');
+  }
+
+  const plan = requireCheckoutPlan(cleanPlanId, env);
   const stripeClient = stripe || (typeof getStripe === 'function' ? getStripe() : null);
 
   if (!stripeClient || !stripeClient.checkout || !stripeClient.checkout.sessions || typeof stripeClient.checkout.sessions.create !== 'function') {
@@ -117,7 +122,9 @@ async function createWorkspaceCheckoutSession(options) {
   const checkoutUrls = getCheckoutUrls(env);
   const metadata = {
     workspaceId: cleanWorkspaceId,
+    workspace_id: cleanWorkspaceId,
     plan: plan.id,
+    planId: plan.id,
   };
 
   const session = await stripeClient.checkout.sessions.create({

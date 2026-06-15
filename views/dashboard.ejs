@@ -82,5 +82,61 @@
       <% }); %>
     </div>
   </section>
+  <script>
+    (function () {
+      function serializeForm(form) {
+        var data = {};
+        var fields = new FormData(form);
+        fields.forEach(function (value, key) {
+          data[key] = value;
+        });
+        return data;
+      }
+
+      function setButtonState(button, isLoading) {
+        if (!button) {
+          return;
+        }
+
+        button.disabled = isLoading;
+        button.textContent = isLoading ? 'Starting...' : 'Start checkout';
+      }
+
+      async function startCheckout(form) {
+        var button = form.querySelector('button[type="submit"]');
+        setButtonState(button, true);
+
+        try {
+          var response = await fetch('/api/billing/checkout/session', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(serializeForm(form))
+          });
+          var payload = await response.json();
+
+          if (!response.ok) {
+            throw new Error(payload.message || 'Unable to start checkout.');
+          }
+
+          if (payload.url) {
+            window.location.assign(payload.url);
+          }
+        } catch (err) {
+          setButtonState(button, false);
+          form.setAttribute('data-checkout-error', err.message || 'Unable to start checkout.');
+        }
+      }
+
+      document.querySelectorAll('[data-testid^="billing-checkout-form-"]').forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          event.preventDefault();
+          startCheckout(form);
+        });
+      });
+    }());
+  </script>
 </body>
 </html>

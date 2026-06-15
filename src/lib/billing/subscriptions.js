@@ -114,13 +114,34 @@ function upsertWorkspaceBilling(workspaceId, fields) {
     return null;
   }
 
-  const current = workspaceBillingRecords.get(cleanWorkspaceId) || { workspaceId: cleanWorkspaceId };
+  const current = workspaceBillingRecords.get(cleanWorkspaceId) || { workspaceId: cleanWorkspaceId, workspace_id: cleanWorkspaceId };
   const next = {
     ...current,
     ...fields,
     workspaceId: cleanWorkspaceId,
+    workspace_id: cleanWorkspaceId,
     updatedAt: new Date(0).toISOString(),
   };
+
+  if (next.planId && !next.plan_id) {
+    next.plan_id = next.planId;
+  }
+
+  if (next.billingPlan && !next.billing_plan) {
+    next.billing_plan = next.billingPlan;
+  }
+
+  if (next.stripeCustomerId && !next.stripe_customer_id) {
+    next.stripe_customer_id = next.stripeCustomerId;
+  }
+
+  if (next.stripeSubscriptionId && !next.stripe_subscription_id) {
+    next.stripe_subscription_id = next.stripeSubscriptionId;
+  }
+
+  if (next.subscriptionStatus && !next.subscription_status) {
+    next.subscription_status = next.subscriptionStatus;
+  }
 
   if (next.stripeCustomerId) {
     rememberWorkspaceCustomer(cleanWorkspaceId, next.stripeCustomerId);
