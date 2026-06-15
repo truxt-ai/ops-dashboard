@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/billing/promo-codes', (req, res) => {
-  res.json(getActivePromoCodes());
+  res.json({ promoCodes: getActivePromoCodes() });
 });
 
 // Proxy a health probe through axios so the dependency is genuinely exercised.
