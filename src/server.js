@@ -5,6 +5,10 @@ const express = require('express');
 const axios = require('axios');
 const _ = require('lodash');
 const minimist = require('minimist');
+const {
+  applyPromoCode,
+  listActivePromoCodes,
+} = require('./lib/billing-promo-codes');
 
 const args = minimist(process.argv.slice(2));
 const PORT = args.port || process.env.PORT || 3000;
@@ -31,6 +35,13 @@ app.get('/', (req, res) => {
   res.render('dashboard', { metrics: buildMetrics() });
 });
 
+function sendActivePromoCodes(req, res) {
+  res.json(listActivePromoCodes());
+}
+
+app.get('/api/billing/promo-codes', sendActivePromoCodes);
+app.get('/billing/promo-codes', sendActivePromoCodes);
+
 // Proxy a health probe through axios so the dependency is genuinely exercised.
 app.get('/health/upstream', async (req, res) => {
   try {
@@ -48,4 +59,10 @@ if (require.main === module) {
   });
 }
 
-module.exports = { app, buildMetrics };
+module.exports = {
+  app,
+  applyPromoCode,
+  applyPromoDiscount: applyPromoCode,
+  buildMetrics,
+  listActivePromoCodes,
+};
