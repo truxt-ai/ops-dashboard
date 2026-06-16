@@ -41,6 +41,20 @@ app.get('/health/upstream', async (req, res) => {
   }
 });
 
+// In-memory invoice store (populated per-test or at startup).
+const invoices = [];
+
+function getBillingSummary() {
+  return {
+    count: invoices.length,
+    total: invoices.reduce((sum, inv) => sum + inv.amount, 0),
+  };
+}
+
+app.get('/api/billing/summary', (req, res) => {
+  res.json(getBillingSummary());
+});
+
 if (require.main === module) {
   app.listen(PORT, () => {
     // eslint-disable-next-line no-console
@@ -48,4 +62,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { app, buildMetrics };
+module.exports = { app, buildMetrics, invoices, getBillingSummary };
