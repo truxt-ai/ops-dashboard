@@ -5,11 +5,14 @@ const express = require('express');
 const axios = require('axios');
 const _ = require('lodash');
 const minimist = require('minimist');
+const promoCodes = require('./lib/promo-codes');
+const { buildDiscountQuote, listActivePromoCodes } = promoCodes;
 
 const args = minimist(process.argv.slice(2));
 const PORT = args.port || process.env.PORT || 3000;
 
 const app = express();
+app.use(express.json());
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '..', 'views'));
 
@@ -31,6 +34,34 @@ app.get('/', (req, res) => {
   res.render('dashboard', { metrics: buildMetrics() });
 });
 
+app.get(['/api/billing/promo-codes', '/billing/promo-codes'], (req, res) => {
+  res.json({ promoCodes: listActivePromoCodes() });
+});
+
+function readDiscountInput(req) {
+  const input = req.method === 'GET' ? req.query : req.body || {};
+
+  return {
+    price: input.price ?? input.originalPrice ?? input.amount,
+    promoCode: input.promoCode ?? input.promo_code ?? input.code,
+  };
+}
+
+function handleBillingDiscount(req, res) {
+  const { price, promoCode } = readDiscountInput(req);
+  const amount = Number(price);
+  const quotedPrice = Number.isFinite(amount) ? amount : price;
+
+  res.json(buildDiscountQuote(quotedPrice, promoCode));
+}
+
+app.get('/api/billing/discount', handleBillingDiscount);
+app.post([
+  '/api/billing/discount',
+  '/api/billing/apply-discount',
+  '/api/billing/apply-promo-code',
+], handleBillingDiscount);
+
 // Proxy a health probe through axios so the dependency is genuinely exercised.
 app.get('/health/upstream', async (req, res) => {
   try {
@@ -48,4 +79,8 @@ if (require.main === module) {
   });
 }
 
-module.exports = { app, buildMetrics };
+module.exports = {
+  app,
+  buildMetrics,
+  ...promoCodes,
+};
