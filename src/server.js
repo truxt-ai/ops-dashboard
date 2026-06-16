@@ -8,7 +8,7 @@ const minimist = require('minimist');
 const {
   applyPromoCode,
   listActivePromoCodes,
-} = require('./lib/billing-promo-codes');
+} = require('./lib/billing');
 
 const args = minimist(process.argv.slice(2));
 const PORT = args.port || process.env.PORT || 3000;
@@ -40,6 +40,7 @@ function sendActivePromoCodes(req, res) {
 }
 
 app.get('/api/billing/promo-codes', sendActivePromoCodes);
+app.get('/billing/promos', sendActivePromoCodes);
 app.get('/billing/promo-codes', sendActivePromoCodes);
 
 // Proxy a health probe through axios so the dependency is genuinely exercised.
