@@ -5,6 +5,7 @@ const express = require('express');
 const axios = require('axios');
 const _ = require('lodash');
 const minimist = require('minimist');
+const { listActivePromoCodes, applyPromoCode } = require('./lib/promo-codes');
 
 const args = minimist(process.argv.slice(2));
 const PORT = args.port || process.env.PORT || 3000;
@@ -41,6 +42,11 @@ app.get('/health/upstream', async (req, res) => {
   }
 });
 
+// Active promo codes for the billing page.
+app.get('/api/billing/promo-codes', (req, res) => {
+  res.json(listActivePromoCodes());
+});
+
 if (require.main === module) {
   app.listen(PORT, () => {
     // eslint-disable-next-line no-console
@@ -48,4 +54,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { app, buildMetrics };
+module.exports = { app, buildMetrics, listActivePromoCodes, applyPromoCode };
