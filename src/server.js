@@ -9,7 +9,7 @@ const minimist = require('minimist');
 const args = minimist(process.argv.slice(2));
 const PORT = args.port || process.env.PORT || 3000;
 
-const { apply: applyPromo, listActive: listActiveCodes } = require('./lib/promo-codes');
+const { apply: applyPromo, listActive: listActiveCodes } = require('./lib/promo');
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
   res.render('dashboard', { metrics: buildMetrics() });
 });
 
-app.get('/promo-codes', (req, res) => {
+app.get('/promos', (req, res) => {
   res.json(listActiveCodes());
 });
 
