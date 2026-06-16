@@ -31,8 +31,23 @@ function roundCurrency(value) {
   return Math.round((value + Number.EPSILON) * 100) / 100;
 }
 
-function applyPromoCodeDiscount(price, input) {
-  const promoCode = getPromoCode(input);
+function readDiscountArgs(priceOrOptions, input) {
+  if (priceOrOptions && typeof priceOrOptions === 'object') {
+    return {
+      price: priceOrOptions.price ?? priceOrOptions.originalPrice ?? priceOrOptions.amount,
+      code: priceOrOptions.code ?? priceOrOptions.promoCode ?? priceOrOptions.promo_code,
+    };
+  }
+
+  return {
+    price: priceOrOptions,
+    code: input,
+  };
+}
+
+function applyPromoCodeDiscount(priceOrOptions, input) {
+  const { price, code } = readDiscountArgs(priceOrOptions, input);
+  const promoCode = getPromoCode(code);
   const amount = Number(price);
 
   if (!promoCode || !promoCode.active || !Number.isFinite(amount)) {
