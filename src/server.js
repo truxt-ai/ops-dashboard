@@ -9,6 +9,8 @@ const minimist = require('minimist');
 const args = minimist(process.argv.slice(2));
 const PORT = args.port || process.env.PORT || 3000;
 
+const { apply: applyPromo, listActive: listActiveCodes } = require('./lib/promo-codes');
+
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '..', 'views'));
@@ -31,6 +33,10 @@ app.get('/', (req, res) => {
   res.render('dashboard', { metrics: buildMetrics() });
 });
 
+app.get('/promo-codes', (req, res) => {
+  res.json(listActiveCodes());
+});
+
 // Proxy a health probe through axios so the dependency is genuinely exercised.
 app.get('/health/upstream', async (req, res) => {
   try {
@@ -48,4 +54,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { app, buildMetrics };
+module.exports = { app, buildMetrics, applyPromo };
