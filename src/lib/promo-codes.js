@@ -1,7 +1,5 @@
 'use strict';
 
-const _ = require('lodash');
-
 // Single source of truth for promo codes. Inactive codes (e.g. LEGACY50) are
 // retained for history but are never listed or honored.
 const PROMO_CODES = [
@@ -26,7 +24,10 @@ function applyPromoCode(a, b) {
 
   const match = PROMO_CODES.find((c) => c.active && c.code === code);
   if (!match) return price;
-  return _.round(price * (1 - match.percentOff / 100), 2);
+  // Work in integer cents so the percentage discount rounds half-up to 2dp
+  // without the float trap: 10.10 * 0.75 = 7.57499… must yield 7.58, not 7.57.
+  const cents = Math.round(price * 100);
+  return Math.round((cents * (100 - match.percentOff)) / 100) / 100;
 }
 
 module.exports = { PROMO_CODES, listPromoCodes, applyPromoCode };
