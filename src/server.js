@@ -5,6 +5,7 @@ const express = require('express');
 const axios = require('axios');
 const _ = require('lodash');
 const minimist = require('minimist');
+const { listActivePromoCodes } = require('./lib/promo-codes');
 
 const args = minimist(process.argv.slice(2));
 const PORT = args.port || process.env.PORT || 3000;
@@ -29,6 +30,13 @@ function buildMetrics() {
 
 app.get('/', (req, res) => {
   res.render('dashboard', { metrics: buildMetrics() });
+});
+
+// List the promo codes a customer may currently use. Retired codes are filtered
+// out by the shared helper, so the billing page never offers them. Served under
+// both the /api prefix and the bare path so either client convention resolves.
+app.get(['/api/promo-codes', '/promo-codes'], (req, res) => {
+  res.json(listActivePromoCodes());
 });
 
 // Proxy a health probe through axios so the dependency is genuinely exercised.
