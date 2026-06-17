@@ -5,6 +5,7 @@ const express = require('express');
 const axios = require('axios');
 const _ = require('lodash');
 const minimist = require('minimist');
+const { listPromoCodes } = require('./lib/promo-codes');
 
 const args = minimist(process.argv.slice(2));
 const PORT = args.port || process.env.PORT || 3000;
@@ -39,6 +40,11 @@ app.get('/health/upstream', async (req, res) => {
   } catch (err) {
     res.status(502).json({ upstream: 'unreachable', error: err.message });
   }
+});
+
+// List active promo codes for the billing page (inactive codes are never exposed).
+app.get('/api/promo-codes', (req, res) => {
+  res.json(listPromoCodes());
 });
 
 if (require.main === module) {
