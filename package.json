@@ -4,6 +4,7 @@
   "description": "Truxt demo dashboard - a small Express + EJS metrics dashboard used to demonstrate the Axiom vulnerability-remediation autopilot.",
   "main": "src/server.js",
   "scripts": {
+    "postinstall": "node scripts/fix-ejs-exports.js",
     "start": "node src/server.js",
     "test": "node --test",
     "lint": "eslint ."
