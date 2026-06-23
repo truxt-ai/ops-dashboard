@@ -4,6 +4,7 @@
   "description": "Truxt demo dashboard - a small Express + EJS metrics dashboard used to demonstrate the Axiom vulnerability-remediation autopilot.",
   "main": "src/server.js",
   "scripts": {
+    "postinstall": "node -e \"var fs=require('fs'),path=require('path'),f=path.join(__dirname,'node_modules/ejs/package.json'),pkg=JSON.parse(fs.readFileSync(f,'utf8'));if(pkg.exports&&!pkg.exports['./package.json']){var e=pkg.exports;if(e['import']||e['require']){pkg.exports={'.':e,'./package.json':'./package.json'};}else{pkg.exports['./package.json']='./package.json';}fs.writeFileSync(f,JSON.stringify(pkg,null,2)+'\\n');}\"",
     "start": "node src/server.js",
     "test": "node --test",
     "lint": "eslint ."
