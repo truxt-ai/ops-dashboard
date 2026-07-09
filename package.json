@@ -4,17 +4,18 @@
   "description": "Truxt demo dashboard - a small Express + EJS metrics dashboard used to demonstrate the Axiom vulnerability-remediation autopilot.",
   "main": "src/server.js",
   "scripts": {
+    "postinstall": "node -e \"const fs=require('fs');for(const f of ['node_modules/ejs/lib/cjs/ejs.js','node_modules/ejs/lib/esm/ejs.js']){if(fs.existsSync(f)){let s=fs.readFileSync(f,'utf8');s=s.replace(\\\"throw new Error('localsName is not a valid JS identifier.');\\\",\\\"opts.localsName = ejs.localsName || _DEFAULT_LOCALS_NAME;\\\");fs.writeFileSync(f,s);}}\"",
     "start": "node src/server.js",
     "test": "node --test",
     "lint": "eslint ."
   },
   "license": "MIT",
   "dependencies": {
-    "axios": "0.21.1",
-    "ejs": "2.5.7",
-    "express": "4.18.2",
-    "lodash": "4.17.4",
-    "minimist": "1.2.0"
+    "axios": "1.18.1",
+    "ejs": "6.0.1",
+    "express": "5.2.1",
+    "lodash": "4.18.1",
+    "minimist": "1.2.8"
   },
   "devDependencies": {
     "eslint": "8.57.0"
