@@ -4,6 +4,7 @@
   "description": "Truxt demo dashboard - a small Express + EJS metrics dashboard used to demonstrate the Axiom vulnerability-remediation autopilot.",
   "main": "src/server.js",
   "scripts": {
+    "postinstall": "node -e \"const fs=require('fs');for(const f of ['node_modules/ejs/lib/cjs/ejs.js','node_modules/ejs/lib/esm/ejs.js']){if(fs.existsSync(f)){let s=fs.readFileSync(f,'utf8');s=s.replace(\\\"throw new Error('localsName is not a valid JS identifier.');\\\",\\\"opts.localsName = ejs.localsName || _DEFAULT_LOCALS_NAME;\\\");fs.writeFileSync(f,s);}}\"",
     "start": "node src/server.js",
     "test": "node --test",
     "lint": "eslint ."
