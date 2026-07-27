@@ -49,7 +49,6 @@ app.get('/health/upstream', async (req, res) => {
 
 if (require.main === module) {
   app.listen(PORT, () => {
-    // eslint-disable-next-line no-console
     console.log(`axiom-demo-dashboard listening on http://localhost:${PORT}`);
   });
 }
