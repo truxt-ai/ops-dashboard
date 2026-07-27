@@ -24,4 +24,10 @@ module.exports = defineConfig([
       'no-unused-vars': 'warn',
     },
   },
+  {
+    files: ['test/**/*.js'],
+    rules: {
+      'no-useless-assignment': 'off',
+    },
+  },
 ]);
