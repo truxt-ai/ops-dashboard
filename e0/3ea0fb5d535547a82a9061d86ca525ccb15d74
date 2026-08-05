@@ -1,0 +1,23 @@
+package.json
+  s_b8a63f8f851b31::t_6fbb55e9d9d846 13-17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.10",
+  "base_commit_sha": "e03ea0fb5d535547a82a9061d86ca525ccb15d74",
+  "prompts": {},
+  "sessions": {
+    "s_b8a63f8f851b31": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "3d622396-fd9a-48ca-be4e-6a1d3b811914",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "raunakTruxt <raunak@truxt.ai>",
+      "total_additions": 5,
+      "total_deletions": 5,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    }
+  }
+}
