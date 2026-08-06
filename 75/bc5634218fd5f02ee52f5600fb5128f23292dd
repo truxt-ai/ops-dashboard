@@ -1,0 +1,23 @@
+package.json
+  s_aad94389b9045e::t_97cf0a36f199bc 14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "75bc5634218fd5f02ee52f5600fb5128f23292dd",
+  "prompts": {},
+  "sessions": {
+    "s_aad94389b9045e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d1b705fd-66cf-4902-bffa-79dbd1249a7a",
+        "model": "claude-haiku-4-5-20251001"
+      },
+      "human_author": "raunakTruxt <raunak@truxt.ai>",
+      "total_additions": 1,
+      "total_deletions": 1,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    }
+  }
+}
