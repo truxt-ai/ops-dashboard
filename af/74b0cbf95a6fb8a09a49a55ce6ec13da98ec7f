@@ -1,0 +1,25 @@
+views/dashboard.ejs
+  s_2ab955ac1b35bd::t_c2b042e108e31b 10-12,23-39,48,56
+src/server.js
+  s_2ab955ac1b35bd::t_c2b042e108e31b 24-27,31-46
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "af74b0cbf95a6fb8a09a49a55ce6ec13da98ec7f",
+  "prompts": {},
+  "sessions": {
+    "s_2ab955ac1b35bd": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a01231-47e4-7ed1-b96c-a122c53cb756",
+        "model": "gpt-5.6-sol"
+      },
+      "human_author": "raunakTruxt <raunak@truxt.ai>",
+      "total_additions": 42,
+      "total_deletions": 3,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    }
+  }
+}
