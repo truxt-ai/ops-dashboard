@@ -7,6 +7,9 @@
     body { font-family: system-ui, sans-serif; margin: 2rem; color: #1a1a2e; }
     h1 { margin-bottom: 0.25rem; }
     .sub { color: #6b7280; margin-top: 0; }
+    .summary { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1.5rem 0; }
+    .summary-card { min-width: 11rem; padding: 1rem; border: 1px solid #e5e7eb; border-radius: 0.75rem; }
+    .summary-card strong { display: block; margin-bottom: 0.35rem; }
     table { border-collapse: collapse; margin-top: 1.5rem; min-width: 480px; }
     th, td { text-align: left; padding: 0.5rem 1rem; border-bottom: 1px solid #e5e7eb; }
     th { background: #f3f4f6; }
@@ -17,6 +20,23 @@
   <h1>Truxt Demo Dashboard</h1>
   <p class="sub">Service health overview</p>
 
+  <section class="summary" aria-label="System health summary">
+    <div class="summary-card" data-testid="overall-health">
+      <strong>Overall health:</strong>
+      <span><%= metrics.overallHealth.charAt(0).toUpperCase() + metrics.overallHealth.slice(1) %></span>
+    </div>
+    <div class="summary-card">
+      <strong>Services by status:</strong>
+      <span data-testid="status-count-healthy">Healthy: <%= metrics.statusCounts.healthy %></span><br>
+      <span data-testid="status-count-watch">Watch: <%= metrics.statusCounts.watch %></span><br>
+      <span data-testid="status-count-degraded">Degraded: <%= metrics.statusCounts.degraded %></span>
+    </div>
+    <div class="summary-card" data-testid="highest-priority-area">
+      <strong>Highest priority affected area:</strong>
+      <span><%= metrics.highestPriorityArea.name %></span>
+    </div>
+  </section>
+
   <p>
     <span class="pill">Total requests: <%= metrics.totalRequests.toLocaleString() %></span>
     <span class="pill">Total errors: <%= metrics.totalErrors %></span>
@@ -25,7 +45,7 @@
 
   <table>
     <thead>
-      <tr><th>Service</th><th>Requests</th><th>Errors</th></tr>
+      <tr><th>Service</th><th>Requests</th><th>Errors</th><th>Status</th></tr>
     </thead>
     <tbody>
       <% metrics.services.forEach(function (s) { %>
@@ -33,6 +53,7 @@
           <td><%= s.name %></td>
           <td><%= s.requests.toLocaleString() %></td>
           <td><%= s.errors %></td>
+          <td><%= s.status.charAt(0).toUpperCase() + s.status.slice(1) %></td>
         </tr>
       <% }); %>
     </tbody>

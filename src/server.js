@@ -21,11 +21,29 @@ function buildMetrics() {
     { name: 'api-gateway', requests: 18420, errors: 12 },
     { name: 'auth-service', requests: 9310, errors: 3 },
     { name: 'billing', requests: 4502, errors: 0 },
-  ];
+  ].map((service) => ({
+    ...service,
+    status: service.errors === 0 ? 'healthy' : service.errors <= 5 ? 'watch' : 'degraded',
+  }));
   const totalRequests = _.sumBy(services, 'requests');
   const totalErrors = _.sumBy(services, 'errors');
   const errorRate = _.round((totalErrors / totalRequests) * 100, 3);
-  return { services, totalRequests, totalErrors, errorRate };
+  const statusCounts = _.countBy(services, 'status');
+  const statusRank = { healthy: 0, watch: 1, degraded: 2 };
+  const highestPriorityArea = _.maxBy(
+    services,
+    (service) => statusRank[service.status] * 1000000 + service.errors,
+  );
+
+  return {
+    services,
+    totalRequests,
+    totalErrors,
+    errorRate,
+    statusCounts,
+    overallHealth: highestPriorityArea.status,
+    highestPriorityArea,
+  };
 }
 
 app.get('/', (req, res) => {
