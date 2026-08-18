@@ -1,0 +1,14 @@
+views/dashboard.ejs
+  h_0d57d365e4e100 10-15,20-23,30-44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "5594b497f80c9650b140fd64ca88bf6e1d1bd639",
+  "prompts": {},
+  "humans": {
+    "h_0d57d365e4e100": {
+      "author": "VD Implementer <vd-implementer@truxt.ai>"
+    }
+  }
+}
