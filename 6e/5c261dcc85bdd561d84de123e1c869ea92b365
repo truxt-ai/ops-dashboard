@@ -1,0 +1,14 @@
+test/smoke.test.js
+  h_8b74ed62758757 5-36,45-70
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "6e5c261dcc85bdd561d84de123e1c869ea92b365",
+  "prompts": {},
+  "humans": {
+    "h_8b74ed62758757": {
+      "author": "Truxt Axiom Agent <agent@truxt.local>"
+    }
+  }
+}
