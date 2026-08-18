@@ -1,0 +1,14 @@
+package.json
+  h_0bf6b1c77bd42f 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "f7e2f0db5fd062e257d324264688606c2ed5f609",
+  "prompts": {},
+  "humans": {
+    "h_0bf6b1c77bd42f": {
+      "author": "TypeScriptDev <typescriptdev@truxt.ai>"
+    }
+  }
+}
