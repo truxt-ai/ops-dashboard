@@ -1,0 +1,24 @@
+test/security-regression.test.js
+  s_be95e28472cfd8::t_0dd00bea8c9aa4 1-8,10-15,24-28,31-47,56,58-60,62-63,65-69,72-79,81-98
+  s_be95e28472cfd8::t_1e0671560588aa 9,16-23,29-30,48-55,57,61,64,70-71,80
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "8b2837f497e1657abf785106b6500ea8befff912",
+  "prompts": {},
+  "sessions": {
+    "s_be95e28472cfd8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5e2dcc10-d85a-40f2-8242-33c1bbf897b8",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "raunakTruxt <raunak@truxt.ai>",
+      "total_additions": 120,
+      "total_deletions": 22,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    }
+  }
+}
