@@ -1,0 +1,16 @@
+package-lock.json
+  h_c60e10d459c961 13,281,576-578,584
+package.json
+  h_c60e10d459c961 9-10,15
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "93c73814f6eaa3d039f1e453e023dc2e146c0d96",
+  "prompts": {},
+  "humans": {
+    "h_c60e10d459c961": {
+      "author": "TypeScriptDev <typescriptdev@truxt.local>"
+    }
+  }
+}
