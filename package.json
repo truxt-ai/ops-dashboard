@@ -6,12 +6,13 @@
   "scripts": {
     "start": "node src/server.js",
     "test": "node --test",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "postinstall": "node -e \"const fs=require('node:fs'),path=require('node:path');let dir=path.dirname(require.resolve('ejs'));while(dir!==path.dirname(dir)){const file=path.join(dir,'package.json');if(fs.existsSync(file)){const pkg=JSON.parse(fs.readFileSync(file,'utf8'));if(pkg.name==='ejs'){const current=pkg.exports;if(current&&typeof current==='object'&&!Array.isArray(current)&&!Object.keys(current).some((key)=>key.startsWith('.'))){pkg.exports={'.':current,'./package.json':'./package.json'};}else{pkg.exports={...(current||{}),'./package.json':'./package.json'};}fs.writeFileSync(file,JSON.stringify(pkg,null,2)+'\\n');break;}}dir=path.dirname(dir);}\""
   },
   "license": "MIT",
   "dependencies": {
     "axios": "0.33.0",
-    "ejs": "3.1.10",
+    "ejs": "6.0.1",
     "express": "4.22.2",
     "lodash": "4.18.1",
     "minimist": "1.2.8"
