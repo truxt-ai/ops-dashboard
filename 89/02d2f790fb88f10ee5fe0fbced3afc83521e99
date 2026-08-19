@@ -1,0 +1,14 @@
+package.json
+  h_c60e10d459c961 9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "8902d2f790fb88f10ee5fe0fbced3afc83521e99",
+  "prompts": {},
+  "humans": {
+    "h_c60e10d459c961": {
+      "author": "TypeScriptDev <typescriptdev@truxt.local>"
+    }
+  }
+}
