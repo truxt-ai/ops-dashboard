@@ -2,9 +2,80 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert');
+const fs = require('node:fs');
+const path = require('node:path');
 const ejs = require('ejs');
 const _ = require('lodash');
 const minimist = require('minimist');
+
+function compareVersions(left, right) {
+  const leftParts = parseVersion(left);
+  const rightParts = parseVersion(right);
+
+  for (let index = 0; index < 3; index += 1) {
+    if (leftParts[index] !== rightParts[index]) {
+      return leftParts[index] - rightParts[index];
+    }
+  }
+
+  return 0;
+}
+
+function parseVersion(version) {
+  return String(version)
+    .split('-')[0]
+    .split('.')
+    .map(part => Number.parseInt(part, 10) || 0)
+    .concat([0, 0, 0])
+    .slice(0, 3);
+}
+
+function readLockfilePackageVersion(packageName) {
+  const lockfile = JSON.parse(fs.readFileSync('package-lock.json', 'utf8'));
+  const packageInfo = lockfile.packages[`node_modules/${packageName}`];
+
+  assert.ok(
+    packageInfo,
+    `package-lock.json should contain node_modules/${packageName}`
+  );
+
+  return packageInfo.version;
+}
+
+function readResolvedPackageVersion(packageName) {
+  let currentDir = path.dirname(require.resolve(packageName));
+  const { root } = path.parse(currentDir);
+
+  while (currentDir !== root) {
+    const packageJsonPath = path.join(currentDir, 'package.json');
+
+    if (fs.existsSync(packageJsonPath)) {
+      const packageInfo = JSON.parse(
+        fs.readFileSync(packageJsonPath, 'utf8')
+      );
+
+      if (packageInfo.name === packageName) {
+        return packageInfo.version;
+      }
+    }
+
+    currentDir = path.dirname(currentDir);
+  }
+
+  throw new Error(`Unable to find package.json for ${packageName}`);
+}
+
+function assertVersionAboveVulnerableRange({
+  advisory,
+  packageName,
+  version,
+  vulnerableThrough,
+}) {
+  assert.ok(
+    compareVersions(version, vulnerableThrough) > 0,
+    `${packageName}@${version} must be outside ${advisory} vulnerable range <=${vulnerableThrough}`
+  );
+}
 
 function withObjectPrototypeProperties(properties, fn) {
   const previousDescriptors = new Map();
@@ -104,17 +175,33 @@ test('GHSA-xvch-5gv4-984h: minimist does not parse __proto__ flags into Object.p
   }
 });
 
-test('audited direct dependencies resolve to patched versions', () => {
-  assert.deepStrictEqual(
+test('audited direct dependencies resolve outside vulnerable advisory ranges', () => {
+  const advisories = [
     {
-      ejs: require('ejs/package.json').version,
-      lodash: require('lodash/package.json').version,
-      minimist: require('minimist/package.json').version,
+      advisory: 'GHSA-phwq-j96m-2c2q / GHSA-ghr5-ch3p-vcr6',
+      packageName: 'ejs',
+      vulnerableThrough: '3.1.9',
     },
     {
-      ejs: '6.0.1',
-      lodash: '4.18.1',
-      minimist: '1.2.8',
-    }
-  );
+      advisory: 'GHSA-jf85-cpcp-j695 and related lodash advisories',
+      packageName: 'lodash',
+      vulnerableThrough: '4.17.23',
+    },
+    {
+      advisory: 'GHSA-xvch-5gv4-984h',
+      packageName: 'minimist',
+      vulnerableThrough: '1.2.5',
+    },
+  ];
+
+  for (const advisory of advisories) {
+    assertVersionAboveVulnerableRange({
+      ...advisory,
+      version: readLockfilePackageVersion(advisory.packageName),
+    });
+    assertVersionAboveVulnerableRange({
+      ...advisory,
+      version: readResolvedPackageVersion(advisory.packageName),
+    });
+  }
 });
