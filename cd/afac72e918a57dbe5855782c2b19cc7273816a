@@ -1,0 +1,14 @@
+test/smoke.test.js
+  h_572e6f954575af 3,6-36,45-94
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "cdafac72e918a57dbe5855782c2b19cc7273816a",
+  "prompts": {},
+  "humans": {
+    "h_572e6f954575af": {
+      "author": "VD Test Author <ashutoshs@truxt.ai>"
+    }
+  }
+}
