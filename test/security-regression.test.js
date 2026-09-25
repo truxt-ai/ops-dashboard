@@ -127,7 +127,7 @@ test('GHSA-xvch-5gv4-984h: minimist parse allows prototype pollution via __proto
   // On vulnerable minimist: Object.prototype.isAdmin is assigned (as a string,
   // since minimist parses all CLI values as strings). The pollution itself
   // occurs; fixed minimist (1.2.8+) prevents the walk.
-  const pollutionOccurred = Object.prototype.hasOwnProperty('isAdmin');
+  const pollutionOccurred = Object.prototype.hasOwnProperty.call(Object.prototype, 'isAdmin');
 
   // Cleanup BEFORE asserting.
   delete Object.prototype.isAdmin;
