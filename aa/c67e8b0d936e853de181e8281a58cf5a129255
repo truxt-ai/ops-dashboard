@@ -1,0 +1,24 @@
+test/security-vulns.test.js
+  s_3dee3483f14be9::t_871bc82f08f8b9 52
+  s_3dee3483f14be9::t_a7c108d4c722a4 73-75,77-79
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "aac67e8b0d936e853de181e8281a58cf5a129255",
+  "prompts": {},
+  "sessions": {
+    "s_3dee3483f14be9": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0c3de-bdf4-7b72-a2d4-e35a61814146",
+        "model": "gpt-6-sol"
+      },
+      "human_author": "raunakTruxt <raunakp@truxt.ai>",
+      "total_additions": 7,
+      "total_deletions": 27,
+      "accepted_lines": 7,
+      "overriden_lines": 0
+    }
+  }
+}
