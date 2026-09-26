@@ -1,0 +1,20 @@
+src/lib/promo-codes.js
+  h_0832b2f0358f1e 1-42
+src/server.js
+  h_0832b2f0358f1e 8,35-39,57
+test/promo-codes.test.js
+  h_0832b2f0358f1e 1-97
+test/security-regression.test.js
+  h_0832b2f0358f1e 1-80
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8506f8a18b0e1a6905a903dad277527c0a6b297f",
+  "prompts": {},
+  "humans": {
+    "h_0832b2f0358f1e": {
+      "author": "Junior UnitTester Agent <agent@truxt.ai>"
+    }
+  }
+}

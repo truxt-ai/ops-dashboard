@@ -1,0 +1,23 @@
+test/security-regression-atl-226.test.js
+  s_cf3d13f37d1836::t_005123ba899437 1-140
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "0fbc09847993cc6b4e66f11bdbe5edf138b29dd9",
+  "prompts": {},
+  "sessions": {
+    "s_cf3d13f37d1836": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8182b873-acc7-4caa-abbe-005d8784a387",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "raunakTruxt <raunak@truxt.ai>",
+      "total_additions": 140,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    }
+  }
+}
