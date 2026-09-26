@@ -49,7 +49,7 @@ test('CVE/GHSA-vh95-rmgr-6w4m: minimist 1.2.0 prototype pollution via CLI parsin
   const minimist = require('minimist');
   
   // Exploit: parse arguments with __proto__ in the key
-  const argv = minimist(['--__proto__.isAdmin=true', '--__proto__.polluted=yes']);
+  minimist(['--__proto__.isAdmin=true', '--__proto__.polluted=yes']);
   
   // Assertion: prototype MUST NOT be polluted after the fix
   // On vulnerable code this will fail (Object.prototype IS polluted)
@@ -70,32 +70,12 @@ test('CVE/GHSA-vh95-rmgr-6w4m: minimist 1.2.0 prototype pollution via CLI parsin
   delete Object.prototype.polluted;
 });
 
-test('CVE/GHSA-phwq-j96m-2c2q: ejs 2.5.7 template injection via untrusted template rendering', () => {
-  // Reproduce GHSA-phwq-j96m-2c2q: ejs <=3.1.9 allows arbitrary code execution
-  // when rendering untrusted templates (user input passed as template source).
-  // The vulnerability occurs when a user-provided string is treated as a template.
-  
+test('CVE/GHSA-phwq-j96m-2c2q: ejs rejects injected outputFunctionName', () => {
+  // The advisory concerns an option interpolated into generated JavaScript,
+  // not EJS executing JavaScript in a template supplied by the application.
   const ejs = require('ejs');
-  
-  // Mark that code execution occurred
-  global.__ejsInjectionTest = false;
-  
-  // Exploit: untrusted user input passed as template
-  // In vulnerable ejs, template code (<%- ... %>) is executed without sandboxing
-  const userSuppliedTemplate = '<%- (function(){ global.__ejsInjectionTest = true; return "pwned" })() %>';
-  
-  // Vulnerable ejs 2.5.7 will execute the JS in template tags
-  // Patched ejs will either sandbox it or reject the dangerous code
-  const result = ejs.render(userSuppliedTemplate);
-  
-  // After the fix, the template code should NOT execute arbitrary JS
-  // (On vulnerable ejs, global.__ejsInjectionTest will be true)
-  assert.strictEqual(
-    global.__ejsInjectionTest,
-    false,
-    'ejs must not execute arbitrary code from untrusted template input'
+  assert.throws(
+    () => ejs.compile('<p>safe</p>', { outputFunctionName: 'x;global.__ejsInjectionTest=true;x' }),
+    /outputFunctionName is not a valid JS identifier/
   );
-  
-  // Cleanup
-  delete global.__ejsInjectionTest;
 });
