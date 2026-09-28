@@ -78,7 +78,7 @@ test('GHSA-xvch-5gv4-984h: minimist does not pollute Object.prototype via __prot
 // ─────────────────────────────────────────────────────────────────────────────
 test('GHSA-phwq-j96m-2c2q: ejs rejects malicious outputFunctionName option', () => {
   const ejs = require('ejs');
-  const pkgPath = path.join(path.dirname(require.resolve('ejs')), '../package.json');
+  const pkgPath = require.resolve('ejs/package.json');
   const ejsVersion = require(pkgPath).version;
   // A malicious outputFunctionName with semicolons (would allow code injection)
   const maliciousName = 'a; process.exit(1); //';
