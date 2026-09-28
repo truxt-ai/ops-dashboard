@@ -1,0 +1,14 @@
+test/security-vulns.test.js
+  h_d60977f0e0cd88 1-101
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f2072fdf235ede8eb24559373bcd5c111cd642ec",
+  "prompts": {},
+  "humans": {
+    "h_d60977f0e0cd88": {
+      "author": "UnitTester Agent <unit-tester@truxt.ai>"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+test/security-regression.test.js
+  h_0832b2f0358f1e 1-80
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "2886cbe3f83431427a0e784901a1883206077ef0",
+  "prompts": {},
+  "humans": {
+    "h_0832b2f0358f1e": {
+      "author": "Junior UnitTester Agent <agent@truxt.ai>"
+    }
+  }
+}

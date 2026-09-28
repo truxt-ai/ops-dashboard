@@ -1,0 +1,16 @@
+package-lock.json
+  h_0bf6b1c77bd42f 13,272-277,593-595,597-599,604,945-974,1422-1438,1791-1796
+package.json
+  h_0bf6b1c77bd42f 14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "267d6a66eb6ddaf3b9c65d5075cdaf37c2d78774",
+  "prompts": {},
+  "humans": {
+    "h_0bf6b1c77bd42f": {
+      "author": "TypeScriptDev <typescriptdev@truxt.ai>"
+    }
+  }
+}

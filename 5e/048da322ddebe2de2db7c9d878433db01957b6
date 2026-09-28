@@ -1,0 +1,27 @@
+package.json
+  s_0efbdf8274fc84::t_291d82c55214cb 7
+scripts/fix-ejs-exports.js
+  s_0efbdf8274fc84::t_f798e1a844456a 1-11,26,28-32
+  s_0efbdf8274fc84::t_890da3263d68db 15-16,22-23,25
+  s_0efbdf8274fc84::t_96b1f11a2c3d3e 12-14,17-21,24,27
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.9",
+  "base_commit_sha": "5e048da322ddebe2de2db7c9d878433db01957b6",
+  "prompts": {},
+  "sessions": {
+    "s_0efbdf8274fc84": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "aecb35ef-cdaf-4024-b02f-98229fe0164f",
+        "model": "claude-sonnet-4-6"
+      },
+      "human_author": "raunakTruxt <raunak@truxt.ai>",
+      "total_additions": 42,
+      "total_deletions": 9,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    }
+  }
+}

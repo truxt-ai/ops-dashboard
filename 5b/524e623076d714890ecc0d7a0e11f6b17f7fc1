@@ -1,0 +1,14 @@
+test/security-regression.test.js
+  h_27cd32bf76d93e 5-6,11-79,178-179,181-183,186-206
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.21",
+  "base_commit_sha": "5b524e623076d714890ecc0d7a0e11f6b17f7fc1",
+  "prompts": {},
+  "humans": {
+    "h_27cd32bf76d93e": {
+      "author": "Truxt Axiom Agent <axiom-agent@truxt.ai>"
+    }
+  }
+}
