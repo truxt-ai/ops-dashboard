@@ -78,9 +78,24 @@ test('GHSA-xvch-5gv4-984h: minimist does not pollute Object.prototype via __prot
 // ─────────────────────────────────────────────────────────────────────────────
 test('GHSA-phwq-j96m-2c2q: ejs rejects malicious outputFunctionName option', () => {
   const ejs = require('ejs');
-  const pkgPath = require.resolve('ejs/package.json');
-  const ejsVersion = require(pkgPath).version;
-  // A malicious outputFunctionName with semicolons (would allow code injection)
+  // Find ejs package.json (works for ejs 2.x–6.x layouts)
+  const ejsModule = require.resolve('ejs');
+  let ejsPkgPath;
+  const fs = require('fs');
+  let dir = path.dirname(ejsModule);
+  for (let i = 0; i < 6; i++) {
+    const candidate = path.join(dir, 'package.json');
+    if (fs.existsSync(candidate)) {
+      const pkg = JSON.parse(fs.readFileSync(candidate, 'utf8'));
+      if (pkg.name === 'ejs') {
+        ejsPkgPath = candidate;
+        break;
+      }
+    }
+    dir = path.dirname(dir);
+  }
+  const ejsVersion = JSON.parse(fs.readFileSync(ejsPkgPath, 'utf8')).version;
+
   const maliciousName = 'a; process.exit(1); //';
   let threw = false;
   let thrownMsg = '';
