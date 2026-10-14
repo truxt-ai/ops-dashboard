@@ -18,5 +18,9 @@
   },
   "devDependencies": {
     "eslint": "8.57.0"
+  },
+  "overrides": {
+    "brace-expansion": "^1.1.21",
+    "js-yaml": "^4.3.2"
   }
 }
