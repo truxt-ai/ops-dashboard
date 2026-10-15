@@ -1,7 +1,5 @@
 'use strict';
 
-const _ = require('lodash');
-
 // Self-contained promo-code catalog for the billing page. Kept as a static,
 // in-code list so there are no external service calls. LEGACY50 is retired:
 // it stays in the catalog for reference but is never honored or listed because
@@ -27,7 +25,7 @@ function applyPromoCode(price, code) {
   if (!promo) {
     return price;
   }
-  return _.round(price * (1 - promo.discountPercent / 100), 2);
+  return Math.round(price * (1 - promo.discountPercent / 100) * 100) / 100;
 }
 
 // List the promo codes the billing page may surface to users: active codes only,

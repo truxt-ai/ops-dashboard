@@ -3,7 +3,6 @@
 const path = require('path');
 const express = require('express');
 const axios = require('axios');
-const _ = require('lodash');
 const minimist = require('minimist');
 const { applyPromoCode, getActivePromoCodes } = require('./lib/promo-codes');
 
@@ -22,9 +21,9 @@ function buildMetrics() {
     { name: 'auth-service', requests: 9310, errors: 3 },
     { name: 'billing', requests: 4502, errors: 0 },
   ];
-  const totalRequests = _.sumBy(services, 'requests');
-  const totalErrors = _.sumBy(services, 'errors');
-  const errorRate = _.round((totalErrors / totalRequests) * 100, 3);
+  const totalRequests = services.reduce((sum, service) => sum + service.requests, 0);
+  const totalErrors = services.reduce((sum, service) => sum + service.errors, 0);
+  const errorRate = Math.round((totalErrors / totalRequests) * 100 * 1000) / 1000;
   return { services, totalRequests, totalErrors, errorRate };
 }
 
