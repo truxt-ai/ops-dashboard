@@ -1,0 +1,33 @@
+AXM-684 / TD-86 — UoW-1 implementation evidence
+Source ticket: https://truxt.atlassian.net/browse/TD-86
+Approved plan revision: dc7ea8ef-476c-4adf-9859-c1036abd85e5
+Requirements document: 7710ebb5-4be1-46ee-aa1f-c2489ca339c4
+Delivery run: bed1e66c-6ff3-4ffd-a061-6212b04b722c
+
+TC-01: test/service-health.test.js covers unrounded 0%, 0.99%, 1%, 4.99%,
+5%, 5.01%, zero requests, and values immediately below both thresholds.
+TC-02: frozen independent fixtures include multiple names per status and
+case variants. Reversed/rotated inputs and repeated calls give identical order.
+TC-03: EJS fixtures and three actual GET / responses verify service/status
+cell order, explicit status text, failing styling, and server rendering.
+TC-04: metrics total 32232 requests, 1100 errors, and 3.413% error rate;
+freshness regression assertions retain their original behavior.
+TC-05: red-tests.txt records 16 expected failures before production edits.
+Tests were committed first as 8c7802c31081b36979a9cf60a359699b84110e65.
+After implementation, npm test passes all 49 tests and npm run lint passes.
+Final-revision command output is retained in .axiom/evidence/final-checks.txt
+in the run worktree; .axiom is intentionally excluded from Git.
+TC-06: real Chromium 153.0.8010.12 loaded the local Express dashboard,
+with shipped metrics, at 1280x800 and 390x800. Both views were loaded twice.
+Screenshots dashboard-1280.png and dashboard-390.png show api-gateway Failing,
+auth-service Degraded, then billing Healthy. Both screenshots were visually
+inspected. browser.json records actual DOM order, cell bounds and computed
+status colors. At 390px the table container is 326px wide with 480px content;
+scrolling 154px reaches the Errors column without page overflow.
+
+Production changes are confined to src/lib/service-health.js, src/server.js
+and views/dashboard.ejs. Dependencies, aggregate calculation, clock interface,
+freshness behavior and public routes are preserved. Screenshots and logs are
+acceptance evidence, not generated mockups or replacements for host verification.
+Independent native review and host verification follow the produced head;
+this implementation report does not approve either gate.

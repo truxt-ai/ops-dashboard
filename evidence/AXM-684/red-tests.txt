@@ -1,0 +1,558 @@
+AXM-684 / TD-86 tests-first evidence
+Base revision: a36ecff0e83febb9850ac4cfa7b36a9e5434f6c5
+UTC: 2026-10-22T13:11:36.414723+00:00
+Command: node --test --test-reporter=tap test/service-health.test.js test/health-freshness.test.js test/smoke.test.js
+Production sources unchanged; test-only patch follows in tests-first.patch.
+Exit: 1
+
+TAP version 13
+# Subtest: TC-01: successful metrics build records its completion and renders fresh UTC time
+not ok 1 - TC-01: successful metrics build records its completion and renders fresh UTC time
+  ---
+  duration_ms: 2.117079
+  type: 'test'
+  location: '/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/health-freshness.test.js:24:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    15 !== 1100
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1100
+  actual: 15
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/health-freshness.test.js:29:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1201:25)
+    Test.start (node:internal/test_runner/test:1096:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)
+  ...
+# Subtest: refresh clock is read after calculation, and never after failed calculation
+ok 2 - refresh clock is read after calculation, and never after failed calculation
+  ---
+  duration_ms: 0.78987
+  type: 'test'
+  ...
+# Subtest: TC-02: stale rendering preserves the snapshot timestamp with text and styling
+ok 3 - TC-02: stale rendering preserves the snapshot timestamp with text and styling
+  ---
+  duration_ms: 14.652071
+  type: 'test'
+  ...
+# Subtest: TC-03: snapshot aged 299999 ms is fresh
+ok 4 - TC-03: snapshot aged 299999 ms is fresh
+  ---
+  duration_ms: 0.840071
+  type: 'test'
+  ...
+# Subtest: TC-03: snapshot aged 300000 ms is fresh
+ok 5 - TC-03: snapshot aged 300000 ms is fresh
+  ---
+  duration_ms: 0.466314
+  type: 'test'
+  ...
+# Subtest: TC-03: snapshot aged 300001 ms is stale
+ok 6 - TC-03: snapshot aged 300001 ms is stale
+  ---
+  duration_ms: 0.392503
+  type: 'test'
+  ...
+# Subtest: TC-04: UTC date boundary uses zero-padded UTC hours and minutes
+ok 7 - TC-04: UTC date boundary uses zero-padded UTC hours and minutes
+  ---
+  duration_ms: 0.490443
+  type: 'test'
+  ...
+# Subtest: TC-05: GET / wires the build timestamp into the actual dashboard
+ok 8 - TC-05: GET / wires the build timestamp into the actual dashboard
+  ---
+  duration_ms: 47.458967
+  type: 'test'
+  ...
+# Subtest: TC-01: 0/10000 is healthy without rounding
+not ok 9 - TC-01: 0/10000 is healthy without rounding
+  ---
+  duration_ms: 1.094953
+  type: 'test'
+  location: '/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:23:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module '../src/lib/service-health'
+    Require stack:
+    - /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Module._resolveFilename (node:internal/modules/cjs/loader:1476:15)
+    wrapResolveFilename (node:internal/modules/cjs/loader:1049:27)
+    defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1073:10)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1094:12)
+    Module._load (node:internal/modules/cjs/loader:1262:25)
+    wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    Module.require (node:internal/modules/cjs/loader:1576:12)
+    require (node:internal/modules/helpers:153:16)
+    TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:24:39)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: TC-01: 99/10000 is healthy without rounding
+not ok 10 - TC-01: 99/10000 is healthy without rounding
+  ---
+  duration_ms: 0.193903
+  type: 'test'
+  location: '/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:23:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module '../src/lib/service-health'
+    Require stack:
+    - /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Module._resolveFilename (node:internal/modules/cjs/loader:1476:15)
+    wrapResolveFilename (node:internal/modules/cjs/loader:1049:27)
+    defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1073:10)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1094:12)
+    Module._load (node:internal/modules/cjs/loader:1262:25)
+    wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    Module.require (node:internal/modules/cjs/loader:1576:12)
+    require (node:internal/modules/helpers:153:16)
+    TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:24:39)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: TC-01: 100/10000 is degraded without rounding
+not ok 11 - TC-01: 100/10000 is degraded without rounding
+  ---
+  duration_ms: 0.142029
+  type: 'test'
+  location: '/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:23:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module '../src/lib/service-health'
+    Require stack:
+    - /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Module._resolveFilename (node:internal/modules/cjs/loader:1476:15)
+    wrapResolveFilename (node:internal/modules/cjs/loader:1049:27)
+    defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1073:10)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1094:12)
+    Module._load (node:internal/modules/cjs/loader:1262:25)
+    wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    Module.require (node:internal/modules/cjs/loader:1576:12)
+    require (node:internal/modules/helpers:153:16)
+    TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:24:39)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: TC-01: 499/10000 is degraded without rounding
+not ok 12 - TC-01: 499/10000 is degraded without rounding
+  ---
+  duration_ms: 0.164495
+  type: 'test'
+  location: '/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:23:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module '../src/lib/service-health'
+    Require stack:
+    - /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Module._resolveFilename (node:internal/modules/cjs/loader:1476:15)
+    wrapResolveFilename (node:internal/modules/cjs/loader:1049:27)
+    defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1073:10)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1094:12)
+    Module._load (node:internal/modules/cjs/loader:1262:25)
+    wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    Module.require (node:internal/modules/cjs/loader:1576:12)
+    require (node:internal/modules/helpers:153:16)
+    TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:24:39)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: TC-01: 500/10000 is failing without rounding
+not ok 13 - TC-01: 500/10000 is failing without rounding
+  ---
+  duration_ms: 0.185143
+  type: 'test'
+  location: '/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:23:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module '../src/lib/service-health'
+    Require stack:
+    - /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Module._resolveFilename (node:internal/modules/cjs/loader:1476:15)
+    wrapResolveFilename (node:internal/modules/cjs/loader:1049:27)
+    defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1073:10)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1094:12)
+    Module._load (node:internal/modules/cjs/loader:1262:25)
+    wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    Module.require (node:internal/modules/cjs/loader:1576:12)
+    require (node:internal/modules/helpers:153:16)
+    TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:24:39)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: TC-01: 501/10000 is failing without rounding
+not ok 14 - TC-01: 501/10000 is failing without rounding
+  ---
+  duration_ms: 0.138829
+  type: 'test'
+  location: '/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:23:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module '../src/lib/service-health'
+    Require stack:
+    - /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Module._resolveFilename (node:internal/modules/cjs/loader:1476:15)
+    wrapResolveFilename (node:internal/modules/cjs/loader:1049:27)
+    defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1073:10)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1094:12)
+    Module._load (node:internal/modules/cjs/loader:1262:25)
+    wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    Module.require (node:internal/modules/cjs/loader:1576:12)
+    require (node:internal/modules/helpers:153:16)
+    TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:24:39)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: TC-01: 0/0 is healthy without rounding
+not ok 15 - TC-01: 0/0 is healthy without rounding
+  ---
+  duration_ms: 0.131557
+  type: 'test'
+  location: '/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:23:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module '../src/lib/service-health'
+    Require stack:
+    - /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Module._resolveFilename (node:internal/modules/cjs/loader:1476:15)
+    wrapResolveFilename (node:internal/modules/cjs/loader:1049:27)
+    defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1073:10)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1094:12)
+    Module._load (node:internal/modules/cjs/loader:1262:25)
+    wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    Module.require (node:internal/modules/cjs/loader:1576:12)
+    require (node:internal/modules/helpers:153:16)
+    TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:24:39)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: TC-01: 5/0 is healthy without rounding
+not ok 16 - TC-01: 5/0 is healthy without rounding
+  ---
+  duration_ms: 0.115516
+  type: 'test'
+  location: '/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:23:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module '../src/lib/service-health'
+    Require stack:
+    - /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Module._resolveFilename (node:internal/modules/cjs/loader:1476:15)
+    wrapResolveFilename (node:internal/modules/cjs/loader:1049:27)
+    defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1073:10)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1094:12)
+    Module._load (node:internal/modules/cjs/loader:1262:25)
+    wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    Module.require (node:internal/modules/cjs/loader:1576:12)
+    require (node:internal/modules/helpers:153:16)
+    TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:24:39)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: TC-01: 9999/1000000 is healthy without rounding
+not ok 17 - TC-01: 9999/1000000 is healthy without rounding
+  ---
+  duration_ms: 0.171214
+  type: 'test'
+  location: '/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:23:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module '../src/lib/service-health'
+    Require stack:
+    - /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Module._resolveFilename (node:internal/modules/cjs/loader:1476:15)
+    wrapResolveFilename (node:internal/modules/cjs/loader:1049:27)
+    defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1073:10)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1094:12)
+    Module._load (node:internal/modules/cjs/loader:1262:25)
+    wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    Module.require (node:internal/modules/cjs/loader:1576:12)
+    require (node:internal/modules/helpers:153:16)
+    TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:24:39)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: TC-01: 49999/1000000 is degraded without rounding
+not ok 18 - TC-01: 49999/1000000 is degraded without rounding
+  ---
+  duration_ms: 0.215704
+  type: 'test'
+  location: '/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:23:3'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module '../src/lib/service-health'
+    Require stack:
+    - /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Module._resolveFilename (node:internal/modules/cjs/loader:1476:15)
+    wrapResolveFilename (node:internal/modules/cjs/loader:1049:27)
+    defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1073:10)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1094:12)
+    Module._load (node:internal/modules/cjs/loader:1262:25)
+    wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    Module.require (node:internal/modules/cjs/loader:1576:12)
+    require (node:internal/modules/helpers:153:16)
+    TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:24:39)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: TC-02: severity and English name order are deterministic without mutating input
+not ok 19 - TC-02: severity and English name order are deterministic without mutating input
+  ---
+  duration_ms: 0.264858
+  type: 'test'
+  location: '/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:45:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module '../src/lib/service-health'
+    Require stack:
+    - /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Module._resolveFilename (node:internal/modules/cjs/loader:1476:15)
+    wrapResolveFilename (node:internal/modules/cjs/loader:1049:27)
+    defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1073:10)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1094:12)
+    Module._load (node:internal/modules/cjs/loader:1262:25)
+    wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    Module.require (node:internal/modules/cjs/loader:1576:12)
+    require (node:internal/modules/helpers:153:16)
+    TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:46:31)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: TC-03: EJS renders independent mixed fixtures in health/name order with adjacent status
+not ok 20 - TC-03: EJS renders independent mixed fixtures in health/name order with adjacent status
+  ---
+  duration_ms: 0.385326
+  type: 'test'
+  location: '/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:67:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Cannot find module '../src/lib/service-health'
+    Require stack:
+    - /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js
+  code: 'MODULE_NOT_FOUND'
+  stack: |-
+    Module._resolveFilename (node:internal/modules/cjs/loader:1476:15)
+    wrapResolveFilename (node:internal/modules/cjs/loader:1049:27)
+    defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1073:10)
+    resolveForCJSWithHooks (node:internal/modules/cjs/loader:1094:12)
+    Module._load (node:internal/modules/cjs/loader:1262:25)
+    wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+    Module.require (node:internal/modules/cjs/loader:1576:12)
+    require (node:internal/modules/helpers:153:16)
+    TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:68:31)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+  ...
+# Subtest: TC-03: repeated GET / requests preserve service row and cell order
+not ok 21 - TC-03: repeated GET / requests preserve service row and cell order
+  ---
+  duration_ms: 73.089161
+  type: 'test'
+  location: '/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:79:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        [
+          'api-gateway',
+    -     'Failing',
+          '18,420',
+    +     '12'
+    -     '1000'
+        ],
+        [
+          'auth-service',
+    -     'Degraded',
+          '9,310',
+    +     '3'
+    -     '100'
+        ],
+        [
+          'billing',
+    -     'Healthy',
+          '4,502',
+          '0'
+        ]
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0:
+      0: 'api-gateway'
+      1: 'Failing'
+      2: '18,420'
+      3: '1000'
+    1:
+      0: 'auth-service'
+      1: 'Degraded'
+      2: '9,310'
+      3: '100'
+    2:
+      0: 'billing'
+      1: 'Healthy'
+      2: '4,502'
+      3: '0'
+  actual:
+    0:
+      0: 'api-gateway'
+      1: '18,420'
+      2: '12'
+    1:
+      0: 'auth-service'
+      1: '9,310'
+      2: '3'
+    2:
+      0: 'billing'
+      1: '4,502'
+      2: '0'
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:89:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    async Test.run (node:internal/test_runner/test:1208:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+  ...
+# Subtest: TC-04: shipped metrics show all states and retain consistent aggregates
+not ok 22 - TC-04: shipped metrics show all states and retain consistent aggregates
+  ---
+  duration_ms: 0.679858
+  type: 'test'
+  location: '/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:101:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      [
+        {
+    +     errors: 12,
+    -     errors: 1000,
+          name: 'api-gateway',
+          requests: 18420,
+    +     status: undefined
+    -     status: 'failing'
+        },
+        {
+    +     errors: 3,
+    -     errors: 100,
+          name: 'auth-service',
+          requests: 9310,
+    +     status: undefined
+    -     status: 'degraded'
+        },
+        {
+          errors: 0,
+          name: 'billing',
+          requests: 4502,
+    +     status: undefined
+    -     status: 'healthy'
+        }
+      ]
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    0:
+      name: 'api-gateway'
+      requests: 18420
+      errors: 1000
+      status: 'failing'
+    1:
+      name: 'auth-service'
+      requests: 9310
+      errors: 100
+      status: 'degraded'
+    2:
+      name: 'billing'
+      requests: 4502
+      errors: 0
+      status: 'healthy'
+  actual:
+    0:
+      name: 'api-gateway'
+      requests: 18420
+      errors: 12
+    1:
+      name: 'auth-service'
+      requests: 9310
+      errors: 3
+    2:
+      name: 'billing'
+      requests: 4502
+      errors: 0
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/service-health.test.js:103:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1201:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:831:18)
+    Test.postRun (node:internal/test_runner/test:1330:19)
+    Test.run (node:internal/test_runner/test:1258:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    async Test.processPendingSubtests (node:internal/test_runner/test:831:7)
+  ...
+# Subtest: buildMetrics totals add up across services
+not ok 23 - buildMetrics totals add up across services
+  ---
+  duration_ms: 1.952649
+  type: 'test'
+  location: '/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/smoke.test.js:8:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    15 !== 1100
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1100
+  actual: 15
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-684-bed1e6/test/smoke.test.js:11:10)
+    Test.runInAsyncScope (node:async_hooks:227:14)
+    Test.run (node:internal/test_runner/test:1201:25)
+    Test.start (node:internal/test_runner/test:1096:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)
+  ...
+# Subtest: brace-expansion installed and locked versions meet security floor 1.1.21
+ok 24 - brace-expansion installed and locked versions meet security floor 1.1.21
+  ---
+  duration_ms: 8.96208
+  type: 'test'
+  ...
+# Subtest: js-yaml installed and locked versions meet security floor 4.3.2
+ok 25 - js-yaml installed and locked versions meet security floor 4.3.2
+  ---
+  duration_ms: 1.321105
+  type: 'test'
+  ...
+1..25
+# tests 25
+# suites 0
+# pass 9
+# fail 16
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 305.405759

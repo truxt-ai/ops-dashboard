@@ -1,0 +1,285 @@
+{
+  "timestamp": "2026-10-22T13:13:20.184Z",
+  "browser": "Chromium 153.0.8010.12, CDP",
+  "results": [
+    {
+      "refresh": 0,
+      "width": 1280,
+      "rows": [
+        [
+          "api-gateway",
+          "Failing"
+        ],
+        [
+          "auth-service",
+          "Degraded"
+        ],
+        [
+          "billing",
+          "Healthy"
+        ]
+      ],
+      "bounds": [
+        [
+          {
+            "left": 32,
+            "right": 168.859375
+          },
+          {
+            "left": 168.859375,
+            "right": 300.9375
+          }
+        ],
+        [
+          {
+            "left": 32,
+            "right": 168.859375
+          },
+          {
+            "left": 168.859375,
+            "right": 300.9375
+          }
+        ],
+        [
+          {
+            "left": 32,
+            "right": 168.859375
+          },
+          {
+            "left": 168.859375,
+            "right": 300.9375
+          }
+        ]
+      ],
+      "statusStyles": [
+        {
+          "background": "rgb(254, 226, 226)",
+          "color": "rgb(153, 27, 27)"
+        },
+        {
+          "background": "rgb(255, 251, 235)",
+          "color": "rgb(146, 64, 14)"
+        },
+        {
+          "background": "rgb(240, 253, 244)",
+          "color": "rgb(22, 101, 52)"
+        }
+      ],
+      "tableWidth": 1216,
+      "scrollWidth": 1216,
+      "overflow": "auto",
+      "documentWidth": 1280
+    },
+    {
+      "refresh": 1,
+      "width": 1280,
+      "rows": [
+        [
+          "api-gateway",
+          "Failing"
+        ],
+        [
+          "auth-service",
+          "Degraded"
+        ],
+        [
+          "billing",
+          "Healthy"
+        ]
+      ],
+      "bounds": [
+        [
+          {
+            "left": 32,
+            "right": 168.859375
+          },
+          {
+            "left": 168.859375,
+            "right": 300.9375
+          }
+        ],
+        [
+          {
+            "left": 32,
+            "right": 168.859375
+          },
+          {
+            "left": 168.859375,
+            "right": 300.9375
+          }
+        ],
+        [
+          {
+            "left": 32,
+            "right": 168.859375
+          },
+          {
+            "left": 168.859375,
+            "right": 300.9375
+          }
+        ]
+      ],
+      "statusStyles": [
+        {
+          "background": "rgb(254, 226, 226)",
+          "color": "rgb(153, 27, 27)"
+        },
+        {
+          "background": "rgb(255, 251, 235)",
+          "color": "rgb(146, 64, 14)"
+        },
+        {
+          "background": "rgb(240, 253, 244)",
+          "color": "rgb(22, 101, 52)"
+        }
+      ],
+      "tableWidth": 1216,
+      "scrollWidth": 1216,
+      "overflow": "auto",
+      "documentWidth": 1280
+    },
+    {
+      "refresh": 0,
+      "width": 390,
+      "rows": [
+        [
+          "api-gateway",
+          "Failing"
+        ],
+        [
+          "auth-service",
+          "Degraded"
+        ],
+        [
+          "billing",
+          "Healthy"
+        ]
+      ],
+      "bounds": [
+        [
+          {
+            "left": 32,
+            "right": 168.859375
+          },
+          {
+            "left": 168.859375,
+            "right": 300.9375
+          }
+        ],
+        [
+          {
+            "left": 32,
+            "right": 168.859375
+          },
+          {
+            "left": 168.859375,
+            "right": 300.9375
+          }
+        ],
+        [
+          {
+            "left": 32,
+            "right": 168.859375
+          },
+          {
+            "left": 168.859375,
+            "right": 300.9375
+          }
+        ]
+      ],
+      "statusStyles": [
+        {
+          "background": "rgb(254, 226, 226)",
+          "color": "rgb(153, 27, 27)"
+        },
+        {
+          "background": "rgb(255, 251, 235)",
+          "color": "rgb(146, 64, 14)"
+        },
+        {
+          "background": "rgb(240, 253, 244)",
+          "color": "rgb(22, 101, 52)"
+        }
+      ],
+      "tableWidth": 326,
+      "scrollWidth": 480,
+      "overflow": "auto",
+      "documentWidth": 390
+    },
+    {
+      "refresh": 1,
+      "width": 390,
+      "rows": [
+        [
+          "api-gateway",
+          "Failing"
+        ],
+        [
+          "auth-service",
+          "Degraded"
+        ],
+        [
+          "billing",
+          "Healthy"
+        ]
+      ],
+      "bounds": [
+        [
+          {
+            "left": 32,
+            "right": 168.859375
+          },
+          {
+            "left": 168.859375,
+            "right": 300.9375
+          }
+        ],
+        [
+          {
+            "left": 32,
+            "right": 168.859375
+          },
+          {
+            "left": 168.859375,
+            "right": 300.9375
+          }
+        ],
+        [
+          {
+            "left": 32,
+            "right": 168.859375
+          },
+          {
+            "left": 168.859375,
+            "right": 300.9375
+          }
+        ]
+      ],
+      "statusStyles": [
+        {
+          "background": "rgb(254, 226, 226)",
+          "color": "rgb(153, 27, 27)"
+        },
+        {
+          "background": "rgb(255, 251, 235)",
+          "color": "rgb(146, 64, 14)"
+        },
+        {
+          "background": "rgb(240, 253, 244)",
+          "color": "rgb(22, 101, 52)"
+        }
+      ],
+      "tableWidth": 326,
+      "scrollWidth": 480,
+      "overflow": "auto",
+      "documentWidth": 390
+    },
+    {
+      "horizontalScroll": {
+        "scrollLeft": 154,
+        "errorsRight": 358,
+        "width": 390
+      }
+    }
+  ]
+}

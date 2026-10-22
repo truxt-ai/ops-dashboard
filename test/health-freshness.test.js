@@ -26,8 +26,8 @@ test('TC-01: successful metrics build records its completion and renders fresh U
   const metrics = buildMetrics(() => new Date(timestamp));
   assert.equal(metrics.lastSuccessfulRefreshAt, timestamp);
   assert.equal(metrics.totalRequests, 32232);
-  assert.equal(metrics.totalErrors, 15);
-  assert.equal(metrics.errorRate, 0.047);
+  assert.equal(metrics.totalErrors, 1100);
+  assert.equal(metrics.errorRate, 3.413);
   assert.equal(metrics.services.length, 3);
   const { time } = await renderSnapshot(timestamp, '2026-10-22T08:20:30.000Z');
   assert.match(time, />Last updated 08:20 UTC<\/time>/);
