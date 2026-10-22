@@ -1,0 +1,107 @@
+✖ TD87-TC-01: unequal mixed counts match every table status above the table (10.565498ms)
+✖ TD87-TC-02: exact boundaries and zero requests use the existing classifier (0.872494ms)
+✖ TD87-TC-03: nonempty zero-failing summary stays visible without failing emphasis (0.554294ms)
+✖ TD87-TC-04: empty services show all three zero counts without failing emphasis (0.537677ms)
+✖ TD87-TC-05: positive failing reuses the red, bold status emphasis (0.598263ms)
+✖ TD87-TC-06: GET / shows shipped counts and preserves rows, aggregates and freshness (47.745449ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 0
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 217.081512
+
+✖ failing tests:
+
+test at test/service-health-summary.test.js:36:1
+✖ TD87-TC-01: unequal mixed counts match every table status above the table (10.565498ms)
+  AssertionError [ERR_ASSERTION]: service health summary is visible
+      at assertSummary (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-683-60f172/test/service-health-summary.test.js:19:10)
+      at TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-683-60f172/test/service-health-summary.test.js:45:3)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test/service-health-summary.test.js:48:1
+✖ TD87-TC-02: exact boundaries and zero requests use the existing classifier (0.872494ms)
+  AssertionError [ERR_ASSERTION]: service health summary is visible
+      at assertSummary (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-683-60f172/test/service-health-summary.test.js:19:10)
+      at TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-683-60f172/test/service-health-summary.test.js:56:3)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test/service-health-summary.test.js:59:1
+✖ TD87-TC-03: nonempty zero-failing summary stays visible without failing emphasis (0.554294ms)
+  AssertionError [ERR_ASSERTION]: service health summary is visible
+      at assertSummary (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-683-60f172/test/service-health-summary.test.js:19:10)
+      at TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-683-60f172/test/service-health-summary.test.js:64:3)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test/service-health-summary.test.js:67:1
+✖ TD87-TC-04: empty services show all three zero counts without failing emphasis (0.537677ms)
+  AssertionError [ERR_ASSERTION]: service health summary is visible
+      at assertSummary (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-683-60f172/test/service-health-summary.test.js:19:10)
+      at TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-683-60f172/test/service-health-summary.test.js:68:3)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test/service-health-summary.test.js:71:1
+✖ TD87-TC-05: positive failing reuses the red, bold status emphasis (0.598263ms)
+  AssertionError [ERR_ASSERTION]: service health summary is visible
+      at assertSummary (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-683-60f172/test/service-health-summary.test.js:19:10)
+      at TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-683-60f172/test/service-health-summary.test.js:73:19)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at test/service-health-summary.test.js:78:1
+✖ TD87-TC-06: GET / shows shipped counts and preserves rows, aggregates and freshness (47.745449ms)
+  AssertionError [ERR_ASSERTION]: service health summary is visible
+      at assertSummary (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-683-60f172/test/service-health-summary.test.js:19:10)
+      at TestContext.<anonymous> (/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-683-60f172/test/service-health-summary.test.js:85:3)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
