@@ -15,6 +15,14 @@ npm start          # http://localhost:3000
 ```
 
 - `/` renders the dashboard with a few fake service metrics.
+- `/health/live` is the process liveness check: it returns HTTP 200 with
+  `{"status":"ok"}` without calling any dependencies. Use it for process checks
+  so an upstream outage does not trigger service restarts.
+- `/health/ready` checks dependency readiness by probing `https://example.com`
+  with a 2000 ms timeout. It returns HTTP 200 with `{"upstream":"ok"}` on
+  success, or HTTP 503 with `{"upstream":"unreachable"}` on an upstream HTTP
+  failure, connection error, or timeout. Use it to decide whether the service
+  can receive traffic; subsequent successful probes restore readiness.
 - `/health/upstream` runs a trivial upstream health probe via axios.
 
 ## Develop
