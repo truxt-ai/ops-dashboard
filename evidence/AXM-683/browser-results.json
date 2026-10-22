@@ -1,0 +1,134 @@
+[
+  {
+    "state": "shipped",
+    "viewport": {
+      "width": 1280,
+      "height": 900
+    },
+    "url": "http://127.0.0.1:38913/",
+    "screenshot": "evidence/AXM-683/shipped-1280.png",
+    "text": "Healthy: 1\nDegraded: 1\nFailing: 1",
+    "wrap": "wrap",
+    "outsideTable": true,
+    "aboveTable": true,
+    "tableScrollLeft": 0,
+    "documentWidth": 1280,
+    "items": [
+      {
+        "text": "Healthy: 1",
+        "left": 32,
+        "right": 129.5,
+        "top": 189.96875,
+        "background": "rgb(240, 253, 244)",
+        "color": "rgb(22, 101, 52)",
+        "weight": "400"
+      },
+      {
+        "text": "Degraded: 1",
+        "left": 137.5,
+        "right": 253.015625,
+        "top": 189.96875,
+        "background": "rgb(255, 251, 235)",
+        "color": "rgb(146, 64, 14)",
+        "weight": "400"
+      },
+      {
+        "text": "Failing: 1",
+        "left": 261.015625,
+        "right": 360.203125,
+        "top": 189.96875,
+        "background": "rgb(254, 226, 226)",
+        "color": "rgb(153, 27, 27)",
+        "weight": "700"
+      }
+    ]
+  },
+  {
+    "state": "shipped",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "url": "http://127.0.0.1:38913/",
+    "screenshot": "evidence/AXM-683/shipped-390.png",
+    "text": "Healthy: 1\nDegraded: 1\nFailing: 1",
+    "wrap": "wrap",
+    "outsideTable": true,
+    "aboveTable": true,
+    "tableScrollLeft": 0,
+    "documentWidth": 390,
+    "items": [
+      {
+        "text": "Healthy: 1",
+        "left": 32,
+        "right": 129.5,
+        "top": 248.75,
+        "background": "rgb(240, 253, 244)",
+        "color": "rgb(22, 101, 52)",
+        "weight": "400"
+      },
+      {
+        "text": "Degraded: 1",
+        "left": 137.5,
+        "right": 253.015625,
+        "top": 248.75,
+        "background": "rgb(255, 251, 235)",
+        "color": "rgb(146, 64, 14)",
+        "weight": "400"
+      },
+      {
+        "text": "Failing: 1",
+        "left": 32,
+        "right": 131.1875,
+        "top": 280.53125,
+        "background": "rgb(254, 226, 226)",
+        "color": "rgb(153, 27, 27)",
+        "weight": "700"
+      }
+    ]
+  },
+  {
+    "state": "zero-failing",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "url": "http://127.0.0.1:37063/",
+    "screenshot": "evidence/AXM-683/zero-failing-390.png",
+    "text": "Healthy: 1\nDegraded: 1\nFailing: 0",
+    "wrap": "wrap",
+    "outsideTable": true,
+    "aboveTable": true,
+    "tableScrollLeft": 0,
+    "documentWidth": 390,
+    "items": [
+      {
+        "text": "Healthy: 1",
+        "left": 32,
+        "right": 129.5,
+        "top": 248.75,
+        "background": "rgb(240, 253, 244)",
+        "color": "rgb(22, 101, 52)",
+        "weight": "400"
+      },
+      {
+        "text": "Degraded: 1",
+        "left": 137.5,
+        "right": 253.015625,
+        "top": 248.75,
+        "background": "rgb(255, 251, 235)",
+        "color": "rgb(146, 64, 14)",
+        "weight": "400"
+      },
+      {
+        "text": "Failing: 0",
+        "left": 261.015625,
+        "right": 348.84375,
+        "top": 248.75,
+        "background": "rgba(0, 0, 0, 0)",
+        "color": "rgb(26, 26, 46)",
+        "weight": "400"
+      }
+    ]
+  }
+]

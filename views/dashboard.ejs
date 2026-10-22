@@ -10,6 +10,7 @@
     .sub { color: #6b7280; margin-top: 0; }
     table { border-collapse: collapse; margin-top: 0.5rem; min-width: 480px; }
     .services-table { overflow-x: auto; }
+    .service-health-summary { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.75rem 0; }
     .health-freshness { display: inline-block; padding: 0.35rem 0.6rem; border: 1px solid #bbf7d0; border-radius: 0.25rem; background: #f0fdf4; color: #166534; }
     .health-freshness--stale { border-color: #f59e0b; background: #fffbeb; color: #92400e; font-weight: 600; }
     th, td { text-align: left; padding: 0.5rem 1rem; border-bottom: 1px solid #e5e7eb; }
@@ -32,6 +33,15 @@
   </p>
 
   <time class="health-freshness<%= freshness.stale ? ' health-freshness--stale' : '' %>" datetime="<%= freshness.isoTimestamp %>"><%= freshness.label %></time>
+  <%
+    const healthCounts = { healthy: 0, degraded: 0, failing: 0 };
+    metrics.services.forEach(function (service) { healthCounts[service.status]++; });
+  %>
+  <div class="service-health-summary" role="group" aria-label="Service health counts">
+    <span class="service-status service-status--healthy">Healthy: <%= healthCounts.healthy %></span>
+    <span class="service-status service-status--degraded">Degraded: <%= healthCounts.degraded %></span>
+    <span class="service-status<%= healthCounts.failing > 0 ? ' service-status--failing' : '' %>">Failing: <%= healthCounts.failing %></span>
+  </div>
   <div class="services-table">
   <table>
     <thead>

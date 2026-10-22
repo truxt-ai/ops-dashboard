@@ -1,0 +1,14 @@
+✔ TD87-TC-01: unequal mixed counts match every table status above the table (9.252304ms)
+✔ TD87-TC-02: exact boundaries and zero requests use the existing classifier (0.989911ms)
+✔ TD87-TC-03: nonempty zero-failing summary stays visible without failing emphasis (0.797746ms)
+✔ TD87-TC-04: empty services show all three zero counts without failing emphasis (0.606899ms)
+✔ TD87-TC-05: positive failing reuses the red, bold status emphasis (0.837747ms)
+✔ TD87-TC-06: GET / shows shipped counts and preserves rows, aggregates and freshness (46.646835ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 212.02673
