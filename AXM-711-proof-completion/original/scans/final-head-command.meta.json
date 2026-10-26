@@ -1,0 +1,24 @@
+{
+  "command": [
+    "/data/work-root/qa-evidence/AXM-708-db9dc0/tools/osv-scanner",
+    "scan",
+    "source",
+    "--lockfile",
+    "package-lock.json",
+    "--config",
+    "/data/work-root/qa-evidence/AXM-708-db9dc0/scans/osv-scanner.toml",
+    "--no-ignore",
+    "--all-packages",
+    "--all-vulns",
+    "--format",
+    "json",
+    "--output-file",
+    "/data/work-root/qa-evidence/AXM-708-db9dc0/scans/final-head.json"
+  ],
+  "cwd": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0",
+  "revision": "712d9c36395d58996689763523d7fe8ba9b7fbae",
+  "started_at": "2026-10-26T08:52:42.658002+00:00",
+  "ended_at": "2026-10-26T08:52:45.000741+00:00",
+  "exit_code": 1,
+  "log": "/data/work-root/qa-evidence/AXM-708-db9dc0/scans/final-head-command.txt"
+}

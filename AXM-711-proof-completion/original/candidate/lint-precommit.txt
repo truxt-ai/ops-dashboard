@@ -1,0 +1,13 @@
+Start: 2026-10-26T08:51:55.223659+00:00
+Revision: dff02375d83394d6f03ce2127e35e62fadc269ab
+CWD: /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0
+Command: npm run lint
+Node bin: /data/work-root/qa-evidence/AXM-708-db9dc0/tools/node-v20.20.2-linux-arm64/bin
+
+
+> axiom-demo-dashboard@1.0.0 lint
+> eslint .
+
+
+End: 2026-10-26T08:51:55.734565+00:00
+Exit status: 0

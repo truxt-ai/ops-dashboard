@@ -1,0 +1,1475 @@
+{
+  "baseline": {
+    "source": {
+      "path": "/data/runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-711-3d6566/package-lock.json",
+      "type": "lockfile"
+    },
+    "packages": [
+      "@eslint-community/eslint-utils@4.9.1",
+      "@eslint-community/regexpp@4.12.2",
+      "@eslint/eslintrc@2.1.4",
+      "@eslint/js@8.57.0",
+      "@humanwhocodes/config-array@0.11.14",
+      "@humanwhocodes/module-importer@1.0.1",
+      "@humanwhocodes/object-schema@2.0.3",
+      "@nodelib/fs.scandir@2.1.5",
+      "@nodelib/fs.stat@2.0.5",
+      "@nodelib/fs.walk@1.2.8",
+      "@ungap/structured-clone@1.3.1",
+      "accepts@1.3.8",
+      "acorn@8.16.0",
+      "acorn-jsx@5.3.2",
+      "ajv@6.15.0",
+      "ansi-regex@5.0.1",
+      "ansi-styles@4.3.0",
+      "argparse@2.0.1",
+      "array-flatten@1.1.1",
+      "async@3.2.6",
+      "axios@0.21.1",
+      "balanced-match@1.0.2",
+      "body-parser@1.20.1",
+      "brace-expansion@1.1.21",
+      "bytes@3.1.2",
+      "call-bind-apply-helpers@1.0.2",
+      "call-bound@1.0.4",
+      "callsites@3.1.0",
+      "chalk@4.1.2",
+      "color-convert@2.0.1",
+      "color-name@1.1.4",
+      "concat-map@0.0.1",
+      "content-disposition@0.5.4",
+      "content-type@1.0.5",
+      "cookie@0.5.0",
+      "cookie-signature@1.0.6",
+      "cross-spawn@7.0.6",
+      "debug@2.6.9",
+      "debug@4.4.3",
+      "deep-is@0.1.4",
+      "depd@2.0.0",
+      "destroy@1.2.0",
+      "doctrine@3.0.0",
+      "dunder-proto@1.0.1",
+      "ee-first@1.1.1",
+      "ejs@3.1.10",
+      "encodeurl@1.0.2",
+      "es-define-property@1.0.1",
+      "es-errors@1.3.0",
+      "es-object-atoms@1.1.2",
+      "escape-html@1.0.3",
+      "escape-string-regexp@4.0.0",
+      "eslint@8.57.0",
+      "eslint-scope@7.2.2",
+      "eslint-visitor-keys@3.4.3",
+      "espree@9.6.1",
+      "esquery@1.7.0",
+      "esrecurse@4.3.0",
+      "estraverse@5.3.0",
+      "esutils@2.0.3",
+      "etag@1.8.1",
+      "express@4.18.2",
+      "fast-deep-equal@3.1.3",
+      "fast-json-stable-stringify@2.1.0",
+      "fast-levenshtein@2.0.6",
+      "fastq@1.20.1",
+      "file-entry-cache@6.0.1",
+      "filelist@1.0.6",
+      "finalhandler@1.2.0",
+      "find-up@5.0.0",
+      "flat-cache@3.2.0",
+      "flatted@3.4.2",
+      "follow-redirects@1.16.0",
+      "forwarded@0.2.0",
+      "fresh@0.5.2",
+      "fs.realpath@1.0.0",
+      "function-bind@1.1.2",
+      "get-intrinsic@1.3.0",
+      "get-proto@1.0.1",
+      "glob@7.2.3",
+      "glob-parent@6.0.2",
+      "globals@13.24.0",
+      "gopd@1.2.0",
+      "graphemer@1.4.0",
+      "has-flag@4.0.0",
+      "has-symbols@1.1.0",
+      "hasown@2.0.4",
+      "http-errors@2.0.0",
+      "iconv-lite@0.4.24",
+      "ignore@5.3.2",
+      "import-fresh@3.3.1",
+      "imurmurhash@0.1.4",
+      "inflight@1.0.6",
+      "inherits@2.0.4",
+      "ipaddr.js@1.9.1",
+      "is-extglob@2.1.1",
+      "is-glob@4.0.3",
+      "is-path-inside@3.0.3",
+      "isexe@2.0.0",
+      "jake@10.9.4",
+      "js-yaml@4.3.2",
+      "json-buffer@3.0.1",
+      "json-schema-traverse@0.4.1",
+      "json-stable-stringify-without-jsonify@1.0.1",
+      "keyv@4.5.4",
+      "levn@0.4.1",
+      "locate-path@6.0.0",
+      "lodash@4.17.4",
+      "lodash.merge@4.6.2",
+      "math-intrinsics@1.1.0",
+      "media-typer@0.3.0",
+      "merge-descriptors@1.0.1",
+      "methods@1.1.2",
+      "mime@1.6.0",
+      "mime-db@1.52.0",
+      "mime-types@2.1.35",
+      "minimatch@3.1.5",
+      "minimatch@5.1.9",
+      "minimist@1.2.8",
+      "ms@2.0.0",
+      "ms@2.1.3",
+      "natural-compare@1.4.0",
+      "negotiator@0.6.3",
+      "object-inspect@1.13.4",
+      "on-finished@2.4.1",
+      "once@1.4.0",
+      "optionator@0.9.4",
+      "p-limit@3.1.0",
+      "p-locate@5.0.0",
+      "parent-module@1.0.1",
+      "parseurl@1.3.3",
+      "path-exists@4.0.0",
+      "path-is-absolute@1.0.1",
+      "path-key@3.1.1",
+      "path-to-regexp@0.1.7",
+      "picocolors@1.1.1",
+      "prelude-ls@1.2.1",
+      "proxy-addr@2.0.7",
+      "punycode@2.3.1",
+      "qs@6.11.0",
+      "queue-microtask@1.2.3",
+      "range-parser@1.2.1",
+      "raw-body@2.5.1",
+      "resolve-from@4.0.0",
+      "reusify@1.1.0",
+      "rimraf@3.0.2",
+      "run-parallel@1.2.0",
+      "safe-buffer@5.2.1",
+      "safer-buffer@2.1.2",
+      "send@0.18.0",
+      "serve-static@1.15.0",
+      "setprototypeof@1.2.0",
+      "shebang-command@2.0.0",
+      "shebang-regex@3.0.0",
+      "side-channel@1.1.1",
+      "side-channel-list@1.0.1",
+      "side-channel-map@1.0.1",
+      "side-channel-weakmap@1.0.2",
+      "statuses@2.0.1",
+      "strip-ansi@6.0.1",
+      "strip-json-comments@3.1.1",
+      "supports-color@7.2.0",
+      "text-table@0.2.0",
+      "toidentifier@1.0.1",
+      "type-check@0.4.0",
+      "type-fest@0.20.2",
+      "type-is@1.6.18",
+      "unpipe@1.0.0",
+      "uri-js@4.4.1",
+      "utils-merge@1.0.1",
+      "vary@1.1.2",
+      "which@2.0.2",
+      "word-wrap@1.2.5",
+      "wrappy@1.0.2",
+      "yocto-queue@0.1.0"
+    ],
+    "groups": [
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-3g43-6gmg-66jw"
+        ],
+        "aliases": [
+          "CVE-2026-44495",
+          "GHSA-3g43-6gmg-66jw"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-3p68-rc4w-qgx5"
+        ],
+        "aliases": [
+          "CVE-2025-62718",
+          "GHSA-3p68-rc4w-qgx5"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-43fc-jf86-j433"
+        ],
+        "aliases": [
+          "CVE-2026-25639",
+          "GHSA-43fc-jf86-j433"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-5c9x-8gcm-mpgx"
+        ],
+        "aliases": [
+          "CVE-2026-42034",
+          "GHSA-5c9x-8gcm-mpgx"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-62hf-57xw-28j9"
+        ],
+        "aliases": [
+          "CVE-2026-42039",
+          "GHSA-62hf-57xw-28j9"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-6chq-wfr3-2hj9"
+        ],
+        "aliases": [
+          "CVE-2026-42035",
+          "GHSA-6chq-wfr3-2hj9"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-7q8q-rj6j-mhjq"
+        ],
+        "aliases": [
+          "CVE-2026-67319",
+          "GHSA-7q8q-rj6j-mhjq"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-898c-q2cr-xwhg"
+        ],
+        "aliases": [
+          "CVE-2026-44490",
+          "GHSA-898c-q2cr-xwhg"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-cph5-m8f7-6c5x"
+        ],
+        "aliases": [
+          "CVE-2021-3749",
+          "GHSA-cph5-m8f7-6c5x"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-fvcv-3m26-pcqx"
+        ],
+        "aliases": [
+          "CVE-2026-40175",
+          "GHSA-fvcv-3m26-pcqx"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-hfxv-24rg-xrqf"
+        ],
+        "aliases": [
+          "CVE-2026-44496",
+          "GHSA-hfxv-24rg-xrqf"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-j5f8-grm9-p9fc"
+        ],
+        "aliases": [
+          "CVE-2026-44486",
+          "GHSA-j5f8-grm9-p9fc"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-jr5f-v2jv-69x6"
+        ],
+        "aliases": [
+          "CVE-2025-27152",
+          "GHSA-jr5f-v2jv-69x6"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-m7pr-hjqh-92cm"
+        ],
+        "aliases": [
+          "CVE-2026-42038",
+          "GHSA-m7pr-hjqh-92cm"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-mmx7-hfxf-jppx"
+        ],
+        "aliases": [
+          "CVE-2026-67316",
+          "GHSA-mmx7-hfxf-jppx"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-p92q-9vqr-4j8v"
+        ],
+        "aliases": [
+          "CVE-2026-44487",
+          "GHSA-p92q-9vqr-4j8v"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-pf86-5x62-jrwf"
+        ],
+        "aliases": [
+          "CVE-2026-42033",
+          "GHSA-pf86-5x62-jrwf"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-pjwm-pj3p-43mv"
+        ],
+        "aliases": [
+          "CVE-2026-44492",
+          "GHSA-pjwm-pj3p-43mv"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-pmwg-cvhr-8vh7"
+        ],
+        "aliases": [
+          "CVE-2026-42043",
+          "GHSA-pmwg-cvhr-8vh7"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-vf2m-468p-8v99"
+        ],
+        "aliases": [
+          "CVE-2026-42036",
+          "GHSA-vf2m-468p-8v99"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-w9j2-pvgh-6h63"
+        ],
+        "aliases": [
+          "CVE-2026-42041",
+          "GHSA-w9j2-pvgh-6h63"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-wf5p-g6vw-rhxx"
+        ],
+        "aliases": [
+          "CVE-2023-45857",
+          "GHSA-wf5p-g6vw-rhxx"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-xhjh-pmcv-23jw"
+        ],
+        "aliases": [
+          "CVE-2026-42040",
+          "GHSA-xhjh-pmcv-23jw"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-xx6v-rp6x-q39c"
+        ],
+        "aliases": [
+          "CVE-2026-42042",
+          "GHSA-xx6v-rp6x-q39c"
+        ]
+      },
+      {
+        "pkg": "body-parser",
+        "ver": "1.20.1",
+        "ids": [
+          "GHSA-27r3-jxmh-p828"
+        ],
+        "aliases": [
+          "CVE-2026-111181",
+          "GHSA-27r3-jxmh-p828"
+        ]
+      },
+      {
+        "pkg": "body-parser",
+        "ver": "1.20.1",
+        "ids": [
+          "GHSA-qwcr-r2fm-qrc7"
+        ],
+        "aliases": [
+          "CVE-2024-45590",
+          "GHSA-qwcr-r2fm-qrc7"
+        ]
+      },
+      {
+        "pkg": "body-parser",
+        "ver": "1.20.1",
+        "ids": [
+          "GHSA-v422-hmwv-36x6"
+        ],
+        "aliases": [
+          "CVE-2026-12590",
+          "GHSA-v422-hmwv-36x6"
+        ]
+      },
+      {
+        "pkg": "cookie",
+        "ver": "0.5.0",
+        "ids": [
+          "GHSA-pxg6-pf52-xh8x"
+        ],
+        "aliases": [
+          "CVE-2024-47764",
+          "GHSA-pxg6-pf52-xh8x"
+        ]
+      },
+      {
+        "pkg": "express",
+        "ver": "4.18.2",
+        "ids": [
+          "GHSA-qw6h-vgh9-j6wx"
+        ],
+        "aliases": [
+          "CVE-2024-43796",
+          "GHSA-qw6h-vgh9-j6wx"
+        ]
+      },
+      {
+        "pkg": "express",
+        "ver": "4.18.2",
+        "ids": [
+          "GHSA-rv95-896h-c2vc"
+        ],
+        "aliases": [
+          "CVE-2024-29041",
+          "GHSA-rv95-896h-c2vc"
+        ]
+      },
+      {
+        "pkg": "follow-redirects",
+        "ver": "1.16.0",
+        "ids": [
+          "GHSA-8r9p-f939-6h3c"
+        ],
+        "aliases": [
+          "CVE-2026-111755",
+          "GHSA-8r9p-f939-6h3c"
+        ]
+      },
+      {
+        "pkg": "follow-redirects",
+        "ver": "1.16.0",
+        "ids": [
+          "GHSA-q3jh-wrc6-jgq8"
+        ],
+        "aliases": [
+          "CVE-2026-111756",
+          "GHSA-q3jh-wrc6-jgq8"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-29mw-wpgm-hmr9"
+        ],
+        "aliases": [
+          "CVE-2020-28500",
+          "GHSA-29mw-wpgm-hmr9"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-35jh-r3h4-6jhm"
+        ],
+        "aliases": [
+          "CVE-2021-23337",
+          "GHSA-35jh-r3h4-6jhm"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-4xc9-xhrj-v574"
+        ],
+        "aliases": [
+          "CVE-2018-16487",
+          "GHSA-4xc9-xhrj-v574"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-f23m-r3pf-42rh"
+        ],
+        "aliases": [
+          "CVE-2026-2950",
+          "GHSA-f23m-r3pf-42rh"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-fvqr-27wr-82fm"
+        ],
+        "aliases": [
+          "CVE-2018-3721",
+          "GHSA-fvqr-27wr-82fm"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-jf85-cpcp-j695"
+        ],
+        "aliases": [
+          "CVE-2019-10744",
+          "GHSA-jf85-cpcp-j695",
+          "SNYK-JS-LODASH-450202"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-p6mc-m468-83gw"
+        ],
+        "aliases": [
+          "CVE-2020-8203",
+          "GHSA-p6mc-m468-83gw"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-r5fr-rjxr-66jc"
+        ],
+        "aliases": [
+          "CVE-2026-4800",
+          "GHSA-r5fr-rjxr-66jc"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-x5rq-j2xg-h7qm"
+        ],
+        "aliases": [
+          "CVE-2019-1010266",
+          "GHSA-x5rq-j2xg-h7qm",
+          "SNYK-JS-LODASH-73639"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-xxjr-mmjv-4gpg"
+        ],
+        "aliases": [
+          "CVE-2025-13465",
+          "GHSA-xxjr-mmjv-4gpg"
+        ]
+      },
+      {
+        "pkg": "path-to-regexp",
+        "ver": "0.1.7",
+        "ids": [
+          "GHSA-37ch-88jc-xwx2",
+          "GHSA-9wv6-86v2-598j"
+        ],
+        "aliases": [
+          "CVE-2024-45296",
+          "CVE-2026-4867",
+          "GHSA-37ch-88jc-xwx2",
+          "GHSA-9wv6-86v2-598j"
+        ]
+      },
+      {
+        "pkg": "path-to-regexp",
+        "ver": "0.1.7",
+        "ids": [
+          "GHSA-rhx6-c78j-4q9w"
+        ],
+        "aliases": [
+          "CVE-2024-52798",
+          "GHSA-rhx6-c78j-4q9w"
+        ]
+      },
+      {
+        "pkg": "proxy-addr",
+        "ver": "2.0.7",
+        "ids": [
+          "GHSA-jqcg-44mw-7w3h"
+        ],
+        "aliases": [
+          "CVE-2026-90711",
+          "GHSA-jqcg-44mw-7w3h"
+        ]
+      },
+      {
+        "pkg": "qs",
+        "ver": "6.11.0",
+        "ids": [
+          "GHSA-4mjr-xmp4-gh2g"
+        ],
+        "aliases": [
+          "CVE-2026-82417",
+          "GHSA-4mjr-xmp4-gh2g"
+        ]
+      },
+      {
+        "pkg": "qs",
+        "ver": "6.11.0",
+        "ids": [
+          "GHSA-6rw7-vpxm-498p"
+        ],
+        "aliases": [
+          "CVE-2025-15284",
+          "GHSA-6rw7-vpxm-498p"
+        ]
+      },
+      {
+        "pkg": "qs",
+        "ver": "6.11.0",
+        "ids": [
+          "GHSA-w7fw-mjwx-w883"
+        ],
+        "aliases": [
+          "CVE-2026-2391",
+          "GHSA-w7fw-mjwx-w883"
+        ]
+      },
+      {
+        "pkg": "send",
+        "ver": "0.18.0",
+        "ids": [
+          "GHSA-m6fv-jmcg-4jfg"
+        ],
+        "aliases": [
+          "CVE-2024-43799",
+          "GHSA-m6fv-jmcg-4jfg"
+        ]
+      },
+      {
+        "pkg": "serve-static",
+        "ver": "1.15.0",
+        "ids": [
+          "GHSA-cm22-4g7w-348p"
+        ],
+        "aliases": [
+          "CVE-2024-43800",
+          "GHSA-cm22-4g7w-348p"
+        ]
+      }
+    ]
+  },
+  "candidate": {
+    "source": {
+      "path": "/tmp/axm711-pr107-712d9c3/package-lock.json",
+      "type": "lockfile"
+    },
+    "packages": [
+      "@eslint-community/eslint-utils@4.9.1",
+      "@eslint-community/regexpp@4.12.2",
+      "@eslint/eslintrc@2.1.4",
+      "@eslint/js@8.57.0",
+      "@humanwhocodes/config-array@0.11.14",
+      "@humanwhocodes/module-importer@1.0.1",
+      "@humanwhocodes/object-schema@2.0.3",
+      "@nodelib/fs.scandir@2.1.5",
+      "@nodelib/fs.stat@2.0.5",
+      "@nodelib/fs.walk@1.2.8",
+      "@ungap/structured-clone@1.3.1",
+      "accepts@1.3.8",
+      "acorn@8.16.0",
+      "acorn-jsx@5.3.2",
+      "ajv@6.15.0",
+      "ansi-regex@5.0.1",
+      "ansi-styles@4.3.0",
+      "argparse@2.0.1",
+      "array-flatten@1.1.1",
+      "async@3.2.6",
+      "axios@0.21.1",
+      "balanced-match@1.0.2",
+      "body-parser@1.20.1",
+      "brace-expansion@1.1.21",
+      "bytes@3.1.2",
+      "call-bind-apply-helpers@1.0.2",
+      "call-bound@1.0.4",
+      "callsites@3.1.0",
+      "chalk@4.1.2",
+      "color-convert@2.0.1",
+      "color-name@1.1.4",
+      "concat-map@0.0.1",
+      "content-disposition@0.5.4",
+      "content-type@1.0.5",
+      "cookie@0.5.0",
+      "cookie-signature@1.0.6",
+      "cross-spawn@7.0.6",
+      "debug@2.6.9",
+      "debug@4.4.3",
+      "deep-is@0.1.4",
+      "depd@2.0.0",
+      "destroy@1.2.0",
+      "doctrine@3.0.0",
+      "dunder-proto@1.0.1",
+      "ee-first@1.1.1",
+      "ejs@3.1.10",
+      "encodeurl@1.0.2",
+      "es-define-property@1.0.1",
+      "es-errors@1.3.0",
+      "es-object-atoms@1.1.2",
+      "escape-html@1.0.3",
+      "escape-string-regexp@4.0.0",
+      "eslint@8.57.0",
+      "eslint-scope@7.2.2",
+      "eslint-visitor-keys@3.4.3",
+      "espree@9.6.1",
+      "esquery@1.7.0",
+      "esrecurse@4.3.0",
+      "estraverse@5.3.0",
+      "esutils@2.0.3",
+      "etag@1.8.1",
+      "express@4.18.2",
+      "fast-deep-equal@3.1.3",
+      "fast-json-stable-stringify@2.1.0",
+      "fast-levenshtein@2.0.6",
+      "fastq@1.20.1",
+      "file-entry-cache@6.0.1",
+      "filelist@1.0.6",
+      "finalhandler@1.2.0",
+      "find-up@5.0.0",
+      "flat-cache@3.2.0",
+      "flatted@3.4.2",
+      "follow-redirects@1.16.0",
+      "forwarded@0.2.0",
+      "fresh@0.5.2",
+      "fs.realpath@1.0.0",
+      "function-bind@1.1.2",
+      "get-intrinsic@1.3.0",
+      "get-proto@1.0.1",
+      "glob@7.2.3",
+      "glob-parent@6.0.2",
+      "globals@13.24.0",
+      "gopd@1.2.0",
+      "graphemer@1.4.0",
+      "has-flag@4.0.0",
+      "has-symbols@1.1.0",
+      "hasown@2.0.4",
+      "http-errors@2.0.0",
+      "iconv-lite@0.4.24",
+      "ignore@5.3.2",
+      "import-fresh@3.3.1",
+      "imurmurhash@0.1.4",
+      "inflight@1.0.6",
+      "inherits@2.0.4",
+      "ipaddr.js@1.9.1",
+      "is-extglob@2.1.1",
+      "is-glob@4.0.3",
+      "is-path-inside@3.0.3",
+      "isexe@2.0.0",
+      "jake@10.9.4",
+      "js-yaml@4.3.2",
+      "json-buffer@3.0.1",
+      "json-schema-traverse@0.4.1",
+      "json-stable-stringify-without-jsonify@1.0.1",
+      "keyv@4.5.4",
+      "levn@0.4.1",
+      "locate-path@6.0.0",
+      "lodash@4.17.4",
+      "lodash.merge@4.6.2",
+      "math-intrinsics@1.1.0",
+      "media-typer@0.3.0",
+      "merge-descriptors@1.0.1",
+      "methods@1.1.2",
+      "mime@1.6.0",
+      "mime-db@1.52.0",
+      "mime-types@2.1.35",
+      "minimatch@3.1.5",
+      "minimatch@5.1.9",
+      "minimist@1.2.8",
+      "ms@2.0.0",
+      "ms@2.1.3",
+      "natural-compare@1.4.0",
+      "negotiator@0.6.3",
+      "object-inspect@1.13.4",
+      "on-finished@2.4.1",
+      "once@1.4.0",
+      "optionator@0.9.4",
+      "p-limit@3.1.0",
+      "p-locate@5.0.0",
+      "parent-module@1.0.1",
+      "parseurl@1.3.3",
+      "path-exists@4.0.0",
+      "path-is-absolute@1.0.1",
+      "path-key@3.1.1",
+      "path-to-regexp@0.1.7",
+      "picocolors@1.1.1",
+      "prelude-ls@1.2.1",
+      "proxy-addr@2.0.8",
+      "punycode@2.3.1",
+      "qs@6.11.0",
+      "queue-microtask@1.2.3",
+      "range-parser@1.2.1",
+      "raw-body@2.5.1",
+      "resolve-from@4.0.0",
+      "reusify@1.1.0",
+      "rimraf@3.0.2",
+      "run-parallel@1.2.0",
+      "safe-buffer@5.2.1",
+      "safer-buffer@2.1.2",
+      "send@0.18.0",
+      "serve-static@1.15.0",
+      "setprototypeof@1.2.0",
+      "shebang-command@2.0.0",
+      "shebang-regex@3.0.0",
+      "side-channel@1.1.1",
+      "side-channel-list@1.0.1",
+      "side-channel-map@1.0.1",
+      "side-channel-weakmap@1.0.2",
+      "statuses@2.0.1",
+      "strip-ansi@6.0.1",
+      "strip-json-comments@3.1.1",
+      "supports-color@7.2.0",
+      "text-table@0.2.0",
+      "toidentifier@1.0.1",
+      "type-check@0.4.0",
+      "type-fest@0.20.2",
+      "type-is@1.6.18",
+      "unpipe@1.0.0",
+      "uri-js@4.4.1",
+      "utils-merge@1.0.1",
+      "vary@1.1.2",
+      "which@2.0.2",
+      "word-wrap@1.2.5",
+      "wrappy@1.0.2",
+      "yocto-queue@0.1.0"
+    ],
+    "groups": [
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-3g43-6gmg-66jw"
+        ],
+        "aliases": [
+          "CVE-2026-44495",
+          "GHSA-3g43-6gmg-66jw"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-3p68-rc4w-qgx5"
+        ],
+        "aliases": [
+          "CVE-2025-62718",
+          "GHSA-3p68-rc4w-qgx5"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-43fc-jf86-j433"
+        ],
+        "aliases": [
+          "CVE-2026-25639",
+          "GHSA-43fc-jf86-j433"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-5c9x-8gcm-mpgx"
+        ],
+        "aliases": [
+          "CVE-2026-42034",
+          "GHSA-5c9x-8gcm-mpgx"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-62hf-57xw-28j9"
+        ],
+        "aliases": [
+          "CVE-2026-42039",
+          "GHSA-62hf-57xw-28j9"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-6chq-wfr3-2hj9"
+        ],
+        "aliases": [
+          "CVE-2026-42035",
+          "GHSA-6chq-wfr3-2hj9"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-7q8q-rj6j-mhjq"
+        ],
+        "aliases": [
+          "CVE-2026-67319",
+          "GHSA-7q8q-rj6j-mhjq"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-898c-q2cr-xwhg"
+        ],
+        "aliases": [
+          "CVE-2026-44490",
+          "GHSA-898c-q2cr-xwhg"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-cph5-m8f7-6c5x"
+        ],
+        "aliases": [
+          "CVE-2021-3749",
+          "GHSA-cph5-m8f7-6c5x"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-fvcv-3m26-pcqx"
+        ],
+        "aliases": [
+          "CVE-2026-40175",
+          "GHSA-fvcv-3m26-pcqx"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-hfxv-24rg-xrqf"
+        ],
+        "aliases": [
+          "CVE-2026-44496",
+          "GHSA-hfxv-24rg-xrqf"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-j5f8-grm9-p9fc"
+        ],
+        "aliases": [
+          "CVE-2026-44486",
+          "GHSA-j5f8-grm9-p9fc"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-jr5f-v2jv-69x6"
+        ],
+        "aliases": [
+          "CVE-2025-27152",
+          "GHSA-jr5f-v2jv-69x6"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-m7pr-hjqh-92cm"
+        ],
+        "aliases": [
+          "CVE-2026-42038",
+          "GHSA-m7pr-hjqh-92cm"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-mmx7-hfxf-jppx"
+        ],
+        "aliases": [
+          "CVE-2026-67316",
+          "GHSA-mmx7-hfxf-jppx"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-p92q-9vqr-4j8v"
+        ],
+        "aliases": [
+          "CVE-2026-44487",
+          "GHSA-p92q-9vqr-4j8v"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-pf86-5x62-jrwf"
+        ],
+        "aliases": [
+          "CVE-2026-42033",
+          "GHSA-pf86-5x62-jrwf"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-pjwm-pj3p-43mv"
+        ],
+        "aliases": [
+          "CVE-2026-44492",
+          "GHSA-pjwm-pj3p-43mv"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-pmwg-cvhr-8vh7"
+        ],
+        "aliases": [
+          "CVE-2026-42043",
+          "GHSA-pmwg-cvhr-8vh7"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-vf2m-468p-8v99"
+        ],
+        "aliases": [
+          "CVE-2026-42036",
+          "GHSA-vf2m-468p-8v99"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-w9j2-pvgh-6h63"
+        ],
+        "aliases": [
+          "CVE-2026-42041",
+          "GHSA-w9j2-pvgh-6h63"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-wf5p-g6vw-rhxx"
+        ],
+        "aliases": [
+          "CVE-2023-45857",
+          "GHSA-wf5p-g6vw-rhxx"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-xhjh-pmcv-23jw"
+        ],
+        "aliases": [
+          "CVE-2026-42040",
+          "GHSA-xhjh-pmcv-23jw"
+        ]
+      },
+      {
+        "pkg": "axios",
+        "ver": "0.21.1",
+        "ids": [
+          "GHSA-xx6v-rp6x-q39c"
+        ],
+        "aliases": [
+          "CVE-2026-42042",
+          "GHSA-xx6v-rp6x-q39c"
+        ]
+      },
+      {
+        "pkg": "body-parser",
+        "ver": "1.20.1",
+        "ids": [
+          "GHSA-27r3-jxmh-p828"
+        ],
+        "aliases": [
+          "CVE-2026-111181",
+          "GHSA-27r3-jxmh-p828"
+        ]
+      },
+      {
+        "pkg": "body-parser",
+        "ver": "1.20.1",
+        "ids": [
+          "GHSA-qwcr-r2fm-qrc7"
+        ],
+        "aliases": [
+          "CVE-2024-45590",
+          "GHSA-qwcr-r2fm-qrc7"
+        ]
+      },
+      {
+        "pkg": "body-parser",
+        "ver": "1.20.1",
+        "ids": [
+          "GHSA-v422-hmwv-36x6"
+        ],
+        "aliases": [
+          "CVE-2026-12590",
+          "GHSA-v422-hmwv-36x6"
+        ]
+      },
+      {
+        "pkg": "cookie",
+        "ver": "0.5.0",
+        "ids": [
+          "GHSA-pxg6-pf52-xh8x"
+        ],
+        "aliases": [
+          "CVE-2024-47764",
+          "GHSA-pxg6-pf52-xh8x"
+        ]
+      },
+      {
+        "pkg": "express",
+        "ver": "4.18.2",
+        "ids": [
+          "GHSA-qw6h-vgh9-j6wx"
+        ],
+        "aliases": [
+          "CVE-2024-43796",
+          "GHSA-qw6h-vgh9-j6wx"
+        ]
+      },
+      {
+        "pkg": "express",
+        "ver": "4.18.2",
+        "ids": [
+          "GHSA-rv95-896h-c2vc"
+        ],
+        "aliases": [
+          "CVE-2024-29041",
+          "GHSA-rv95-896h-c2vc"
+        ]
+      },
+      {
+        "pkg": "follow-redirects",
+        "ver": "1.16.0",
+        "ids": [
+          "GHSA-8r9p-f939-6h3c"
+        ],
+        "aliases": [
+          "CVE-2026-111755",
+          "GHSA-8r9p-f939-6h3c"
+        ]
+      },
+      {
+        "pkg": "follow-redirects",
+        "ver": "1.16.0",
+        "ids": [
+          "GHSA-q3jh-wrc6-jgq8"
+        ],
+        "aliases": [
+          "CVE-2026-111756",
+          "GHSA-q3jh-wrc6-jgq8"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-29mw-wpgm-hmr9"
+        ],
+        "aliases": [
+          "CVE-2020-28500",
+          "GHSA-29mw-wpgm-hmr9"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-35jh-r3h4-6jhm"
+        ],
+        "aliases": [
+          "CVE-2021-23337",
+          "GHSA-35jh-r3h4-6jhm"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-4xc9-xhrj-v574"
+        ],
+        "aliases": [
+          "CVE-2018-16487",
+          "GHSA-4xc9-xhrj-v574"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-f23m-r3pf-42rh"
+        ],
+        "aliases": [
+          "CVE-2026-2950",
+          "GHSA-f23m-r3pf-42rh"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-fvqr-27wr-82fm"
+        ],
+        "aliases": [
+          "CVE-2018-3721",
+          "GHSA-fvqr-27wr-82fm"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-jf85-cpcp-j695"
+        ],
+        "aliases": [
+          "CVE-2019-10744",
+          "GHSA-jf85-cpcp-j695",
+          "SNYK-JS-LODASH-450202"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-p6mc-m468-83gw"
+        ],
+        "aliases": [
+          "CVE-2020-8203",
+          "GHSA-p6mc-m468-83gw"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-r5fr-rjxr-66jc"
+        ],
+        "aliases": [
+          "CVE-2026-4800",
+          "GHSA-r5fr-rjxr-66jc"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-x5rq-j2xg-h7qm"
+        ],
+        "aliases": [
+          "CVE-2019-1010266",
+          "GHSA-x5rq-j2xg-h7qm",
+          "SNYK-JS-LODASH-73639"
+        ]
+      },
+      {
+        "pkg": "lodash",
+        "ver": "4.17.4",
+        "ids": [
+          "GHSA-xxjr-mmjv-4gpg"
+        ],
+        "aliases": [
+          "CVE-2025-13465",
+          "GHSA-xxjr-mmjv-4gpg"
+        ]
+      },
+      {
+        "pkg": "path-to-regexp",
+        "ver": "0.1.7",
+        "ids": [
+          "GHSA-37ch-88jc-xwx2",
+          "GHSA-9wv6-86v2-598j"
+        ],
+        "aliases": [
+          "CVE-2024-45296",
+          "CVE-2026-4867",
+          "GHSA-37ch-88jc-xwx2",
+          "GHSA-9wv6-86v2-598j"
+        ]
+      },
+      {
+        "pkg": "path-to-regexp",
+        "ver": "0.1.7",
+        "ids": [
+          "GHSA-rhx6-c78j-4q9w"
+        ],
+        "aliases": [
+          "CVE-2024-52798",
+          "GHSA-rhx6-c78j-4q9w"
+        ]
+      },
+      {
+        "pkg": "qs",
+        "ver": "6.11.0",
+        "ids": [
+          "GHSA-4mjr-xmp4-gh2g"
+        ],
+        "aliases": [
+          "CVE-2026-82417",
+          "GHSA-4mjr-xmp4-gh2g"
+        ]
+      },
+      {
+        "pkg": "qs",
+        "ver": "6.11.0",
+        "ids": [
+          "GHSA-6rw7-vpxm-498p"
+        ],
+        "aliases": [
+          "CVE-2025-15284",
+          "GHSA-6rw7-vpxm-498p"
+        ]
+      },
+      {
+        "pkg": "qs",
+        "ver": "6.11.0",
+        "ids": [
+          "GHSA-w7fw-mjwx-w883"
+        ],
+        "aliases": [
+          "CVE-2026-2391",
+          "GHSA-w7fw-mjwx-w883"
+        ]
+      },
+      {
+        "pkg": "send",
+        "ver": "0.18.0",
+        "ids": [
+          "GHSA-m6fv-jmcg-4jfg"
+        ],
+        "aliases": [
+          "CVE-2024-43799",
+          "GHSA-m6fv-jmcg-4jfg"
+        ]
+      },
+      {
+        "pkg": "serve-static",
+        "ver": "1.15.0",
+        "ids": [
+          "GHSA-cm22-4g7w-348p"
+        ],
+        "aliases": [
+          "CVE-2024-43800",
+          "GHSA-cm22-4g7w-348p"
+        ]
+      }
+    ]
+  },
+  "removed": [
+    "GHSA-jqcg-44mw-7w3h"
+  ],
+  "added": []
+}

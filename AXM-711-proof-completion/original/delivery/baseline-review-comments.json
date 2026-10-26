@@ -1,0 +1,35 @@
+[
+  {
+    "id": "3de361d8-a070-4029-8166-f8990dc897fc",
+    "companyId": "c0c0d9ad-8fa7-4eef-a2c0-49b0b2849668",
+    "issueId": "deefdc60-30fa-4a9c-ab6c-99d47b955f4b",
+    "body": "Truxt Axiom started this ticket with codex on branch `raunakTruxt/axm-711-3d6566`.",
+    "authorUserId": "4719b0b0-2b2b-48e8-b7e4-d5fef638d4c4",
+    "authorAgentId": "4aba4e7a-4e42-4171-a206-c05ceb370dd7",
+    "authorType": "agent",
+    "createdAt": "2026-10-26T08:42:23.873Z",
+    "updatedAt": "2026-10-26T08:42:23.873Z"
+  },
+  {
+    "id": "8480f147-e766-4a49-bc62-ac05812e6b80",
+    "companyId": "c0c0d9ad-8fa7-4eef-a2c0-49b0b2849668",
+    "issueId": "deefdc60-30fa-4a9c-ab6c-99d47b955f4b",
+    "body": "Original builder baseline proof is now attached to this task as vd49-baseline-evidence.tar.gz, attachment 5030f315-602f-4122-8727-a8de857aeba4. SHA-256: 9a9c397011815594af5d73ee21657d0cb70b191acf7549089a09814f5cc898ce; 117370 bytes. It contains 21 completed baseline command/log/raw-scan files and a per-file SHA-256 manifest from native AXM-708 run db9dc000-11ec-404d-8adb-6d277609eb58, baseline dff02375d83394d6f03ce2127e35e62fadc269ab. The failed wrong-architecture install is preserved separately from the successful ARM64 Node20 run.\n\nUse the normal authenticated attachment download into your own writable worktree or /tmp; the builder path /data/work-root/qa-evidence is not shared with the cloud host. For the member CLI: truxt-axiom-cli attachment download 5030f315-602f-4122-8727-a8de857aeba4 --out <your-writable-path>/vd49-baseline-evidence.tar.gz --workspace backend --output json. Preserve hashes and inspect raw scan completeness rather than assuming a scanner exit1 is failure. Publish your attributable review as an AXM-711 comment and preserve raw command evidence in your own durable location, then return the truthful native task outcome. No source AXM-708 attachment or frozen-field edits. This message is coordination from Codex under the user-authorized assisted run, not a completed reviewer verdict.\n",
+    "authorUserId": "4719b0b0-2b2b-48e8-b7e4-d5fef638d4c4",
+    "authorAgentId": null,
+    "authorType": "user",
+    "createdAt": "2026-10-26T08:48:07.382Z",
+    "updatedAt": "2026-10-26T08:48:07.382Z"
+  },
+  {
+    "id": "f101527b-9825-4fe4-97b0-da7c911e8577",
+    "companyId": "c0c0d9ad-8fa7-4eef-a2c0-49b0b2849668",
+    "issueId": "deefdc60-30fa-4a9c-ab6c-99d47b955f4b",
+    "body": "**Truxt Axiom run finished: blocked**\n\nAt assigned commit dff02375d83394d6f03ce2127e35e62fadc269ab, the independent Node 20 rerun passed all 49 tests and lint, and a complete OSV 2.6.0 live scan found 175 versioned packages and 50 finding groups including CVE-2026-90711/GHSA-jqcg-44mw-7w3h. The specified original evidence tree is absent and /data/work-root cannot be created by this worker, so the original baseline files and required report destination cannot be verified or completed. A fallback review and raw rerun artifacts are in AXM-711-review/; orchestration commands also fail with runtime_unavailable.\n\n- Branch: `raunakTruxt/axm-711-3d6566`\n- Tests: 49 passed, 0 failed\n- Needs: The assigned original evidence root /data/work-root/qa-evidence/AXM-708-db9dc0 is absent; creating /data/work-root fails Permission denied, and orchestration commands fail runtime_unavailable. The read-only ticket explicitly prohibits a PR.\n- Follow-up: Restore readable /data/work-root/qa-evidence/AXM-708-db9dc0 and writable report destination for original evidence comparison.\n- Follow-up: Restore Axiom orchestration runtime metadata access for native worker completion reporting.\n- The agent left uncommitted changes; the daemon committed them locally as `07a35a330d88` (not pushed).\n- Harness: codex",
+    "authorUserId": "4719b0b0-2b2b-48e8-b7e4-d5fef638d4c4",
+    "authorAgentId": "4aba4e7a-4e42-4171-a206-c05ceb370dd7",
+    "authorType": "agent",
+    "createdAt": "2026-10-26T08:55:31.487Z",
+    "updatedAt": "2026-10-26T08:55:31.487Z"
+  }
+]

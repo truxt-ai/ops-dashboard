@@ -1,0 +1,25 @@
+{
+  "schema": "axm-711/bounded-proof-review@1",
+  "reviewer": "Quality Assurance agent (Codex gpt-6-sol)",
+  "review_date_utc": "2026-10-26",
+  "verdict": "success",
+  "ticket": "AXM-711",
+  "candidate_pr": 107,
+  "candidate_head": "712d9c36395d58996689763523d7fe8ba9b7fbae",
+  "baseline_head": "dff02375d83394d6f03ce2127e35e62fadc269ab",
+  "current_review_checkout": "07a35a330d882079b6142822bfb0048d5465cf3a",
+  "archives": {
+    "original_builder": {"path": "original/", "sha256": "55b74a677301d7f7ec226ceaf980535a35fff786f2d14876c239d97f7d57bb6f", "files": 89, "run": "AXM-708 builder"},
+    "prior_independent": {"path": "independent/", "sha256": "91f1cf5fe86220317826b1be99af7549c06ce3759897f118721433062e12ecc3", "files": 18, "runs": ["3d656645-16ca-4731-bdf3-c8c6d187e621", "a6d08a19-dffd-4dff-8a91-6abf22695df1"]}
+  },
+  "checks": [
+    {"id": "proof_integrity", "status": "pass", "manifest_entries_verified": 88, "local_links_verified": 92, "broken_links": 0},
+    {"id": "baseline", "status": "pass", "node": "20.20.2 ARM64", "npm": "10.8.2", "tests_passed": 49, "tests_failed": 0, "lint_exit": 0, "initial_x64_install_exit": 2, "subsequent_arm64_install_exit": 0},
+    {"id": "fixture", "status": "pass", "sha256": "e76f67d4761dd00dcb7be10e4bf6e500666a33418176fb194766fe5965215452", "red": {"first_assertion_failures": 2, "passing_controls": 2, "later_failing_case_assertions_executed": false}, "green": {"focused_passed": 4, "full_suite_passed": 53, "skipped": 0}},
+    {"id": "osv_full_reports", "status": "pass", "package_versions_each": 175, "baseline_groups": 50, "head_groups": 49, "removed": ["GHSA-jqcg-44mw-7w3h", "CVE-2026-90711"], "added_groups": 0, "other_findings_open": 49, "original_independent_records_match": true},
+    {"id": "scope", "status": "pass", "changed_files": ["package.json", "package-lock.json", "test/proxy-addr-security.test.js"], "proxy_addr_from": "2.0.7", "proxy_addr_to": "2.0.8", "app_trust_proxy": false},
+    {"id": "pr_ci", "status": "pass", "pr_state": "OPEN", "merged": false, "hosted_ci_run": 40295522832, "ci_conclusion": "success", "final_read_only_head_check": "712d9c36395d58996689763523d7fe8ba9b7fbae"}
+  ],
+  "fresh_tests_or_scans_in_this_continuation": false,
+  "limitations": ["Earlier blocked outcomes remain historical.", "Current review checkout is not the candidate head; exact-head executions are attributed to prior runs and hosted CI.", "Original usage.json is interim; final platform accounting and publication belong to the coordinator.", "Human review and native Verified Delivery receipt are separate from this technical verdict.", "The remaining 49 OSV findings stay open; the fixture does not establish current application exploitability."]
+}

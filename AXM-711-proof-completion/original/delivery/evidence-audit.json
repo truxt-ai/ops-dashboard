@@ -1,0 +1,472 @@
+{
+  "verified_at": "2026-10-26T08:58:09.400463+00:00",
+  "head": "712d9c36395d58996689763523d7fe8ba9b7fbae",
+  "pr_open_unmerged": true,
+  "ci_exact_head_success": true,
+  "hosted_test_count": 53,
+  "local_proof_links": [
+    {
+      "from": "qa-report.md",
+      "link": "baseline/tests.txt",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "baseline/coverage.md",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "baseline/versions.txt",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "vulnerable/regression.txt",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "candidate/regression.txt",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "fixtures.md",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "vulnerable/fixture.json",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "candidate/full-suite.txt",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "candidate/lint.txt",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "candidate/versions.txt",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "scope-review.md",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "delivery/ci-readback.txt",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "delivery/ci-log.txt",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "delivery/pr.json",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "scans/baseline.json",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "scans/final-head.json",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "scans/comparison.json",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "scans/comparison.md",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "scans/baseline-command.txt",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "scans/final-head-command.txt",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "usage.json",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "evidence-index.md",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "delivery/baseline-review-comments.json",
+      "exists": true
+    },
+    {
+      "from": "qa-report.md",
+      "link": "approved-packet.json",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "approved-packet.json",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "baseline/coverage.md",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "baseline/install-arm64.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "baseline/tests.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "baseline/lint.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "baseline/files.json",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "baseline/versions.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "baseline/install.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "fixtures.md",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "vulnerable/proxy-addr-security.test.js",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "vulnerable/fixture.json",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "vulnerable/regression.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "candidate/lockfile-update.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "candidate/install.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "candidate/dependency-delta.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "candidate/diff.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "candidate/versions.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "candidate/regression.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "candidate/lint.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "candidate/full-suite.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "scans/baseline.json",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "scans/final-head.json",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "scans/osv-scanner.toml",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "scans/scanner-version.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "scans/baseline-command.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "scans/final-head-command.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "scans/comparison.json",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "scans/comparison.md",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "scans/comparison-command.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "compare-scans.py",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "scope-review.md",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "pr-body.md",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "qa-report.md",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "delivery/pr.json",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "delivery/ci-readback.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "delivery/ci-log.txt",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "delivery/ci.json",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "delivery/baseline-review-comments.json",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "usage.json",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "capture-usage.py",
+      "exists": true
+    },
+    {
+      "from": "evidence-index.md",
+      "link": "run.py",
+      "exists": true
+    },
+    {
+      "from": "scope-review.md",
+      "link": "candidate/diff.txt",
+      "exists": true
+    },
+    {
+      "from": "scope-review.md",
+      "link": "reference/AXM-707-comments.json",
+      "exists": true
+    },
+    {
+      "from": "scope-review.md",
+      "link": "candidate/dependency-delta.txt",
+      "exists": true
+    },
+    {
+      "from": "scope-review.md",
+      "link": "candidate/versions.txt",
+      "exists": true
+    },
+    {
+      "from": "scope-review.md",
+      "link": "baseline/files.json",
+      "exists": true
+    },
+    {
+      "from": "scope-review.md",
+      "link": "fixtures.md",
+      "exists": true
+    },
+    {
+      "from": "fixtures.md",
+      "link": "reference/advisory.json",
+      "exists": true
+    },
+    {
+      "from": "fixtures.md",
+      "link": "reference/upstream-fix.json",
+      "exists": true
+    },
+    {
+      "from": "fixtures.md",
+      "link": "reference/release.json",
+      "exists": true
+    },
+    {
+      "from": "fixtures.md",
+      "link": "reference/pr106.json",
+      "exists": true
+    },
+    {
+      "from": "fixtures.md",
+      "link": "reference/pr106.diff",
+      "exists": true
+    },
+    {
+      "from": "fixtures.md",
+      "link": "reference/proxy-addr-security.test.js",
+      "exists": true
+    },
+    {
+      "from": "fixtures.md",
+      "link": "reference/AXM-707.json",
+      "exists": true
+    },
+    {
+      "from": "fixtures.md",
+      "link": "vulnerable/regression.txt",
+      "exists": true
+    },
+    {
+      "from": "fixtures.md",
+      "link": "vulnerable/fixture.json",
+      "exists": true
+    },
+    {
+      "from": "fixtures.md",
+      "link": "vulnerable/proxy-addr-security.test.js",
+      "exists": true
+    },
+    {
+      "from": "fixtures.md",
+      "link": "baseline/versions.txt",
+      "exists": true
+    },
+    {
+      "from": "baseline/coverage.md",
+      "link": "install-arm64.txt",
+      "exists": true
+    },
+    {
+      "from": "baseline/coverage.md",
+      "link": "tests.txt",
+      "exists": true
+    },
+    {
+      "from": "baseline/coverage.md",
+      "link": "lint.txt",
+      "exists": true
+    },
+    {
+      "from": "baseline/coverage.md",
+      "link": "versions.txt",
+      "exists": true
+    },
+    {
+      "from": "baseline/coverage.md",
+      "link": "npm-version.txt",
+      "exists": true
+    },
+    {
+      "from": "baseline/coverage.md",
+      "link": "install.txt",
+      "exists": true
+    },
+    {
+      "from": "baseline/coverage.md",
+      "link": "../scans/baseline.json",
+      "exists": true
+    },
+    {
+      "from": "baseline/coverage.md",
+      "link": "../scans/baseline-findings.json",
+      "exists": true
+    },
+    {
+      "from": "baseline/coverage.md",
+      "link": "../scans/baseline-command.txt",
+      "exists": true
+    },
+    {
+      "from": "scans/comparison.md",
+      "link": "comparison.json",
+      "exists": true
+    }
+  ],
+  "not_completed": [
+    "Independent reviews, actual user reviews/publication and final accounting remain open."
+  ]
+}

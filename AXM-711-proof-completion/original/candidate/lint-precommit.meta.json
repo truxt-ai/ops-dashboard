@@ -1,0 +1,13 @@
+{
+  "command": [
+    "npm",
+    "run",
+    "lint"
+  ],
+  "cwd": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0",
+  "revision": "dff02375d83394d6f03ce2127e35e62fadc269ab",
+  "started_at": "2026-10-26T08:51:55.223659+00:00",
+  "ended_at": "2026-10-26T08:51:55.734565+00:00",
+  "exit_code": 0,
+  "log": "/data/work-root/qa-evidence/AXM-708-db9dc0/candidate/lint-precommit.txt"
+}

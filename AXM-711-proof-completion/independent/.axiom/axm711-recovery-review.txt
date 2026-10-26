@@ -1,0 +1,27 @@
+AXM-711 independent recovery review, 2026-10-26 UTC
+
+Assigned candidate: PR107 head 712d9c36395d58996689763523d7fe8ba9b7fbae.
+Baseline: dff02375d83394d6f03ce2127e35e62fadc269ab.
+Review is read-only for implementation. Scratch checkouts are under /tmp.
+
+The requested AXM-711 full proof attachment 4af27aa4-9e84-4fee-a7aa-e305998c320e could not be downloaded. /usr/local/lib/truxt-cli/bin/truxt-axiom-cli attachment download ... --workspace backend --output json returned exit 1: "not supported inside an Axiom run: this operation has no agent route". Attachment list returned the same. Thus original builder proof, its manifest and relative links, and original two OSV reports could not be inspected. This is a blocking gap in the six-check review; do not backdate original-evidence verification.
+
+Independent PR107 checks using Node 20.20.2:
+- npm ci: exit 0, 181 installed packages.
+- Focused unchanged fixture SHA256 e76f67d4761dd00dcb7be10e4bf6e500666a33418176fb194766fe5965215452: exit 0, four passed, zero skipped.
+- npm test: exit 0, 53 passed, zero failed or skipped.
+- npm run lint: exit 127 due to /tmp noexec (eslint executable permission denied). Equivalent Node 20 invocation of node node_modules/eslint/bin/eslint.js .: exit 0, no diagnostics.
+- Resolved Express 4.18.2, proxy-addr 2.0.8.
+
+Independent red reproduction on baseline checkout, same copied fixture hash:
+- npm ci: exit 0; proxy-addr 2.0.7 from baseline lockfile.
+- node --test test/proxy-addr-security.test.js: exit 1; S1 and S2 each failed ERR_ASSERTION at first trust(remoteAddress) assertion with true !== false; C1 and C2 passed; zero skipped.
+
+GitHub PR107 was open, unmerged at assigned exact head. Hosted CI run 40295522832 completed success at the same SHA, including install, lint, and 53 tests with zero skips. Three changed files: package.json, package-lock.json, test/proxy-addr-security.test.js. No src or CI changes. The advisory's affected range is >=1.1.0 <2.0.8, patched at 2.0.8. The fixture tests dependency preconditions only; this does not establish current application exploitability, and app trust proxy remains false.
+
+Independent scanner comparison, separate from inaccessible original builder reports:
+- Prior AXM-711 baseline live raw report: OSV 2.6.0, 175 unique package versions, 50 groups.
+- This review's candidate live raw report: OSV 2.6.0, 175 unique package versions, 49 groups.
+- Both reports have one lockfile source, 181 lock entries mapping to 175 unique package/version pairs, no missing or extraneous scanner package pairs. The full group sets differ only by GHSA-jqcg-44mw-7w3h / CVE-2026-90711 on proxy-addr@2.0.7; zero groups were added. All 49 other groups remain open. Scanner exit 1 records findings, not a scan failure.
+
+Prior AXM-711 baseline rerun provenance is the committed AXM-711-review/ directory on this review branch and is separate from original AXM-708 builder proof. The full proof bundle and its historical usage.json were unavailable; no final usage amount was inferred from that interim file. Finalized native figures stated in the ticket are not provider invoices.

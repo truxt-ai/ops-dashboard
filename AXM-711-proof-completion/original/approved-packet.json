@@ -1,0 +1,2564 @@
+{
+  "verifiedDelivery": true,
+  "missionId": "01a17705-4492-7fb5-bd69-8f25c79a6033",
+  "attemptId": "01a17705-45a2-7474-b863-26a7f84d53ad",
+  "role": "implementer",
+  "mode": "fast",
+  "baseRevision": null,
+  "headRevision": null,
+  "pullRequestUrl": null,
+  "goal": "Execute the complete pinned sharedPlan document for revision 64ed64cd-f4ea-4039-9058-cb77daad134d (input 6865d0365b4aa6fc4b7391f63024a268d7d3acb01d7405c2131c015f5e62729d). All scope, approach, test cases and verification obligations in that document apply.\n\nAcceptance criteria:\n1. Fresh baseline output shows 49 passing tests before changes. HTTP cases verify GET `/` returns 200 with the expected service rows and UTC freshness display; `/health/live` returns 200 without upstream calls during healthy, failing and pending probes; `/health/ready` returns 200 on success and 503 for HTTP failure, connection error and timeout, then returns 200 after recovery. `/health/upstream` preserves success status and its 502/error response on failure. Preserve all existing metrics, promo-code and security-floor cases.\n2. Four named fixtures document the advisory precondition and independent expected results. Security cases S1 and S2 each demonstrate the advisory's incorrect trust decision with a failed security assertion on 2.0.7; controls C1 and C2 exercise legitimate trusted and untrusted decisions and pass on both versions. All four unchanged assertions pass on 2.0.8. Exact attack inputs must be grounded in the advisory/reference evidence before implementation; they are not invented in this plan.\n3. Inspect installed and locked proxy-addr versions and the final diff; only the selected dependency is upgraded. Lint succeeds and the complete suite reports 53 passing cases, with zero failures, skips or exclusions. Confirm existing tests and CI were not suppressed or weakened.\n4. Verify the chosen PR is scoped, open and unmerged; capture its final head SHA and hosted CI URLs. Check that successful CI is attached to that exact SHA. If the head changes, refresh affected proof and CI before completion. Document whether PR106 was reused or a separate workflow-required candidate references it.\n5. Preserve both OSV 2.6.0 raw reports, commands, scan timestamps, settings and revision identities. Compare the complete finding sets: the target CVE/GHSA alias group is absent at the final head, additions are empty, and the remaining inventory is explicitly listed with the expected 49 findings still open. Failed API calls or incomplete scans cannot satisfy this criterion.\n6. Review the six-row report and follow every proof link. Verify logs contain actual commands/results and test counts; PR, CI, SHA and scans identify the same final candidate. Verify proof survives `.axiom` cleanup through attachments or an external location. Usage distinguishes actual fresh input/output tokens and cost from estimates and separately identifies planning usage.",
+  "acceptanceCriteria": [
+    "Fresh baseline output shows 49 passing tests before changes. HTTP cases verify GET `/` returns 200 with the expected service rows and UTC freshness display; `/health/live` returns 200 without upstream calls during healthy, failing and pending probes; `/health/ready` returns 200 on success and 503 for HTTP failure, connection error and timeout, then returns 200 after recovery. `/health/upstream` preserves success status and its 502/error response on failure. Preserve all existing metrics, promo-code and security-floor cases.",
+    "Four named fixtures document the advisory precondition and independent expected results. Security cases S1 and S2 each demonstrate the advisory's incorrect trust decision with a failed security assertion on 2.0.7; controls C1 and C2 exercise legitimate trusted and untrusted decisions and pass on both versions. All four unchanged assertions pass on 2.0.8. Exact attack inputs must be grounded in the advisory/reference evidence before implementation; they are not invented in this plan.",
+    "Inspect installed and locked proxy-addr versions and the final diff; only the selected dependency is upgraded. Lint succeeds and the complete suite reports 53 passing cases, with zero failures, skips or exclusions. Confirm existing tests and CI were not suppressed or weakened.",
+    "Verify the chosen PR is scoped, open and unmerged; capture its final head SHA and hosted CI URLs. Check that successful CI is attached to that exact SHA. If the head changes, refresh affected proof and CI before completion. Document whether PR106 was reused or a separate workflow-required candidate references it.",
+    "Preserve both OSV 2.6.0 raw reports, commands, scan timestamps, settings and revision identities. Compare the complete finding sets: the target CVE/GHSA alias group is absent at the final head, additions are empty, and the remaining inventory is explicitly listed with the expected 49 findings still open. Failed API calls or incomplete scans cannot satisfy this criterion.",
+    "Review the six-row report and follow every proof link. Verify logs contain actual commands/results and test counts; PR, CI, SHA and scans identify the same final candidate. Verify proof survives `.axiom` cleanup through attachments or an external location. Usage distinguishes actual fresh input/output tokens and cost from estimates and separately identifies planning usage."
+  ],
+  "approvedPacket": null,
+  "remediationCauses": null,
+  "evidencePath": "/v1/host/vd/runs/db9dc000-11ec-404d-8adb-6d277609eb58/evidence",
+  "sharedPlan": {
+    "schemaVersion": "vd-shared-plan-context/v1",
+    "bindingId": "716f7417-b460-43a0-a466-ed5d87a20484",
+    "sourceIssueId": "4efa3315-df53-4a8b-a935-fbc7ba0bacac",
+    "inputDigest": "6865d0365b4aa6fc4b7391f63024a268d7d3acb01d7405c2131c015f5e62729d",
+    "epicId": "e5edc8e1-2d0b-4e5b-8c8c-7599131187a4",
+    "planningRunId": "8bb06eb6-5e03-4176-b5ea-d51c6dd68217",
+    "revisionId": "64ed64cd-f4ea-4039-9058-cb77daad134d",
+    "revisionDigest": "23b5999a75655e56f5e6033f3681bbd29ab087222f33a5d05b702f72e415fe2b",
+    "document": {
+      "schema": "truxt-axiom/plan@1",
+      "planningMetadata": {
+        "schema": "truxt-axiom/construction@2",
+        "items": [
+          {
+            "itemKey": "capture-baseline",
+            "unitRefs": [
+              "UoW-1"
+            ],
+            "acceptance": [
+              {
+                "criterionIndex": 0,
+                "requirementRefs": [
+                  "FR-1",
+                  "NFR-2",
+                  "NFR-3"
+                ],
+                "checkRefs": [
+                  "CHECK-1"
+                ]
+              },
+              {
+                "criterionIndex": 1,
+                "requirementRefs": [
+                  "FR-5",
+                  "NFR-3"
+                ],
+                "checkRefs": [
+                  "CHECK-6"
+                ]
+              }
+            ],
+            "modelReason": "The Execution squad's pinned Security Remediation Codex gpt-6-astra runtime fits revision-specific baseline and security provenance capture.",
+            "tokenAssumptions": [
+              "12000 tokens estimates fresh command orchestration and evidence capture; it is not measured usage.",
+              "Four human-engineer hours cover this item only and exclude later review."
+            ]
+          },
+          {
+            "itemKey": "review-baseline",
+            "unitRefs": [
+              "UoW-1"
+            ],
+            "acceptance": [
+              {
+                "criterionIndex": 0,
+                "requirementRefs": [
+                  "FR-1",
+                  "NFR-2",
+                  "NFR-3"
+                ],
+                "checkRefs": [
+                  "CHECK-1"
+                ]
+              },
+              {
+                "criterionIndex": 1,
+                "requirementRefs": [
+                  "FR-5",
+                  "NFR-3"
+                ],
+                "checkRefs": [
+                  "CHECK-6"
+                ]
+              }
+            ],
+            "modelReason": "Quality Assurance Codex gpt-6-sol independently checks evidence produced by the different-model remediation runtime.",
+            "tokenAssumptions": [
+              "6000 tokens assumes accessible raw baseline and scan evidence; actual usage must be recorded separately."
+            ]
+          },
+          {
+            "itemKey": "prove-vulnerable-regressions",
+            "unitRefs": [
+              "UoW-2"
+            ],
+            "acceptance": [
+              {
+                "criterionIndex": 0,
+                "requirementRefs": [
+                  "FR-2",
+                  "NFR-1",
+                  "NFR-3"
+                ],
+                "checkRefs": [
+                  "CHECK-2"
+                ]
+              }
+            ],
+            "modelReason": "The pinned Security Remediation runtime fits advisory-grounded fixture reasoning and intended assertion-failure analysis.",
+            "tokenAssumptions": [
+              "24000 tokens assumes advisory and reference evidence can establish four meaningful fixtures within approved scope.",
+              "Eight human-engineer hours reflect fixture discovery, implementation and vulnerable proof, not runtime duration."
+            ]
+          },
+          {
+            "itemKey": "review-vulnerable-regressions",
+            "unitRefs": [
+              "UoW-2"
+            ],
+            "acceptance": [
+              {
+                "criterionIndex": 0,
+                "requirementRefs": [
+                  "FR-2",
+                  "NFR-1",
+                  "NFR-3"
+                ],
+                "checkRefs": [
+                  "CHECK-2"
+                ]
+              }
+            ],
+            "modelReason": "Independent Quality Assurance Codex gpt-6-sol assesses fixture meaning and actual failures separately from their author.",
+            "tokenAssumptions": [
+              "10000 tokens assumes fixture provenance and raw red-run output are available; unsupported fixtures remain a gate."
+            ]
+          },
+          {
+            "itemKey": "apply-scoped-upgrade",
+            "unitRefs": [
+              "UoW-3"
+            ],
+            "acceptance": [
+              {
+                "criterionIndex": 0,
+                "requirementRefs": [
+                  "FR-2",
+                  "FR-3",
+                  "NFR-1",
+                  "NFR-2",
+                  "NFR-3"
+                ],
+                "checkRefs": [
+                  "CHECK-3"
+                ]
+              }
+            ],
+            "modelReason": "The Execution squad retains the pinned Security Remediation runtime for the bounded dependency change and fixed-version validation.",
+            "tokenAssumptions": [
+              "16000 tokens assumes one dependency update and reuse of reviewed fixtures without unrelated lockfile churn.",
+              "The estimate does not authorize a new runtime routing choice."
+            ]
+          },
+          {
+            "itemKey": "manual-scope-review",
+            "unitRefs": [
+              "UoW-3"
+            ],
+            "acceptance": [
+              {
+                "criterionIndex": 0,
+                "requirementRefs": [
+                  "FR-3",
+                  "NFR-1",
+                  "NFR-2",
+                  "NFR-3"
+                ],
+                "checkRefs": [
+                  "CHECK-4"
+                ]
+              }
+            ],
+            "modelReason": "CHECK-4 is manual and belongs to verified Backend admin Raunak Poonia; agent execution cannot substitute for his actual review.",
+            "tokenAssumptions": [
+              "Tokens are null because this is user-owned review, not an agent coding run.",
+              "Two human-engineer hours estimate complete scope inspection; assignment does not imply completion."
+            ]
+          },
+          {
+            "itemKey": "bind-validated-pr",
+            "unitRefs": [
+              "UoW-4"
+            ],
+            "acceptance": [
+              {
+                "criterionIndex": 0,
+                "requirementRefs": [
+                  "FR-4",
+                  "NFR-3"
+                ],
+                "checkRefs": [
+                  "CHECK-5"
+                ]
+              }
+            ],
+            "modelReason": "The pinned Security Remediation runtime owns candidate binding, scoped delivery and honest exact-head evidence.",
+            "tokenAssumptions": [
+              "10000 tokens assumes PR106 is bindable or the existing workflow provides a documented fallback.",
+              "Hosted CI waiting time is not counted as human effort or observed token usage."
+            ]
+          },
+          {
+            "itemKey": "review-pr-ci",
+            "unitRefs": [
+              "UoW-4"
+            ],
+            "acceptance": [
+              {
+                "criterionIndex": 0,
+                "requirementRefs": [
+                  "FR-4",
+                  "NFR-3"
+                ],
+                "checkRefs": [
+                  "CHECK-5"
+                ]
+              }
+            ],
+            "modelReason": "Independent Quality Assurance Codex gpt-6-sol verifies candidate identity and hosted CI without substituting historical reference results.",
+            "tokenAssumptions": [
+              "6000 tokens assumes readable PR and hosted CI records tied to an unchanged final head."
+            ]
+          },
+          {
+            "itemKey": "compare-live-scans",
+            "unitRefs": [
+              "UoW-5"
+            ],
+            "acceptance": [
+              {
+                "criterionIndex": 0,
+                "requirementRefs": [
+                  "FR-5",
+                  "NFR-1",
+                  "NFR-3"
+                ],
+                "checkRefs": [
+                  "CHECK-6"
+                ]
+              }
+            ],
+            "modelReason": "The pinned Security Remediation runtime fits complete advisory-alias and package-occurrence comparison within the selected finding scope.",
+            "tokenAssumptions": [
+              "12000 tokens assumes live API availability and comparable baseline/final reports; inventory drift can require further capture."
+            ]
+          },
+          {
+            "itemKey": "review-scan-delta",
+            "unitRefs": [
+              "UoW-5"
+            ],
+            "acceptance": [
+              {
+                "criterionIndex": 0,
+                "requirementRefs": [
+                  "FR-5",
+                  "NFR-1",
+                  "NFR-3"
+                ],
+                "checkRefs": [
+                  "CHECK-6"
+                ]
+              }
+            ],
+            "modelReason": "Independent Quality Assurance Codex gpt-6-sol checks the full finding inventory and scan completeness.",
+            "tokenAssumptions": [
+              "8000 tokens assumes complete raw reports and a readable full comparison; summary counts alone are insufficient."
+            ]
+          },
+          {
+            "itemKey": "publish-durable-report",
+            "unitRefs": [
+              "UoW-6"
+            ],
+            "acceptance": [
+              {
+                "criterionIndex": 0,
+                "requirementRefs": [
+                  "FR-6",
+                  "NFR-3"
+                ],
+                "checkRefs": [
+                  "CHECK-7"
+                ]
+              }
+            ],
+            "modelReason": "FR-6's manual disposition and user publication remain assigned to Raunak Poonia using supported task-comment and native-evidence surfaces.",
+            "tokenAssumptions": [
+              "Tokens are null because publication is user-owned, not a separate agent coding run.",
+              "Two human-engineer hours assume the preceding tasks provide complete durable evidence and actual usage records."
+            ]
+          },
+          {
+            "itemKey": "manual-evidence-usage-review",
+            "unitRefs": [
+              "UoW-6"
+            ],
+            "acceptance": [
+              {
+                "criterionIndex": 0,
+                "requirementRefs": [
+                  "FR-6",
+                  "NFR-3"
+                ],
+                "checkRefs": [
+                  "CHECK-7"
+                ]
+              }
+            ],
+            "modelReason": "CHECK-7 requires actual attributable user review by verified Backend admin Raunak Poonia; no personal review may be invented.",
+            "tokenAssumptions": [
+              "Tokens are null for this manual review.",
+              "Two human-engineer hours assume proof links and actual usage records are accessible; missing records block completion."
+            ]
+          },
+          {
+            "itemKey": "final-independent-test-run",
+            "unitRefs": [
+              "UoW-1",
+              "UoW-2",
+              "UoW-3",
+              "UoW-4",
+              "UoW-5"
+            ],
+            "acceptance": [
+              {
+                "criterionIndex": 0,
+                "requirementRefs": [
+                  "FR-1",
+                  "NFR-2",
+                  "NFR-3"
+                ],
+                "checkRefs": [
+                  "CHECK-1"
+                ]
+              },
+              {
+                "criterionIndex": 1,
+                "requirementRefs": [
+                  "FR-2",
+                  "NFR-1",
+                  "NFR-3"
+                ],
+                "checkRefs": [
+                  "CHECK-2"
+                ]
+              },
+              {
+                "criterionIndex": 2,
+                "requirementRefs": [
+                  "FR-2",
+                  "FR-3",
+                  "NFR-1",
+                  "NFR-2",
+                  "NFR-3"
+                ],
+                "checkRefs": [
+                  "CHECK-3"
+                ]
+              },
+              {
+                "criterionIndex": 3,
+                "requirementRefs": [
+                  "FR-4",
+                  "NFR-3"
+                ],
+                "checkRefs": [
+                  "CHECK-5"
+                ]
+              },
+              {
+                "criterionIndex": 4,
+                "requirementRefs": [
+                  "FR-5",
+                  "NFR-1",
+                  "NFR-3"
+                ],
+                "checkRefs": [
+                  "CHECK-6"
+                ]
+              }
+            ],
+            "modelReason": "The native Quality Assurance Codex gpt-6-sol pin provides same-family cross-model independence from Security Remediation Codex gpt-6-astra; manual checks remain prerequisite user-owned work.",
+            "tokenAssumptions": [
+              "20000 tokens estimates independent final command validation and evidence reconciliation, not observed usage.",
+              "Explicit phaseIndex 7 is required because the dependency closure includes user-owned executable items.",
+              "Four human-engineer hours estimate this final verification item only; failed gates remain unresolved rather than being replaced with estimates."
+            ]
+          }
+        ]
+      },
+      "taskRequirements": {
+        "scope": [
+          "Original execution and conversation owner remains AXM-708 / 4efa3315-df53-4a8b-a935-fbc7ba0bacac in project b7ee50ee-2ea6-4719-a57a-f8237f0d75ea; construction items are decomposition within that mission, not replacement tickets.",
+          "Upgrade only proxy-addr 2.0.7 to 2.0.8 for CVE-2026-90711 / GHSA-jqcg-44mw-7w3h in truxt-ai/ops-dashboard. Retain the other 49 findings explicitly open.",
+          "Preserve application trust proxy disabled, application behavior, existing assertions, unrelated dependencies and CI. No merge, deployment, runtime restart, external service change or test suppression.",
+          "Prefer binding PR106 and retaining its existing four-test filename. A separate candidate requires the documented workflow necessity; a fixed-minimum manifest override requires the existing documented justification.",
+          "Source title, description, project and attachments are frozen. Publish the six-row report as a task comment and native evidence linking externally durable proof; do not edit frozen fields or add task attachments.",
+          "Raunak Poonia, userId 4719b0b0-2b2b-48e8-b7e4-d5fef638d4c4, is the authoritative verified Backend admin owner for manual CHECK-4, CHECK-7 and user publication. Membership evidence is retained at qa-delivery/workspace-members.json. Assignment is not evidence of actual review."
+        ],
+        "approach": "Use the approved six units in dependency order: capture fresh baseline and scan provenance; establish four evidence-backed fixtures and vulnerable assertion failures; apply the bounded upgrade and validate identical fixtures, lint and the full suite; bind the candidate and exact-head hosted CI; compare complete live scans; publish durable evidence and actual usage. Manual checks remain user-owned. Independent QA runs after every earlier executable item, with explicit phaseIndex 7. Baseline is dff02375d83394d6f03ce2127e35e62fadc269ab. Historical PR106 and AXM-707 evidence never substitutes for fresh execution. Raw intake lineage remains artifact 1b95c008-e42b-4c2f-996d-e31b27f03ded, digest 447d95d8213e911eba31f3c8d33da6f3c24a1d3bed166bc1342db293ca1c8902; normalized requirements remain ef4282d6-ff89-429e-ae67-2408943ef865, digest 101b7c3b4c82f93fbf69749c8618c2f041ca36b33af80ed72059306d200727e7. Stories remain 51d14a19-cf2e-40c3-8560-586142c39d9e, digest 8749c53b2c7a5d7759da8d0ca8513a6c4260090cec14647498acc56296cf9432; design remains 3910fa7a-f24e-41ef-857a-45d0fe3b6f55, digest 72cdce49b59050ccd58fe8d4dddb44bcf1a1dae808986de19fc5524bb24ffd52. Original input digest remains 6865d0365b4aa6fc4b7391f63024a268d7d3acb01d7405c2131c015f5e62729d.",
+        "acceptanceCriteria": [
+          "Fresh baseline output shows 49 passing tests before changes. HTTP cases verify GET `/` returns 200 with the expected service rows and UTC freshness display; `/health/live` returns 200 without upstream calls during healthy, failing and pending probes; `/health/ready` returns 200 on success and 503 for HTTP failure, connection error and timeout, then returns 200 after recovery. `/health/upstream` preserves success status and its 502/error response on failure. Preserve all existing metrics, promo-code and security-floor cases.",
+          "Four named fixtures document the advisory precondition and independent expected results. Security cases S1 and S2 each demonstrate the advisory's incorrect trust decision with a failed security assertion on 2.0.7; controls C1 and C2 exercise legitimate trusted and untrusted decisions and pass on both versions. All four unchanged assertions pass on 2.0.8. Exact attack inputs must be grounded in the advisory/reference evidence before implementation; they are not invented in this plan.",
+          "Inspect installed and locked proxy-addr versions and the final diff; only the selected dependency is upgraded. Lint succeeds and the complete suite reports 53 passing cases, with zero failures, skips or exclusions. Confirm existing tests and CI were not suppressed or weakened.",
+          "Verify the chosen PR is scoped, open and unmerged; capture its final head SHA and hosted CI URLs. Check that successful CI is attached to that exact SHA. If the head changes, refresh affected proof and CI before completion. Document whether PR106 was reused or a separate workflow-required candidate references it.",
+          "Preserve both OSV 2.6.0 raw reports, commands, scan timestamps, settings and revision identities. Compare the complete finding sets: the target CVE/GHSA alias group is absent at the final head, additions are empty, and the remaining inventory is explicitly listed with the expected 49 findings still open. Failed API calls or incomplete scans cannot satisfy this criterion.",
+          "Review the six-row report and follow every proof link. Verify logs contain actual commands/results and test counts; PR, CI, SHA and scans identify the same final candidate. Verify proof survives `.axiom` cleanup through attachments or an external location. Usage distinguishes actual fresh input/output tokens and cost from estimates and separately identifies planning usage."
+        ],
+        "testCases": [
+          {
+            "id": "TC-1",
+            "procedure": "CHECK-1: At the named baseline under Node 20, run npm ci and npm test before fixture or dependency changes. Preserve commands, revision, tool versions and full output. Review dashboard rendering, UTC freshness, independent liveness, readiness HTTP/connection/timeout failures and recovery, legacy upstream responses, metrics, promo-code and security-floor coverage.",
+            "expectedResult": "49 original cases pass without exclusions; the 2000 ms timeout and existing application behavior remain covered.",
+            "criterionIndexes": [
+              0
+            ]
+          },
+          {
+            "id": "TC-2",
+            "procedure": "CHECK-2: Verify advisory/reference provenance and the proxy-addr copy resolved by Express. Run the four sourced fixtures on 2.0.7 using PR106's existing filename when bound; otherwise use the approved proposed test/proxy-addr.test.js. Record fixture bytes, digest, exact inputs, trust configuration and independent expectations.",
+            "expectedResult": "S1 and S2 fail their intended security assertions; C1 and C2 pass. Setup or infrastructure failures do not qualify, and production trust proxy remains disabled.",
+            "criterionIndexes": [
+              1
+            ]
+          },
+          {
+            "id": "TC-3",
+            "procedure": "CHECK-3: At the exact fixed candidate under Node 20, verify installed and locked proxy-addr 2.0.8 including Express resolution. Run identical fixture bytes, npm run lint and npm test; retain SHA, commands and complete output.",
+            "expectedResult": "Four unchanged regressions pass, lint succeeds and the full suite records 53 passes with zero failures, skips or exclusions.",
+            "criterionIndexes": [
+              1,
+              2
+            ]
+          },
+          {
+            "id": "TC-4",
+            "procedure": "CHECK-4: Raunak Poonia actually reviews the complete baseline-to-final diff, all dependency versions, fixture equivalence, production trust settings, existing overrides, tests and CI. Record any necessary fixed-minimum manifest override's existing documented justification and the actual reviewer identity.",
+            "expectedResult": "Only proxy-addr changes version, four meaningful fixtures are retained, application trust stays disabled, and unrelated dependencies, behavior, tests and CI remain unchanged. No personal review is inferred from assignment.",
+            "criterionIndexes": [
+              2
+            ]
+          },
+          {
+            "id": "TC-5",
+            "procedure": "CHECK-5: Verify PR106 binding or the documented workflow requirement for one scoped replacement candidate referencing PR106. Capture open/unmerged status, actual diff, final head and hosted CI run URLs with matching SHA. Refresh affected proof after any head movement.",
+            "expectedResult": "One scoped open, unmerged PR has fresh successful hosted CI on its exact final head; reference results remain separately identified.",
+            "criterionIndexes": [
+              3
+            ]
+          },
+          {
+            "id": "TC-6",
+            "procedure": "CHECK-6: Capture complete baseline and exact-head OSV 2.6.0 scans using comparable all-package, no-ignore, live-API settings. Preserve reports, commands, timestamps, versions and revisions. Compare every package/version occurrence and advisory alias group, retaining additions, removals and unchanged findings.",
+            "expectedResult": "The selected CVE/GHSA alias group is absent, additions are empty and the other 49 findings are explicitly listed as open. Drift is explained; incomplete scans, failed APIs or unresolved discrepancies do not pass.",
+            "criterionIndexes": [
+              4
+            ]
+          },
+          {
+            "id": "TC-7",
+            "procedure": "CHECK-7: Raunak Poonia publishes and actually reviews the six-row report as an original-task comment and native evidence with external durable proof links. Follow every link, reconcile candidate SHA across tests/CI/scans and inspect actual input/output tokens and cost, including separate planning usage. Preserve actual review attribution.",
+            "expectedResult": "Existing tests, Security regression, Full suite, CI, Rescan and Usage link complete accessible proof with distinct evidence origins and actual accounting. Proof survives .axiom cleanup. Frozen source fields and attachment inventory are unchanged. Missing evidence or usage remains a completion gap.",
+            "criterionIndexes": [
+              5
+            ]
+          }
+        ],
+        "verificationStrategy": "Retain approved CHECK-1 through CHECK-7 lineage and all canonical criteria 0 through 5. Checks 1, 2, 3, 5 and 6 are command-based; checks 4 and 7 require actual user-owned review. Execute fresh proof rather than reporting reference results as new. Independently validate the final head with Quality Assurance on Codex gpt-6-sol, distinct from the Security Remediation Codex gpt-6-astra runtime. Bind every result to its actual revision, fixture digest where relevant, tool versions, command, timestamp, exit status and durable location. Preserve failed results honestly. Completion requires all checks, user publication and actual accounting; no gate is marked complete by this plan."
+      },
+      "summary": "Construction plan for original AXM-708 task 4efa3315-df53-4a8b-a935-fbc7ba0bacac: remediate only proxy-addr 2.0.7 to 2.0.8, preserve application compatibility, and deliver fresh durable proof with an open, unmerged PR. The six story parents have empty dependencies. The final independent test task explicitly uses phase test_run and phaseIndex 7 and depends on all twelve earlier executable items, including user-owned checks. Approved requirements, stories and design remain authoritative. Native execution routing remains Security Remediation 1be3dfa3-1e60-490c-921c-4bf25551fa2f, Codex gpt-6-astra, and independent Quality Assurance 4aba4e7a-4e42-4171-a206-c05ceb370dd7, Codex gpt-6-sol. Estimates do not override these pins or represent actual usage. No execution, personal review, completed gate or server acceptance is claimed.",
+      "items": [
+        {
+          "key": "baseline-compatibility",
+          "kind": "story",
+          "requirementRefs": [
+            "FR-1",
+            "NFR-2",
+            "NFR-3"
+          ],
+          "storyRefs": [
+            "US-1"
+          ],
+          "designRefs": [
+            "UoW-1"
+          ],
+          "researchRefs": [
+            "R-1",
+            "R-2",
+            "R-3",
+            "R-4",
+            "R-5",
+            "R-6",
+            "R-7",
+            "R-8",
+            "R-9"
+          ],
+          "title": "Establish baseline compatibility",
+          "description": "The developer can distinguish existing application behavior from remediation effects.\n\n## For the agent\nUS-1 organizes UoW-1 baseline evidence for FR-1, NFR-2 and NFR-3 using the five existing test files and application behavior described in the approved design.",
+          "acceptanceCriteria": [
+            "Fresh evidence records 49 original passing tests at the named baseline before changes, including all approved HTTP compatibility cases."
+          ],
+          "estimate": {
+            "points": null,
+            "hours": null,
+            "tokens": null
+          },
+          "dependsOn": [],
+          "priority": "high"
+        },
+        {
+          "key": "capture-baseline",
+          "kind": "task",
+          "parentKey": "baseline-compatibility",
+          "requirementRefs": [
+            "FR-1",
+            "FR-5",
+            "NFR-2",
+            "NFR-3"
+          ],
+          "storyRefs": [
+            "US-1",
+            "US-5"
+          ],
+          "designRefs": [
+            "UoW-1",
+            "package.json",
+            "package-lock.json",
+            "src/server.js",
+            "test/health.test.js",
+            "test/health-freshness.test.js",
+            "test/service-health.test.js",
+            "test/promo-codes.test.js",
+            "test/smoke.test.js",
+            ".github/workflows/ci.yml"
+          ],
+          "researchRefs": [
+            "R-1",
+            "R-2",
+            "R-3",
+            "R-4",
+            "R-5",
+            "R-6",
+            "R-7",
+            "R-8",
+            "R-9"
+          ],
+          "title": "Capture fresh baseline tests and scan provenance",
+          "description": "Reviewers receive a reproducible record of application behavior before the change.\n\n## For the agent\nUoW-1; US-1 and US-5; FR-1, FR-5, NFR-2 and NFR-3. Fold acceptance setup into this small implementation item. During execution inspect package.json, package-lock.json, src/server.js, the five existing test files and unchanged CI. At dff02375d83394d6f03ce2127e35e62fadc269ab under Node 20 run the original suite before changes and capture a complete live OSV 2.6.0 baseline scan. Establish external durable evidence provenance.",
+          "acceptanceCriteria": [
+            "Fresh baseline output records 49 passing original tests, commands, revision and tool versions, including dashboard, health failure/recovery, metrics, promo-code and security-floor cases.",
+            "A complete baseline OSV 2.6.0 raw report records all-package, no-ignore, live-API settings, timestamps, commands and revision for later complete comparison."
+          ],
+          "estimate": {
+            "points": 2,
+            "hours": 4,
+            "tokens": 12000,
+            "tokenBucket": {
+              "bucket": "lt_50k",
+              "source": "rules",
+              "confidence": null
+            }
+          },
+          "phase": "implement",
+          "phaseIndex": 1,
+          "execution": {
+            "harness": "codex",
+            "model": "gpt-6-astra",
+            "effort": "high"
+          },
+          "verificationRisk": {
+            "level": "high",
+            "source": "jev",
+            "confidence": 0.83
+          },
+          "modelSuggestion": {
+            "harness": "codex",
+            "model": "gpt-6-luna",
+            "effort": "low",
+            "source": "jev",
+            "confidence": 0.54,
+            "difficulty": 0.48,
+            "reason": "Difficulty 0.48 (estimated, confidence 0.54); lowest known price among 120/120 qualifying pairs: gpt-6-luna \u00b7 low (codex), capability 0.84, 0.26 USD/Mtok blended (models.dev)."
+          },
+          "dependsOn": [],
+          "assignee": {
+            "kind": "squad",
+            "squadId": "2f2a9648-fd76-497d-9cb1-6274e724e1d1"
+          },
+          "priority": "high"
+        },
+        {
+          "key": "review-baseline",
+          "kind": "task",
+          "parentKey": "baseline-compatibility",
+          "requirementRefs": [
+            "FR-1",
+            "FR-5",
+            "NFR-2",
+            "NFR-3"
+          ],
+          "storyRefs": [
+            "US-1",
+            "US-5"
+          ],
+          "designRefs": [
+            "UoW-1"
+          ],
+          "researchRefs": [
+            "R-1",
+            "R-2",
+            "R-3",
+            "R-4",
+            "R-5",
+            "R-6",
+            "R-7",
+            "R-8",
+            "R-9"
+          ],
+          "title": "Independently review baseline evidence",
+          "description": "Reviewers know the starting evidence is fresh and complete.\n\n## For the agent\nUoW-1; US-1 and US-5; FR-1, FR-5, NFR-2 and NFR-3. Independently verify CHECK-1 and the baseline portion of CHECK-6 against the original test and dependency files. Confirm evidence predates modifications and contains actual results rather than static counts or historical proof.",
+          "acceptanceCriteria": [
+            "Independent review verifies the fresh 49-pass baseline, full approved compatibility coverage and immutable baseline revision without excluded or weakened tests.",
+            "Baseline scan evidence is complete and records comparable settings and provenance; missing live API results remain an unresolved gate."
+          ],
+          "estimate": {
+            "points": 1,
+            "hours": 2,
+            "tokens": 6000,
+            "tokenBucket": {
+              "bucket": "lt_50k",
+              "source": "rules",
+              "confidence": null
+            }
+          },
+          "phase": "review",
+          "phaseIndex": 1,
+          "execution": {
+            "harness": "codex",
+            "model": "gpt-6-sol",
+            "effort": "high"
+          },
+          "verificationRisk": {
+            "level": "high",
+            "source": "jev",
+            "confidence": 0.83
+          },
+          "modelSuggestion": {
+            "harness": "codex",
+            "model": "gpt-6-luna",
+            "effort": "low",
+            "source": "jev",
+            "confidence": 0.37,
+            "difficulty": 0.46,
+            "reason": "Difficulty 0.46 (estimated, confidence 0.37); lowest known price among 120/120 qualifying pairs: gpt-6-luna \u00b7 low (codex), capability 0.84, 0.26 USD/Mtok blended (models.dev)."
+          },
+          "dependsOn": [
+            "capture-baseline"
+          ],
+          "assignee": {
+            "kind": "agent",
+            "agentId": "4aba4e7a-4e42-4171-a206-c05ceb370dd7"
+          },
+          "priority": "high"
+        },
+        {
+          "key": "security-regression",
+          "kind": "story",
+          "requirementRefs": [
+            "FR-2",
+            "NFR-1",
+            "NFR-3"
+          ],
+          "storyRefs": [
+            "US-2"
+          ],
+          "designRefs": [
+            "UoW-2"
+          ],
+          "researchRefs": [
+            "R-1",
+            "R-2",
+            "R-3",
+            "R-10",
+            "R-11"
+          ],
+          "title": "Reproduce the dependency security regression",
+          "description": "The developer can distinguish unsafe trust decisions from legitimate controls.\n\n## For the agent\nUS-2; UoW-2; FR-2, NFR-1 and NFR-3. Establish four sourced fixtures with isolated advisory-precondition trust configuration and preserve their exact bytes for fixed-version validation.",
+          "acceptanceCriteria": [
+            "Two intended security assertions fail on 2.0.7 while two safe controls pass, with documented independent expectations and no production trust change."
+          ],
+          "estimate": {
+            "points": null,
+            "hours": null,
+            "tokens": null
+          },
+          "dependsOn": [],
+          "priority": "high"
+        },
+        {
+          "key": "prove-vulnerable-regressions",
+          "kind": "task",
+          "parentKey": "security-regression",
+          "requirementRefs": [
+            "FR-2",
+            "NFR-1",
+            "NFR-3"
+          ],
+          "storyRefs": [
+            "US-2"
+          ],
+          "designRefs": [
+            "UoW-2",
+            "test/proxy-addr.test.js",
+            "package.json",
+            "package-lock.json",
+            "src/server.js"
+          ],
+          "researchRefs": [
+            "R-1",
+            "R-2",
+            "R-3",
+            "R-10",
+            "R-11"
+          ],
+          "title": "Write and prove the four vulnerable-version fixtures",
+          "description": "Reviewers receive direct evidence that the regression tests detect the selected defect.\n\n## For the agent\nUoW-2; US-2; FR-2, NFR-1 and NFR-3. Verify advisory, release and reference evidence during execution. Reuse PR106's four-test filename when bindable; otherwise use proposed test/proxy-addr.test.js. Record Express module resolution, fixture origins, trust settings, inputs, independent expectations and digest. Run against baseline proxy-addr 2.0.7 without changing application trust settings.",
+          "acceptanceCriteria": [
+            "Exactly S1 and S2 fail intended security assertions on 2.0.7 and C1/C2 pass; fixture provenance and bytes are preserved, infrastructure failures are excluded as proof, and application trust proxy stays disabled."
+          ],
+          "estimate": {
+            "points": 3,
+            "hours": 8,
+            "tokens": 24000,
+            "tokenBucket": {
+              "bucket": "lt_50k",
+              "source": "rules",
+              "confidence": null
+            }
+          },
+          "phase": "write_tests",
+          "phaseIndex": 2,
+          "execution": {
+            "harness": "codex",
+            "model": "gpt-6-astra",
+            "effort": "high"
+          },
+          "verificationRisk": {
+            "level": "high",
+            "source": "jev",
+            "confidence": 0.91
+          },
+          "modelSuggestion": {
+            "harness": "codex",
+            "model": "gpt-6-luna",
+            "effort": "low",
+            "source": "jev",
+            "confidence": 0.71,
+            "difficulty": 0.55,
+            "reason": "Difficulty 0.55 (estimated, confidence 0.71); lowest known price among 120/120 qualifying pairs: gpt-6-luna \u00b7 low (codex), capability 0.84, 0.26 USD/Mtok blended (models.dev)."
+          },
+          "dependsOn": [
+            "review-baseline"
+          ],
+          "assignee": {
+            "kind": "squad",
+            "squadId": "2f2a9648-fd76-497d-9cb1-6274e724e1d1"
+          },
+          "priority": "high"
+        },
+        {
+          "key": "review-vulnerable-regressions",
+          "kind": "task",
+          "parentKey": "security-regression",
+          "requirementRefs": [
+            "FR-2",
+            "NFR-1",
+            "NFR-3"
+          ],
+          "storyRefs": [
+            "US-2"
+          ],
+          "designRefs": [
+            "UoW-2",
+            "test/proxy-addr.test.js",
+            "src/server.js"
+          ],
+          "researchRefs": [
+            "R-1",
+            "R-2",
+            "R-3",
+            "R-10",
+            "R-11"
+          ],
+          "title": "Independently verify vulnerable assertion failures",
+          "description": "Reviewers can trust that the red tests demonstrate the intended defect.\n\n## For the agent\nUoW-2; US-2; FR-2, NFR-1 and NFR-3. Apply CHECK-2 independently to the actual fixture file, recorded sources and Express-resolved dependency. Reject self-derived expectations, setup failures, expected-failure wrappers and claims of current application exploitability.",
+          "acceptanceCriteria": [
+            "Independent command evidence confirms two intended assertion failures and two passing safe controls on 2.0.7, with sourced inputs, isolated trust configuration and a recorded fixture digest for unchanged fixed-version validation."
+          ],
+          "estimate": {
+            "points": 2,
+            "hours": 4,
+            "tokens": 10000,
+            "tokenBucket": {
+              "bucket": "lt_50k",
+              "source": "rules",
+              "confidence": null
+            }
+          },
+          "phase": "review",
+          "phaseIndex": 2,
+          "execution": {
+            "harness": "codex",
+            "model": "gpt-6-sol",
+            "effort": "high"
+          },
+          "verificationRisk": {
+            "level": "high",
+            "source": "jev",
+            "confidence": 0.91
+          },
+          "modelSuggestion": {
+            "harness": "codex",
+            "model": "gpt-6-luna",
+            "effort": "low",
+            "source": "jev",
+            "confidence": 0.37,
+            "difficulty": 0.53,
+            "reason": "Difficulty 0.53 (estimated, confidence 0.37); lowest known price among 120/120 qualifying pairs: gpt-6-luna \u00b7 low (codex), capability 0.84, 0.26 USD/Mtok blended (models.dev)."
+          },
+          "dependsOn": [
+            "prove-vulnerable-regressions"
+          ],
+          "assignee": {
+            "kind": "agent",
+            "agentId": "4aba4e7a-4e42-4171-a206-c05ceb370dd7"
+          },
+          "priority": "high"
+        },
+        {
+          "key": "scoped-remediation",
+          "kind": "story",
+          "requirementRefs": [
+            "FR-2",
+            "FR-3",
+            "NFR-1",
+            "NFR-2",
+            "NFR-3"
+          ],
+          "storyRefs": [
+            "US-3"
+          ],
+          "designRefs": [
+            "UoW-3"
+          ],
+          "researchRefs": [
+            "R-1",
+            "R-2",
+            "R-3",
+            "R-4",
+            "R-5",
+            "R-6",
+            "R-7",
+            "R-8",
+            "R-9"
+          ],
+          "title": "Apply the scoped fix and preserve application behavior",
+          "description": "Dashboard users retain existing behavior with the selected dependency remediated.\n\n## For the agent\nUS-3; UoW-3; FR-2, FR-3, NFR-1, NFR-2 and NFR-3. Upgrade only proxy-addr, preserve the same four regression assertions and validate lint plus the complete suite.",
+          "acceptanceCriteria": [
+            "Installed and locked proxy-addr is 2.0.8, all four unchanged regressions and all 53 suite cases pass, lint succeeds and scope review confirms no unrelated changes."
+          ],
+          "estimate": {
+            "points": null,
+            "hours": null,
+            "tokens": null
+          },
+          "dependsOn": [],
+          "priority": "high"
+        },
+        {
+          "key": "apply-scoped-upgrade",
+          "kind": "task",
+          "parentKey": "scoped-remediation",
+          "requirementRefs": [
+            "FR-2",
+            "FR-3",
+            "NFR-1",
+            "NFR-2",
+            "NFR-3"
+          ],
+          "storyRefs": [
+            "US-3"
+          ],
+          "designRefs": [
+            "UoW-3",
+            "package.json",
+            "package-lock.json",
+            "test/proxy-addr.test.js",
+            "src/server.js",
+            ".github/workflows/ci.yml"
+          ],
+          "researchRefs": [
+            "R-1",
+            "R-2",
+            "R-3",
+            "R-4",
+            "R-5",
+            "R-6",
+            "R-7",
+            "R-8",
+            "R-9"
+          ],
+          "title": "Upgrade only proxy-addr and validate the fixed candidate",
+          "description": "Dashboard users receive the bounded fix with compatibility evidence.\n\n## For the agent\nUoW-3; US-3; FR-2, FR-3, NFR-1, NFR-2 and NFR-3. Update package-lock.json to proxy-addr 2.0.8, retaining the reviewed four fixtures. Any package.json fixed-minimum override requires the existing documented justification. Reuse the bindable PR106 candidate and its existing filename. Preserve src/server.js, existing tests, overrides and CI. Run CHECK-3 under Node 20 and retain actual candidate identity.",
+          "acceptanceCriteria": [
+            "Installed and locked proxy-addr including Express resolution is 2.0.8; the identical four regressions pass, lint succeeds and all 53 tests pass with zero failures, skips or exclusions, preserving approved application compatibility."
+          ],
+          "estimate": {
+            "points": 2,
+            "hours": 4,
+            "tokens": 16000,
+            "tokenBucket": {
+              "bucket": "lt_50k",
+              "source": "rules",
+              "confidence": null
+            }
+          },
+          "phase": "implement",
+          "phaseIndex": 3,
+          "execution": {
+            "harness": "codex",
+            "model": "gpt-6-astra",
+            "effort": "high"
+          },
+          "verificationRisk": {
+            "level": "high",
+            "source": "jev",
+            "confidence": 0.91
+          },
+          "modelSuggestion": {
+            "harness": "codex",
+            "model": "gpt-6-luna",
+            "effort": "low",
+            "source": "jev",
+            "confidence": 0.39,
+            "difficulty": 0.46,
+            "reason": "Difficulty 0.46 (estimated, confidence 0.39); lowest known price among 120/120 qualifying pairs: gpt-6-luna \u00b7 low (codex), capability 0.84, 0.26 USD/Mtok blended (models.dev)."
+          },
+          "dependsOn": [
+            "review-vulnerable-regressions"
+          ],
+          "assignee": {
+            "kind": "squad",
+            "squadId": "2f2a9648-fd76-497d-9cb1-6274e724e1d1"
+          },
+          "priority": "high"
+        },
+        {
+          "key": "manual-scope-review",
+          "kind": "task",
+          "parentKey": "scoped-remediation",
+          "requirementRefs": [
+            "FR-3",
+            "NFR-1",
+            "NFR-2",
+            "NFR-3"
+          ],
+          "storyRefs": [
+            "US-3"
+          ],
+          "designRefs": [
+            "UoW-3",
+            "package.json",
+            "package-lock.json",
+            "src/server.js",
+            "test/proxy-addr.test.js",
+            ".github/workflows/ci.yml"
+          ],
+          "researchRefs": [
+            "R-1",
+            "R-2",
+            "R-3",
+            "R-4",
+            "R-5",
+            "R-6",
+            "R-7",
+            "R-8",
+            "R-9"
+          ],
+          "title": "Record Raunak's actual scope review",
+          "description": "Reviewers receive an attributable human assessment of the change boundary.\n\n## For the agent\nUoW-3; US-3; FR-3, NFR-1, NFR-2 and NFR-3. CHECK-4 belongs to Raunak Poonia, verified Backend admin user 4719b0b0-2b2b-48e8-b7e4-d5fef638d4c4. Review the complete dependency and source diff, unchanged fixture bytes, production trust settings, existing tests, overrides and CI. Record existing justification for any necessary fixed-minimum manifest override. Membership evidence at qa-delivery/workspace-members.json establishes ownership, not completed review.",
+          "acceptanceCriteria": [
+            "Raunak's actual attributable review confirms only proxy-addr changes version, regression assertions are unchanged, production trust proxy remains disabled, existing behavior/tests/CI are preserved and any manifest override has the required documented justification."
+          ],
+          "estimate": {
+            "points": 1,
+            "hours": 2,
+            "tokens": null
+          },
+          "phase": "review",
+          "phaseIndex": 3,
+          "dependsOn": [
+            "apply-scoped-upgrade"
+          ],
+          "assignee": {
+            "kind": "user",
+            "userId": "4719b0b0-2b2b-48e8-b7e4-d5fef638d4c4"
+          },
+          "priority": "high"
+        },
+        {
+          "key": "exact-head-delivery",
+          "kind": "story",
+          "requirementRefs": [
+            "FR-4",
+            "NFR-3"
+          ],
+          "storyRefs": [
+            "US-4"
+          ],
+          "designRefs": [
+            "UoW-4"
+          ],
+          "researchRefs": [
+            "R-9",
+            "R-10",
+            "R-11"
+          ],
+          "title": "Deliver an open PR with exact-head CI",
+          "description": "Reviewers can inspect the same candidate that passed hosted validation.\n\n## For the agent\nUS-4; UoW-4; FR-4 and NFR-3. Prefer binding PR106, otherwise document the workflow-required separate candidate referencing it; preserve exact-head proof and open/unmerged status.",
+          "acceptanceCriteria": [
+            "One scoped open, unmerged PR has fresh passing hosted CI attached to its recorded final SHA, with reference evidence distinguished from new execution."
+          ],
+          "estimate": {
+            "points": null,
+            "hours": null,
+            "tokens": null
+          },
+          "dependsOn": [],
+          "priority": "high"
+        },
+        {
+          "key": "bind-validated-pr",
+          "kind": "task",
+          "parentKey": "exact-head-delivery",
+          "requirementRefs": [
+            "FR-4",
+            "NFR-3"
+          ],
+          "storyRefs": [
+            "US-4"
+          ],
+          "designRefs": [
+            "UoW-4",
+            ".github/workflows/ci.yml"
+          ],
+          "researchRefs": [
+            "R-9",
+            "R-10",
+            "R-11"
+          ],
+          "title": "Bind the validated PR and capture exact-head CI",
+          "description": "Reviewers receive a single scoped candidate with current hosted proof.\n\n## For the agent\nUoW-4; US-4; FR-4 and NFR-3. Fold CHECK-5 verification setup into this delivery item. Bind https://github.com/truxt-ai/ops-dashboard/pull/106 if supported, retaining its four-test filename. Otherwise document the workflow requirement for one scoped candidate referencing PR106. Preserve unchanged .github/workflows/ci.yml, record actual final head, refresh affected candidate proof and capture hosted CI URLs. Leave the PR open and unmerged.",
+          "acceptanceCriteria": [
+            "The bound scoped PR is open and unmerged with fresh passing hosted CI at the exact final SHA; reuse or workflow-required fallback is documented, historical evidence is labeled and any head change refreshes affected proof."
+          ],
+          "estimate": {
+            "points": 2,
+            "hours": 4,
+            "tokens": 10000,
+            "tokenBucket": {
+              "bucket": "lt_50k",
+              "source": "rules",
+              "confidence": null
+            }
+          },
+          "phase": "implement",
+          "phaseIndex": 4,
+          "execution": {
+            "harness": "codex",
+            "model": "gpt-6-astra",
+            "effort": "high"
+          },
+          "verificationRisk": {
+            "level": "high",
+            "source": "jev",
+            "confidence": 0.83
+          },
+          "modelSuggestion": {
+            "harness": "codex",
+            "model": "gpt-6-luna",
+            "effort": "low",
+            "source": "jev",
+            "confidence": 0.29,
+            "difficulty": 0.46,
+            "reason": "Difficulty 0.46 (estimated, confidence 0.29); lowest known price among 120/120 qualifying pairs: gpt-6-luna \u00b7 low (codex), capability 0.84, 0.26 USD/Mtok blended (models.dev)."
+          },
+          "dependsOn": [
+            "manual-scope-review"
+          ],
+          "assignee": {
+            "kind": "squad",
+            "squadId": "2f2a9648-fd76-497d-9cb1-6274e724e1d1"
+          },
+          "priority": "high"
+        },
+        {
+          "key": "review-pr-ci",
+          "kind": "task",
+          "parentKey": "exact-head-delivery",
+          "requirementRefs": [
+            "FR-4",
+            "NFR-3"
+          ],
+          "storyRefs": [
+            "US-4"
+          ],
+          "designRefs": [
+            "UoW-4",
+            ".github/workflows/ci.yml"
+          ],
+          "researchRefs": [
+            "R-9",
+            "R-10",
+            "R-11"
+          ],
+          "title": "Independently verify PR identity and hosted CI",
+          "description": "Reviewers know hosted checks validate the delivered revision.\n\n## For the agent\nUoW-4; US-4; FR-4 and NFR-3. Independently perform CHECK-5 using actual PR and hosted CI records, final SHA and unchanged CI configuration. Historical reference checks are not fresh execution; changed heads require refreshed proof.",
+          "acceptanceCriteria": [
+            "Independent evidence confirms scope, binding rationale, open/unmerged status and fresh successful hosted CI on the final exact SHA, with no merge, deployment or runtime restart."
+          ],
+          "estimate": {
+            "points": 1,
+            "hours": 2,
+            "tokens": 6000,
+            "tokenBucket": {
+              "bucket": "lt_50k",
+              "source": "rules",
+              "confidence": null
+            }
+          },
+          "phase": "review",
+          "phaseIndex": 4,
+          "execution": {
+            "harness": "codex",
+            "model": "gpt-6-sol",
+            "effort": "high"
+          },
+          "verificationRisk": {
+            "level": "high",
+            "source": "jev",
+            "confidence": 0.83
+          },
+          "modelSuggestion": {
+            "harness": "codex",
+            "model": "gpt-6-luna",
+            "effort": "low",
+            "source": "jev",
+            "confidence": 0.35,
+            "difficulty": 0.48,
+            "reason": "Difficulty 0.48 (estimated, confidence 0.35); lowest known price among 120/120 qualifying pairs: gpt-6-luna \u00b7 low (codex), capability 0.84, 0.26 USD/Mtok blended (models.dev)."
+          },
+          "dependsOn": [
+            "bind-validated-pr"
+          ],
+          "assignee": {
+            "kind": "agent",
+            "agentId": "4aba4e7a-4e42-4171-a206-c05ceb370dd7"
+          },
+          "priority": "high"
+        },
+        {
+          "key": "vulnerability-delta",
+          "kind": "story",
+          "requirementRefs": [
+            "FR-5",
+            "NFR-1",
+            "NFR-3"
+          ],
+          "storyRefs": [
+            "US-5"
+          ],
+          "designRefs": [
+            "UoW-1",
+            "UoW-5"
+          ],
+          "researchRefs": [
+            "R-1",
+            "R-2"
+          ],
+          "title": "Verify the complete vulnerability delta",
+          "description": "Reviewers can see the selected finding removed without hidden inventory changes.\n\n## For the agent\nUS-5; UoW-1 and UoW-5; FR-5, NFR-1 and NFR-3. Compare complete live OSV 2.6.0 baseline and final-head scans using package/version identities and advisory aliases.",
+          "acceptanceCriteria": [
+            "Complete comparable live scans show the selected alias group removed, zero additions and the other 49 findings explicitly retained as open."
+          ],
+          "estimate": {
+            "points": null,
+            "hours": null,
+            "tokens": null
+          },
+          "dependsOn": [],
+          "priority": "high"
+        },
+        {
+          "key": "compare-live-scans",
+          "kind": "task",
+          "parentKey": "vulnerability-delta",
+          "requirementRefs": [
+            "FR-5",
+            "NFR-1",
+            "NFR-3"
+          ],
+          "storyRefs": [
+            "US-5"
+          ],
+          "designRefs": [
+            "UoW-5",
+            "package.json",
+            "package-lock.json"
+          ],
+          "researchRefs": [
+            "R-1",
+            "R-2"
+          ],
+          "title": "Capture final live scan and compare every finding",
+          "description": "Reviewers receive a complete account of the vulnerability change.\n\n## For the agent\nUoW-5; US-5; FR-5, NFR-1 and NFR-3. Fold comparison acceptance setup into this evidence item. Scan final-head package.json and package-lock.json with OSV 2.6.0, all packages, no ignores and the live API, matching baseline settings. Retain raw reports and compare all identities, aliases and occurrences. Explain live-data drift and refresh comparable scans if needed without expanding remediation.",
+          "acceptanceCriteria": [
+            "Complete comparable baseline and final-head reports, commands and full inventory comparison show the target CVE/GHSA group removed, no additions and the other 49 findings explicitly open; incomplete scans or unresolved discrepancies remain failing gates."
+          ],
+          "estimate": {
+            "points": 2,
+            "hours": 4,
+            "tokens": 12000,
+            "tokenBucket": {
+              "bucket": "lt_50k",
+              "source": "rules",
+              "confidence": null
+            }
+          },
+          "phase": "implement",
+          "phaseIndex": 5,
+          "execution": {
+            "harness": "codex",
+            "model": "gpt-6-astra",
+            "effort": "high"
+          },
+          "verificationRisk": {
+            "level": "high",
+            "source": "jev",
+            "confidence": 0.98
+          },
+          "modelSuggestion": {
+            "harness": "codex",
+            "model": "gpt-6-luna",
+            "effort": "low",
+            "source": "jev",
+            "confidence": 0.3,
+            "difficulty": 0.61,
+            "reason": "Difficulty 0.61 (estimated, confidence 0.30); lowest known price among 120/120 qualifying pairs: gpt-6-luna \u00b7 low (codex), capability 0.84, 0.26 USD/Mtok blended (models.dev)."
+          },
+          "dependsOn": [
+            "capture-baseline",
+            "review-pr-ci"
+          ],
+          "assignee": {
+            "kind": "squad",
+            "squadId": "2f2a9648-fd76-497d-9cb1-6274e724e1d1"
+          },
+          "priority": "high"
+        },
+        {
+          "key": "review-scan-delta",
+          "kind": "task",
+          "parentKey": "vulnerability-delta",
+          "requirementRefs": [
+            "FR-5",
+            "NFR-1",
+            "NFR-3"
+          ],
+          "storyRefs": [
+            "US-5"
+          ],
+          "designRefs": [
+            "UoW-5",
+            "package.json",
+            "package-lock.json"
+          ],
+          "researchRefs": [
+            "R-1",
+            "R-2"
+          ],
+          "title": "Independently verify the complete scan delta",
+          "description": "Reviewers can trust that no finding was hidden or silently added.\n\n## For the agent\nUoW-5; US-5; FR-5, NFR-1 and NFR-3. Independently perform CHECK-6 against both raw reports, settings, commands, revisions and full comparison. Verify package/version occurrence details and alias normalization rather than summary counts alone.",
+          "acceptanceCriteria": [
+            "Independent verification confirms complete live OSV 2.6.0 scans, selected-alias removal, zero additions and all remaining 49 findings explicitly open, with explained drift and no ignored or suppressed findings."
+          ],
+          "estimate": {
+            "points": 1,
+            "hours": 2,
+            "tokens": 8000,
+            "tokenBucket": {
+              "bucket": "lt_50k",
+              "source": "rules",
+              "confidence": null
+            }
+          },
+          "phase": "review",
+          "phaseIndex": 5,
+          "execution": {
+            "harness": "codex",
+            "model": "gpt-6-sol",
+            "effort": "high"
+          },
+          "verificationRisk": {
+            "level": "high",
+            "source": "jev",
+            "confidence": 0.98
+          },
+          "modelSuggestion": {
+            "harness": "codex",
+            "model": "gpt-6-luna",
+            "effort": "low",
+            "source": "jev",
+            "confidence": 0.46,
+            "difficulty": 0.59,
+            "reason": "Difficulty 0.59 (estimated, confidence 0.46); lowest known price among 120/120 qualifying pairs: gpt-6-luna \u00b7 low (codex), capability 0.84, 0.26 USD/Mtok blended (models.dev)."
+          },
+          "dependsOn": [
+            "compare-live-scans"
+          ],
+          "assignee": {
+            "kind": "agent",
+            "agentId": "4aba4e7a-4e42-4171-a206-c05ceb370dd7"
+          },
+          "priority": "high"
+        },
+        {
+          "key": "durable-qa-evidence",
+          "kind": "story",
+          "requirementRefs": [
+            "FR-6",
+            "NFR-3"
+          ],
+          "storyRefs": [
+            "US-6"
+          ],
+          "designRefs": [
+            "UoW-6"
+          ],
+          "researchRefs": [
+            "R-10",
+            "R-11"
+          ],
+          "title": "Preserve and publish reviewable QA evidence",
+          "description": "Reviewers can audit delivery after the execution workspace is cleaned.\n\n## For the agent\nUS-6; UoW-6; FR-6 and NFR-3. Publish the six-row report on the original task using a comment and native evidence linked to external durable proof. Preserve frozen source fields and attachments, truthful review attribution and actual usage distinct from estimates.",
+          "acceptanceCriteria": [
+            "The six-row report links complete durable proof, aligned final-head identities and actual usage with distinct evidence origins and separate planning accounting."
+          ],
+          "estimate": {
+            "points": null,
+            "hours": null,
+            "tokens": null
+          },
+          "dependsOn": [],
+          "priority": "high"
+        },
+        {
+          "key": "publish-durable-report",
+          "kind": "task",
+          "parentKey": "durable-qa-evidence",
+          "requirementRefs": [
+            "FR-6",
+            "NFR-3"
+          ],
+          "storyRefs": [
+            "US-6"
+          ],
+          "designRefs": [
+            "UoW-6"
+          ],
+          "researchRefs": [
+            "R-10",
+            "R-11"
+          ],
+          "title": "Publish the six-row report and external durable evidence",
+          "description": "Reviewers receive a concise report that remains usable after cleanup.\n\n## For the agent\nUoW-6; US-6; FR-6 and NFR-3. User publication belongs to Raunak Poonia. Fold report acceptance preparation into this item. Publish Existing tests, Security regression, Full suite, CI, Rescan and Usage as a task comment and native evidence under AXM-708, linking external durable logs, fixtures, counts, PR/CI URLs, final SHA, raw scans, complete comparison and actual usage. Do not edit frozen title, description, project or attachments, or add attachments. Clearly distinguish baseline, vulnerable, fixed and historical evidence; do not claim later final verification has occurred.",
+          "acceptanceCriteria": [
+            "The original-task comment and native evidence contain exactly the six requested report rows with externally durable proof links and actual input/output tokens and cost, separating planning usage and estimates while preserving all frozen fields and attachments."
+          ],
+          "estimate": {
+            "points": 1,
+            "hours": 2,
+            "tokens": null
+          },
+          "phase": "implement",
+          "phaseIndex": 6,
+          "dependsOn": [
+            "review-baseline",
+            "review-vulnerable-regressions",
+            "manual-scope-review",
+            "review-pr-ci",
+            "review-scan-delta"
+          ],
+          "assignee": {
+            "kind": "user",
+            "userId": "4719b0b0-2b2b-48e8-b7e4-d5fef638d4c4"
+          },
+          "priority": "high"
+        },
+        {
+          "key": "manual-evidence-usage-review",
+          "kind": "task",
+          "parentKey": "durable-qa-evidence",
+          "requirementRefs": [
+            "FR-6",
+            "NFR-3"
+          ],
+          "storyRefs": [
+            "US-6"
+          ],
+          "designRefs": [
+            "UoW-6"
+          ],
+          "researchRefs": [
+            "R-10",
+            "R-11"
+          ],
+          "title": "Record Raunak's actual evidence and usage review",
+          "description": "Reviewers receive an attributable assessment that the report can be audited.\n\n## For the agent\nUoW-6; US-6; FR-6 and NFR-3. CHECK-7 belongs to Raunak Poonia, verified Backend admin user 4719b0b0-2b2b-48e8-b7e4-d5fef638d4c4. Actually follow every durable proof link, reconcile final SHA across candidate tests, hosted CI and scans, and inspect actual usage including separate planning accounting. Attribute review to its actual performer; never infer personal approval from membership or assignment. Missing proof and accounting remain unresolved.",
+          "acceptanceCriteria": [
+            "Raunak's recorded actual review verifies all six rows, complete accessible external proof surviving .axiom cleanup, distinct evidence origins, consistent candidate SHA and actual token/cost accounting separate from the 50\u2013200k estimate and up-to-$10 planning allowance."
+          ],
+          "estimate": {
+            "points": 1,
+            "hours": 2,
+            "tokens": null
+          },
+          "phase": "review",
+          "phaseIndex": 6,
+          "dependsOn": [
+            "publish-durable-report"
+          ],
+          "assignee": {
+            "kind": "user",
+            "userId": "4719b0b0-2b2b-48e8-b7e4-d5fef638d4c4"
+          },
+          "priority": "high"
+        },
+        {
+          "key": "final-independent-test-run",
+          "kind": "task",
+          "parentKey": "durable-qa-evidence",
+          "requirementRefs": [
+            "FR-1",
+            "FR-2",
+            "FR-3",
+            "FR-4",
+            "FR-5",
+            "NFR-1",
+            "NFR-2",
+            "NFR-3"
+          ],
+          "storyRefs": [
+            "US-1",
+            "US-2",
+            "US-3",
+            "US-4",
+            "US-5",
+            "US-6"
+          ],
+          "designRefs": [
+            "UoW-1",
+            "UoW-2",
+            "UoW-3",
+            "UoW-4",
+            "UoW-5"
+          ],
+          "researchRefs": [
+            "R-1",
+            "R-2",
+            "R-3",
+            "R-4",
+            "R-5",
+            "R-6",
+            "R-7",
+            "R-8",
+            "R-9",
+            "R-10",
+            "R-11"
+          ],
+          "title": "Run final independent exact-head verification",
+          "description": "Reviewers receive independent confirmation that the delivered candidate satisfies the technical gates.\n\n## For the agent\nUoW-1 through UoW-5; US-1 through US-6; FR-1 through FR-5, NFR-1, NFR-2 and NFR-3. Quality Assurance uses Codex gpt-6-sol independently of the Security Remediation Codex gpt-6-astra runtime. Verify CHECK-1, CHECK-2, CHECK-3, CHECK-5 and CHECK-6 at their required revisions and independently run final-head regression, lint and complete-suite validation. Preserve final command evidence durably through the original mission's native evidence surface. This task depends on all earlier executable work, including manual CHECK-4/CHECK-7 and publication, but does not perform or impersonate those personal reviews. Head movement invalidates affected technical and human-review evidence; keep completion open until refreshed. Do not merge, deploy, restart, change external services or modify frozen source fields.",
+          "acceptanceCriteria": [
+            "Independent verification confirms fresh original-baseline evidence of 49 passing tests and all approved HTTP compatibility coverage before changes.",
+            "Independent verification confirms sourced vulnerable evidence with two intended security assertion failures and two passing controls on 2.0.7, preserving identical fixture bytes for fixed validation.",
+            "At the final exact head, independent commands verify proxy-addr 2.0.8, four unchanged passing regressions, successful lint and 53 passing suite cases with zero failures, skips or exclusions.",
+            "Independent delivery verification confirms the scoped candidate remains open and unmerged with fresh successful hosted CI on the same final SHA.",
+            "Independent complete-scan comparison verifies comparable live OSV 2.6.0 reports, selected-alias removal, zero additions and the other 49 findings explicitly open; incomplete or inconsistent proof prevents completion."
+          ],
+          "estimate": {
+            "points": 2,
+            "hours": 4,
+            "tokens": 20000,
+            "tokenBucket": {
+              "bucket": "lt_50k",
+              "source": "rules",
+              "confidence": null
+            }
+          },
+          "phase": "test_run",
+          "phaseIndex": 7,
+          "execution": {
+            "harness": "codex",
+            "model": "gpt-6-sol",
+            "effort": "high"
+          },
+          "verificationRisk": {
+            "level": "high",
+            "source": "rules",
+            "confidence": null
+          },
+          "modelSuggestion": {
+            "harness": "codex",
+            "model": "gpt-6-luna",
+            "effort": "low",
+            "source": "jev",
+            "confidence": 0.35,
+            "difficulty": 0.54,
+            "reason": "Difficulty 0.54 (estimated, confidence 0.35); lowest known price among 120/120 qualifying pairs: gpt-6-luna \u00b7 low (codex), capability 0.84, 0.26 USD/Mtok blended (models.dev)."
+          },
+          "dependsOn": [
+            "capture-baseline",
+            "review-baseline",
+            "prove-vulnerable-regressions",
+            "review-vulnerable-regressions",
+            "apply-scoped-upgrade",
+            "manual-scope-review",
+            "bind-validated-pr",
+            "review-pr-ci",
+            "compare-live-scans",
+            "review-scan-delta",
+            "publish-durable-report",
+            "manual-evidence-usage-review"
+          ],
+          "assignee": {
+            "kind": "agent",
+            "agentId": "4aba4e7a-4e42-4171-a206-c05ceb370dd7"
+          },
+          "priority": "high"
+        }
+      ],
+      "risks": [
+        "The earlier complete 19-item construction JSON is not present in the replayed context. This output reconstructs the requested 19-item structure from the supplied approved artifacts and correction instructions; byte-for-byte preservation of unspecified earlier fields cannot be verified.",
+        "The reviewer reports local schema, indexing and dependency-graph validation of the specified final-task correction. That report is not server acceptance or evidence that this reconstructed output was locally validated.",
+        "Advisory identity, fixed-version behavior, exact fixture inputs and reference provenance remain execution checks; unsupported fixtures or infrastructure errors cannot satisfy security reproduction.",
+        "PR head movement invalidates affected tests, CI, scans and human scope review; refreshed proof is required without adding backward dependencies to the final task.",
+        "Live OSV inventory drift, failed API calls, partial scans or unexplained differences prevent a passing scan gate. The other 49 findings remain open.",
+        "Missing durable links, actual review attribution or usage accounting prevents completion. No model estimate, membership record or historical reference result substitutes for observed evidence.",
+        "No new repository inspection or execution was performed for this correction. Repository grounding is inherited from the approved design and supplied daemon observations; this output supplies no checkoutObservation.",
+        "Source title, description, project and attachments remain frozen. The report must use a task comment and native evidence with external durable proof, without adding attachments."
+      ],
+      "openQuestions": []
+    },
+    "stageDocuments": [
+      {
+        "id": "1b95c008-e42b-4c2f-996d-e31b27f03ded",
+        "key": "intake",
+        "digest": "447d95d8213e911eba31f3c8d33da6f3c24a1d3bed166bc1342db293ca1c8902",
+        "markdown": "# Requirements\n\nCustomer evidence for requirements finalization; authorizes no execution.\n\n```text\nFix proxy-addr and verify application compatibility\n\nFix CVE-2026-90711 / GHSA-jqcg-44mw-7w3h in Ops Dashboard and prove application compatibility.\n\nScope: proxy-addr 2.0.7 \u2192 2.0.8, one critical finding. Repository truxt-ai/ops-dashboard, baseline dff02375d83394d6f03ce2127e35e62fadc269ab. Retain the other 49 findings as open. Developer: Raunak Poonia. Capacity estimate: 50\u2013200k fresh input/output tokens, up to $10 planning allowance; record actual usage separately.\n\nAcceptance evidence:\n1. Inspect the repository and existing tests. Run its existing 49 tests before changes, including HTTP integration checks for dashboard rendering, health/readiness, upstream failures and recovery.\n2. Add meaningful proxy trust regression cases. Demonstrate two assertion failures against 2.0.7 while safe controls pass; then upgrade only proxy-addr and demonstrate all four cases pass.\n3. Run lint and the full existing plus new test suite. No disabled tests, exclusions, unrelated upgrades or CI changes.\n4. Open a scoped PR and confirm hosted CI passes on its exact head. Keep the PR open and unmerged.\n5. Run comparable OSV 2.6.0 baseline and exact-head scans, with all packages, no ignores, and live OSV API. Preserve raw reports and compare all findings. The selected finding must disappear with no new findings; explicitly report any remaining findings.\n6. Publish a concise QA report and actual command logs, test counts, PR/CI links, commit SHA, scan comparison, tokens and cost. Evidence must be uploaded to Axiom task attachments or preserved outside .axiom before completion; .axiom is cleaned when the run ends.\n\nReference implementation and independently reproduced evidence: PR https://github.com/truxt-ai/ops-dashboard/pull/106 and task https://axiom-stage.truxt.ai/b560f8c8/backend/issues/AXM-707. Prefer validating the existing scoped PR106 candidate instead of opening a duplicate when the delivery workflow can bind that exact PR. Do not claim reference results as a new execution; rerun the required proof and record its origin. If the workflow requires a separate candidate branch, create one scoped PR and reference PR106.\n\nThe application leaves Express trust proxy disabled. Regression cases verify the dependency behavior under the advisory precondition; they do not establish current application exploitability. No merge, deployment, runtime restart, external service change or test suppression is authorized.\n\nReport format: one short result table for Existing tests, Security regression, Full suite, CI, Rescan and Usage, with links to complete proof. Keep operational prompts and intermediate logs out of the main description.\n```\n\n## Complete recorded intake answers (dimension, facet, question, answer)\n```text\n{\"answers\":[]}\n```\n\n## Contextual assessment\n```text\nNo consequential product decisions remain unresolved. Scope, first deliverable, compatibility evidence, delivery boundaries and reporting are specified. No destructive, money, authorization or personal-data changes are implicated by the bounded dependency update. Tests were not run during this read-only intake. PR106, its reference evidence and the live advisory were not accessed; their verification remains a research gap for execution, not a product question.\n```\n\n## Axiom's assumptions (not customer answers)\n```text\n{\"assumptions\":[{\"dimension\":\"scope\",\"facet\":\"bounded_remediation\",\"axiomAssumed\":\"Upgrade only proxy-addr from 2.0.7 to 2.0.8 and add the required regression proof. Leave the other 49 findings open. Do not change CI, suppress tests, merge, deploy, restart runtime services or change external services.\",\"basis\":\"request\",\"evidence\":\"\u201cproxy-addr 2.0.7 \u2192 2.0.8\u201d; \u201cRetain the other 49 findings as open\u201d; \u201cNo merge, deployment, runtime restart, external service change or test suppression is authorized.\u201d\"},{\"dimension\":\"behaviour\",\"facet\":\"proxy_trust_unchanged\",\"axiomAssumed\":\"Keep Express trust proxy disabled and preserve application behavior. Exercise the advisory precondition in regression tests without claiming current application exploitability.\",\"basis\":\"request\",\"evidence\":\"\u201cThe application leaves Express trust proxy disabled. Regression cases verify the dependency behavior under the advisory precondition\u201d\"},{\"dimension\":\"acceptance\",\"facet\":\"first_deliverable\",\"axiomAssumed\":\"Record a fresh run of the existing 49 tests at baseline dff02375d83394d6f03ce2127e35e62fadc269ab before changes, including HTTP compatibility checks; then prove two failing security assertions with safe controls passing on 2.0.7.\",\"basis\":\"request\",\"evidence\":\"Acceptance evidence 1\u20132: \u201cRun its existing 49 tests before changes\u201d; \u201cDemonstrate two assertion failures against 2.0.7 while safe controls pass\u201d\"},{\"dimension\":\"acceptance\",\"facet\":\"completion_evidence\",\"axiomAssumed\":\"Require four passing regression cases, lint and the full suite, hosted CI on the exact PR head, comparable live OSV 2.6.0 scans showing only the selected finding removed and no new findings, plus preserved logs and the requested six-row QA table with actual usage.\",\"basis\":\"request\",\"evidence\":\"Acceptance evidence 3\u20136; \u201cExisting tests, Security regression, Full suite, CI, Rescan and Usage\u201d; evidence preserved outside .axiom or in task attachments.\"},{\"dimension\":\"target\",\"facet\":\"candidate_delivery\",\"axiomAssumed\":\"Prefer PR106 if the delivery workflow can bind that exact PR; otherwise create one scoped candidate PR referencing PR106. Rerun all required proof, distinguish reference evidence from fresh execution, and leave the resulting PR open and unmerged.\",\"basis\":\"request\",\"evidence\":\"\u201cPrefer validating the existing scoped PR106 candidate\u201d; \u201cIf the workflow requires a separate candidate branch, create one scoped PR and reference PR106.\u201d\"}]}\n```\n",
+        "workflow": "truxt-deep-plan/v2",
+        "metadata": null,
+        "checkoutObservation": null
+      },
+      {
+        "id": "ef4282d6-ff89-429e-ae67-2408943ef865",
+        "key": "requirements",
+        "digest": "101b7c3b4c82f93fbf69749c8618c2f041ca36b33af80ed72059306d200727e7",
+        "markdown": "# Goal\nRemediate CVE-2026-90711 / GHSA-jqcg-44mw-7w3h in truxt-ai/ops-dashboard by upgrading only proxy-addr from 2.0.7 to 2.0.8, prove application compatibility and the dependency security regression with fresh evidence, and deliver an open, unmerged scoped PR with passing hosted CI and comparable vulnerability scans. Leave the other 49 findings open and preserve complete verification evidence under the original execution task.\n\n## Users and context\nThis is brownfield maintenance. Raunak Poonia is the named developer; dashboard users depend on unchanged rendering and health behavior, and delivery reviewers need reproducible security and compatibility evidence. The original execution and conversation owner remains task 4efa3315-df53-4a8b-a935-fbc7ba0bacac; this plan creates no replacement task.\n\nRead-only inspection confirmed HEAD dff02375d83394d6f03ce2127e35e62fadc269ab. Existing areas touched or verified are:\n- `package-lock.json`: resolves proxy-addr 2.0.7; Express declares `~2.0.7`. This is the dependency update area.\n- `package.json`: defines `npm test` as `node --test`, lint as `eslint .`, and existing dependency overrides. Any manifest change must be strictly necessary for this remediation.\n- `src/server.js`: Express application, dashboard, promo-code endpoint, liveness, readiness and upstream probe. No trust-proxy setting is present.\n- `test/health.test.js`, `test/health-freshness.test.js`, `test/service-health.test.js`, `test/promo-codes.test.js`, `test/smoke.test.js`: all five files were read. Their expanded cases total 49 by static inspection, not execution. They cover real local HTTP requests with mocked upstream calls, dashboard rendering, health recovery, metrics, promo codes and existing dependency security floors. New regression coverage belongs in `test/`; its filename is not yet selected.\n- `.github/workflows/ci.yml`: read and verified to use Node 20, `npm ci`, lint and tests on pushes and pull requests. It is a verification surface, not an authorized change area.\n- `README.md`: read for documented routes and development commands.\n\nNo tests, installations, scans or network requests were performed in this planning stage. PR106, AXM-707 and the live advisory were not accessed. No source attachments are listed in the supplied inventory; that inventory is not an attachment verification receipt.\n\n## Functional requirements\n1. **FR-1 \u2014 Baseline compatibility evidence.** Before changing dependencies, freshly run all 49 existing tests at baseline dff02375d83394d6f03ce2127e35e62fadc269ab. Preserve command output, revision, tool versions and test counts. The run must include dashboard HTTP rendering, liveness/readiness, upstream HTTP failures, connection errors, timeouts and recovery.\n2. **FR-2 \u2014 Security regression proof.** Add four meaningful proxy-trust cases exercising the verified advisory precondition: two security cases and two safe controls. Against 2.0.7, the security cases must fail their intended assertions while both controls pass; against 2.0.8, the same four cases must pass without weakening assertions. Record the trust configuration, inputs, expected outcomes and origin of each fixture. Infrastructure failures do not count as the required assertion failures.\n3. **FR-3 \u2014 Scoped upgrade and full validation.** Upgrade only proxy-addr from 2.0.7 to 2.0.8. Verify installed and locked versions and review the dependency diff for unrelated changes. Run lint and the full existing-plus-new suite successfully, with 49 existing and four new cases expected, no disabled or excluded tests, no unrelated upgrades and no CI changes.\n4. **FR-4 \u2014 Exact-head PR delivery.** Prefer validating https://github.com/truxt-ai/ops-dashboard/pull/106 when the delivery workflow can bind that exact PR. Otherwise create one scoped candidate PR referencing PR106. Rerun required proof, identify reference evidence separately from fresh execution, confirm hosted CI passes on the final PR head SHA, and leave the PR open and unmerged. Reference task: https://axiom-stage.truxt.ai/b560f8c8/backend/issues/AXM-707.\n5. **FR-5 \u2014 Comparable vulnerability verification.** Run OSV 2.6.0 against the baseline and final exact PR head using comparable configuration, all packages, no ignores and the live OSV API. Preserve raw reports and compare every finding, including package/version identities and advisory aliases. The selected finding must disappear, no new findings may appear, and all remaining findings must be explicitly reported. Retain the other 49 findings as open; any discrepancy from that expected inventory must be explained without silently changing scope or claiming completion.\n6. **FR-6 \u2014 Durable QA and usage report.** Publish one concise result table with rows Existing tests, Security regression, Full suite, CI, Rescan and Usage. Link complete actual command logs, test counts, PR and CI URLs, final commit SHA, scan reports and comparison, and actual token/cost accounting. Distinguish baseline, vulnerable regression, fixed candidate and reference evidence. Upload proof to Axiom task attachments or preserve it outside `.axiom` before completion. Keep operational prompts and intermediate logs out of the main description.\n\n### Observable acceptance criteria and test coverage\n`sourceTask.acceptanceCriteria` is null, so there are no explicit array entries to reproduce verbatim. The following zero-based canonical criteria normalize the six acceptance-evidence items in the approved intake.\n\n| Index | Requirement | Acceptance criterion and concrete verification cases |\n| --- | --- | --- |\n| 0 | FR-1 | Fresh baseline output shows 49 passing tests before changes. HTTP cases verify GET `/` returns 200 with the expected service rows and UTC freshness display; `/health/live` returns 200 without upstream calls during healthy, failing and pending probes; `/health/ready` returns 200 on success and 503 for HTTP failure, connection error and timeout, then returns 200 after recovery. `/health/upstream` preserves success status and its 502/error response on failure. Preserve all existing metrics, promo-code and security-floor cases. |\n| 1 | FR-2 | Four named fixtures document the advisory precondition and independent expected results. Security cases S1 and S2 each demonstrate the advisory's incorrect trust decision with a failed security assertion on 2.0.7; controls C1 and C2 exercise legitimate trusted and untrusted decisions and pass on both versions. All four unchanged assertions pass on 2.0.8. Exact attack inputs must be grounded in the advisory/reference evidence before implementation; they are not invented in this plan. |\n| 2 | FR-3 | Inspect installed and locked proxy-addr versions and the final diff; only the selected dependency is upgraded. Lint succeeds and the complete suite reports 53 passing cases, with zero failures, skips or exclusions. Confirm existing tests and CI were not suppressed or weakened. |\n| 3 | FR-4 | Verify the chosen PR is scoped, open and unmerged; capture its final head SHA and hosted CI URLs. Check that successful CI is attached to that exact SHA. If the head changes, refresh affected proof and CI before completion. Document whether PR106 was reused or a separate workflow-required candidate references it. |\n| 4 | FR-5 | Preserve both OSV 2.6.0 raw reports, commands, scan timestamps, settings and revision identities. Compare the complete finding sets: the target CVE/GHSA alias group is absent at the final head, additions are empty, and the remaining inventory is explicitly listed with the expected 49 findings still open. Failed API calls or incomplete scans cannot satisfy this criterion. |\n| 5 | FR-6 | Review the six-row report and follow every proof link. Verify logs contain actual commands/results and test counts; PR, CI, SHA and scans identify the same final candidate. Verify proof survives `.axiom` cleanup through attachments or an external location. Usage distinguishes actual fresh input/output tokens and cost from estimates and separately identifies planning usage. |\n\n## Non-functional requirements\n- **NFR-1 \u2014 Security integrity.** Keep application Express trust proxy disabled. Regression tests may enable the advisory precondition in an isolated fixture, but their results must not be represented as proof of current application exploitability. Preserve existing security-floor checks and do not remediate or suppress other findings.\n- **NFR-2 \u2014 Compatibility and reliability.** Preserve observable dashboard, metrics, promo-code and health behavior under the existing Node 20 CI configuration. Preserve the 2000 ms upstream timeout, liveness independence and recovery after upstream failures. Use existing controlled upstream test behavior; verification must not require changing external services.\n- **NFR-3 \u2014 Evidence operability.** Verification must be reproducible and attributable to exact revisions, commands and tool versions. Store readable raw evidence durably, identify reused reference material, and report missing or failed verification honestly rather than substituting historical results.\n\n## Constraints\n- Planning is read-only and authorizes no execution. Builds, tests, installations, network access and repository or ticket mutations are not part of this stage.\n- Execution scope is proxy-addr 2.0.7 \u2192 2.0.8, four meaningful regression cases and required delivery evidence. Preserve unrelated dependencies and CI.\n- No merge, deployment, runtime restart, external service change or test suppression is authorized.\n- The named baseline is immutable acceptance context; candidate evidence must identify the final exact PR head.\n- Capacity estimate: 50\u2013200k fresh input/output tokens, with up to $10 planning allowance. These are supplied estimates/limits, not observed usage. Actual usage must be recorded separately.\n- Checkout and source-attachment observations are runtime-owned evidence; this document does not manufacture either receipt.\n\n## Out of scope\nRemediation of the other 49 findings; enabling production trust proxy; application feature changes; broad dependency refreshes; CI changes; replacement execution tasks; merge or deployment; new performance targets or benchmarking beyond preserving existing behavior.\n\n## Assumptions\n- The supplied advisory identity, target version and remaining-finding count are authoritative task targets pending fresh execution verification, not independently verified security facts from this stage.\n- Static enumeration supports 49 existing cases and an expected final count of 53. Actual runner results remain required.\n- The exact advisory-triggering payloads can be established from the live advisory and reference proof during authorized execution. Legitimate trusted/untrusted controls are proposed control categories; fixture details remain reversible until that evidence is read.\n- PR106 reuse depends on the delivery workflow's ability to bind that PR. This is an execution routing condition, not a request to expand scope.\n- No earlier approved requirement needs correction based on inspected files.\n\n## Risks\n- The live advisory, release contents and reference PR evidence remain execution research gaps. Unsupported fixtures or a mismatch in advisory/version identity would invalidate security proof and must be resolved before claiming remediation.\n- Live OSV data can change between scans. Comparable scans and a complete diff must distinguish inventory drift from candidate changes; the required outcome must not be inferred from a summary count alone.\n- Package installation or lockfile regeneration could introduce unrelated changes. Dependency-diff review must enforce the one-package boundary.\n- Reference PR movement or new candidate commits can invalidate prior exact-head results. Evidence must follow the final head.\n- Hosted CI, live API availability, attachment persistence or actual usage accounting may block execution completion. Their absence is not a passing result.\n\n## Open questions\nNo consequential product questions remain. Non-blocking execution checks are whether the workflow can bind PR106, which verified advisory inputs instantiate S1/S2, and which durable evidence destination and usage records the owning runtime provides. These checks do not relax the acceptance obligations.",
+        "workflow": "truxt-deep-plan/v2",
+        "metadata": {
+          "schema": "truxt-axiom/requirements@2",
+          "workType": "brownfield",
+          "requirements": [
+            {
+              "id": "FR-1",
+              "statement": "Freshly run all 49 existing tests at baseline dff02375d83394d6f03ce2127e35e62fadc269ab before changes, including HTTP dashboard, health/readiness, upstream failure and recovery checks; preserve commands, revision, versions and counts."
+            },
+            {
+              "id": "FR-2",
+              "statement": "Add four meaningful advisory-precondition proxy-trust cases: two security assertions must fail on 2.0.7 while two safe controls pass; the same four assertions must pass on 2.0.8. Document verified fixtures, expected results and evidence origins."
+            },
+            {
+              "id": "FR-3",
+              "statement": "Upgrade only proxy-addr from 2.0.7 to 2.0.8, verify installed and locked versions, and pass lint plus the complete 49-existing/four-new test suite without disabled tests, exclusions, weakened assertions, unrelated upgrades or CI changes."
+            },
+            {
+              "id": "FR-4",
+              "statement": "Prefer binding and freshly validating PR106; if the workflow requires a separate candidate, create one scoped PR referencing PR106. Distinguish historical reference evidence from new execution, confirm hosted CI on the final exact head SHA, and leave the PR open and unmerged."
+            },
+            {
+              "id": "FR-5",
+              "statement": "Run comparable baseline and final exact-head OSV 2.6.0 scans using all packages, no ignores and the live API; retain raw reports and compare every finding. Require the selected finding to disappear with no additions, explicitly report remaining findings and retain the other 49 as open; explain inventory discrepancies."
+            },
+            {
+              "id": "FR-6",
+              "statement": "Publish the six-row Existing tests/Security regression/Full suite/CI/Rescan/Usage report linking actual command logs, test counts, PR/CI URLs, final SHA, raw scans, comparison and actual token/cost records. Preserve evidence in Axiom attachments or outside .axiom before completion, separate estimates and reference results from actual usage and fresh execution, and keep operational prompts/intermediate logs outside the main description."
+            },
+            {
+              "id": "NFR-1",
+              "statement": "Keep application Express trust proxy disabled, isolate advisory-precondition regression fixtures, avoid claims of current application exploitability, and preserve existing security checks without suppressing or remediating unrelated findings."
+            },
+            {
+              "id": "NFR-2",
+              "statement": "Preserve dashboard, metrics, promo-code and health behavior under existing Node 20 CI, including the 2000 ms upstream timeout, independent liveness and readiness recovery, without external service changes."
+            },
+            {
+              "id": "NFR-3",
+              "statement": "Make proof reproducible, revision-specific and durable; identify command/tool provenance, reference evidence and verification gaps accurately, and never substitute historical results for required fresh execution."
+            }
+          ],
+          "rawEvidenceRefs": [
+            {
+              "digest": "447d95d8213e911eba31f3c8d33da6f3c24a1d3bed166bc1342db293ca1c8902",
+              "artifactId": "1b95c008-e42b-4c2f-996d-e31b27f03ded"
+            }
+          ]
+        },
+        "checkoutObservation": {
+          "fence": 1,
+          "hostId": "8644ef5f-d036-49ba-9bed-3e1fa22d8801",
+          "schema": "truxt-axiom/planning-checkout@1",
+          "omitted": [],
+          "sessionId": "e31b5030-0d7c-4799-8056-bd5977c10f68",
+          "observedAt": "2026-10-26T07:08:48.441Z",
+          "repositories": [
+            {
+              "clean": true,
+              "files": [],
+              "configDigest": "6fe350b011e718af048152adb69eae9cf17d086f27d38653b3554cc8c5869d11",
+              "repositoryId": "fdedfb0e-894e-490e-93f5-16f9e73699f6",
+              "requestedRef": "master",
+              "resolvedCommit": "dff02375d83394d6f03ce2127e35e62fadc269ab"
+            }
+          ],
+          "planningRunId": "61a091c4-ef5c-48c8-9d6f-f3e0ec7eb890"
+        }
+      },
+      {
+        "id": "51d14a19-cf2e-40c3-8560-586142c39d9e",
+        "key": "stories",
+        "digest": "8749c53b2c7a5d7759da8d0ca8513a6c4260090cec14647498acc56296cf9432",
+        "markdown": "# User stories\n\n## Personas\n- **Dashboard user:** relies on unchanged dashboard, metrics, promo-code and health behavior.\n- **Developer:** Raunak Poonia, responsible for the bounded dependency remediation and reproducible validation.\n- **Delivery reviewer:** evaluates security, compatibility, CI, vulnerability and usage evidence before accepting delivery.\n\n## Scope and evidence\nThese stories organize work within original execution task `4efa3315-df53-4a8b-a935-fbc7ba0bacac`; they do not create replacement tasks or authorize execution during planning. Remediate CVE-2026-90711 / GHSA-jqcg-44mw-7w3h through proxy-addr 2.0.7 \u2192 2.0.8, add four regression cases, and retain the other 49 findings as open. No merge, deployment, runtime restart, external service change, test suppression, unrelated upgrade or CI change is authorized.\n\nRead-only inspection in this stage confirmed HEAD `dff02375d83394d6f03ce2127e35e62fadc269ab`. `package.json` defines `node --test` and `eslint .`; the inspected lockfile entries resolve proxy-addr 2.0.7 through Express's `~2.0.7` requirement. The complete `src/server.js` has no trust-proxy setting and uses a 2000 ms upstream timeout. All five existing test files were read: `test/health.test.js`, `test/health-freshness.test.js`, `test/service-health.test.js`, `test/promo-codes.test.js` and `test/smoke.test.js`. Static enumeration yields 9 + 8 + 14 + 15 + 3 = 49 cases. `.github/workflows/ci.yml` runs installation, lint and tests under Node 20 on pushes and pull requests. These observations ground the stories; no tests, builds, installations, scans or network requests were performed.\n\n## US-1 \u2014 Establish baseline compatibility\nAs a developer, I want fresh baseline compatibility evidence so that I can distinguish existing behavior from remediation effects.\n\nCovers **FR-1, NFR-2, NFR-3**; canonical criterion **0**. Independently reviewable deliverable: baseline execution record.\n\n- **Given** baseline `dff02375d83394d6f03ce2127e35e62fadc269ab` before dependency or test changes, **when** all existing tests run, **then** actual output records 49 passing cases, the revision, commands, tool versions and counts.\n- **Given** controlled upstream mocks and local HTTP requests, **when** dashboard and health tests run, **then** GET `/` returns 200 with expected service rows and UTC freshness; `/health/live` returns 200 without upstream calls during healthy, failing and pending probes; `/health/ready` returns 200 on success, 503 for HTTP failure, connection error and timeout, and 200 after recovery, preserving the 2000 ms probe timeout.\n- **Given** the complete existing suite, **when** remaining compatibility cases run, **then** `/health/upstream` preserves its success payload and 502/error response, and all metrics, freshness, service ordering, promo-code and dependency security-floor assertions pass. External services are not changed.\n\n## US-2 \u2014 Reproduce the dependency security regression\nAs a developer, I want four meaningful proxy-trust fixtures so that the vulnerable behavior and legitimate decisions are demonstrably distinguished.\n\nCovers **FR-2, NFR-1, NFR-3**; canonical criterion **1**, completed jointly with US-3. Depends on US-1. Independently reviewable deliverable: four fixtures and vulnerable-version proof.\n\n- **Given** verified advisory and reference evidence, **when** fixtures S1, S2, C1 and C2 are defined, **then** each records its origin, trust configuration, exact input and independently justified expected outcome. S1 and S2 exercise the advisory's incorrect trust decision; C1 and C2 exercise legitimate trusted and untrusted decisions. Exact attack inputs must be established from evidence before implementation, not invented from this plan.\n- **Given** proxy-addr 2.0.7 and those fixtures, **when** the four cases run, **then** S1 and S2 fail their intended security assertions and C1 and C2 pass. Preserve actual assertion output and dependency-version evidence; infrastructure failures do not qualify.\n- **Given** the advisory precondition requires proxy trust, **when** regression coverage is added under `test/`, **then** that configuration is isolated from the application, application trust proxy remains disabled, and the evidence does not claim current application exploitability. Preserve the same four assertions for fixed-version validation in US-3.\n\n## US-3 \u2014 Apply the scoped fix and preserve application behavior\nAs a dashboard user, I want the dependency remediated while existing behavior stays compatible so that I can continue using the dashboard reliably.\n\nCovers **FR-2, FR-3, NFR-1, NFR-2, NFR-3**; canonical criteria **1 and 2**. Depends on US-2. Independently reviewable deliverable: scoped candidate with fixed-version and full-suite proof.\n\n- **Given** baseline and vulnerable-regression evidence, **when** proxy-addr is upgraded, **then** installed and locked versions are 2.0.8 and dependency-diff review confirms that only proxy-addr changed version. Any manifest change is strictly necessary for this remediation; unrelated dependencies, existing overrides and CI remain unchanged.\n- **Given** the same S1, S2, C1 and C2 inputs and assertions, **when** they run against 2.0.8, **then** all four pass without weakened assertions, and their output is linked to the vulnerable-version proof.\n- **Given** the fixed candidate, **when** lint and the full suite run under the existing Node 20 compatibility context, **then** lint succeeds and 53 cases pass: 49 existing plus four new, with zero failures, skips or exclusions. Existing tests and security-floor checks are not suppressed or weakened.\n- **Given** the final diff and compatibility output, **when** reviewed, **then** application trust proxy remains disabled and dashboard, metrics, promo-code and health behavior\u2014including liveness independence, the 2000 ms timeout and readiness recovery\u2014remains unchanged without external service changes.\n\n## US-4 \u2014 Deliver an open PR with exact-head CI\nAs a delivery reviewer, I want a scoped open PR with fresh CI evidence for its exact head so that I can review the verified candidate confidently.\n\nCovers **FR-4, NFR-3**; canonical criterion **3**. Depends on US-3. Independently reviewable deliverable: PR identity and hosted CI proof.\n\n- **Given** reference PR https://github.com/truxt-ai/ops-dashboard/pull/106, **when** delivery routing is established, **then** reuse that PR if the workflow can bind it; otherwise create one scoped candidate PR referencing PR106 and document the workflow requirement. Reference evidence from https://axiom-stage.truxt.ai/b560f8c8/backend/issues/AXM-707 is identified separately and never substituted for fresh execution.\n- **Given** the chosen PR, **when** delivery is verified, **then** capture its final head SHA and hosted CI URLs, confirm passing CI belongs to that exact SHA, review the scope, and confirm the PR is open and unmerged.\n- **Given** any subsequent head change, **when** completion is assessed, **then** refresh affected test, scan and CI proof for the final head. Do not merge, deploy or restart runtime services.\n\n## US-5 \u2014 Verify the complete vulnerability delta\nAs a delivery reviewer, I want comparable baseline and final-head vulnerability reports so that I can verify the selected finding disappeared without new findings or hidden inventory changes.\n\nCovers **FR-5, NFR-1, NFR-3**; canonical criterion **4**. Baseline capture can accompany US-1; final comparison depends on the final candidate identified in US-4. Independently reviewable deliverable: two raw scans and complete finding comparison.\n\n- **Given** the named baseline and final exact PR head, **when** OSV 2.6.0 scans both revisions, **then** both use comparable configuration, all packages, no ignores and the live OSV API. Preserve raw reports, actual commands, tool versions, timestamps, settings and revision identities.\n- **Given** both complete reports, **when** every finding is compared using package/version identities and advisory aliases, **then** the CVE-2026-90711 / GHSA-jqcg-44mw-7w3h alias group is absent at the final head, additions are empty, and all remaining findings are explicitly listed with the other 49 retained as open.\n- **Given** inventory drift, a count discrepancy, API failure or incomplete scan, **when** results are assessed, **then** explain the discrepancy and its effect on acceptance without silently changing scope or claiming completion. Summary counts alone, suppressed findings and historical scans cannot satisfy this story.\n\n## US-6 \u2014 Preserve and publish reviewable QA evidence\nAs a delivery reviewer, I want a concise report linked to durable proof and actual usage so that I can audit delivery after the execution workspace is cleaned.\n\nCovers **FR-6, NFR-3**; canonical criterion **5**. Depends on US-1 through US-5, with evidence preservation throughout execution. Independently reviewable deliverable: final QA report and durable evidence index under the original task.\n\n- **Given** completed verification, **when** the QA report is published, **then** its main description contains one short result table with rows Existing tests, Security regression, Full suite, CI, Rescan and Usage. Link complete actual command logs, test counts, PR/CI URLs, final SHA, raw scan reports, full finding comparison and actual token/cost records. Keep operational prompts and intermediate logs outside the main description.\n- **Given** baseline, vulnerable-regression, fixed-candidate and reference material, **when** evidence is indexed, **then** identify each origin and revision distinctly; follow every proof link and confirm candidate tests, CI and final scan refer to the same final PR head.\n- **Given** `.axiom` is cleaned at run end, **when** completion is considered, **then** proof has been uploaded to Axiom task attachments or preserved outside `.axiom`, and its durable accessibility has been verified. Missing proof cannot be represented as a pass.\n- **Given** the supplied 50\u2013200k fresh input/output token estimate and up to $10 planning allowance, **when** usage is reported, **then** distinguish those estimates/limits from actual input tokens, output tokens and cost, and identify planning usage separately. Model or token assumptions are not observed usage; missing accounting is an explicit completion gap.\n\n## Assumptions and research gaps\nThe target advisory, fixed version and expected remaining-finding inventory are approved targets pending execution verification. PR106, AXM-707, the live advisory and release contents were not accessed during this stage. Their verification, exact fixture inputs, PR binding, durable evidence destination and runtime usage records remain execution checks; none relaxes acceptance. The expected 49/53 counts are grounded in static inspection, not runner results.\n\nNo consequential product questions remain. The supplied attachment inventory has no references; it is not an attachment-verification receipt. Checkout and attachment receipts remain runtime-owned and are not manufactured here.\n\n## Source provenance\nRaw intake evidence is preserved separately from normalized requirements:\n- Intake artifact: `1b95c008-e42b-4c2f-996d-e31b27f03ded`; digest `447d95d8213e911eba31f3c8d33da6f3c24a1d3bed166bc1342db293ca1c8902`.\n- Approved requirements artifact: `ef4282d6-ff89-429e-ae67-2408943ef865`; digest `101b7c3b4c82f93fbf69749c8618c2f041ca36b33af80ed72059306d200727e7`.\n- Original task input digest: `6865d0365b4aa6fc4b7391f63024a268d7d3acb01d7405c2131c015f5e62729d`.\n\n## Issues with earlier stages\nNone identified. `sourceTask.acceptanceCriteria` is null, so there are no explicit array entries to reproduce verbatim. The approved zero-based canonical criteria 0\u20135 are preserved through the story acceptance criteria above.\n\n## Traceability\n| Requirement | Stories | Canonical criterion |\n| --- | --- | --- |\n| FR-1 | US-1 | 0 |\n| FR-2 | US-2, US-3 | 1 |\n| FR-3 | US-3 | 2 |\n| FR-4 | US-4 | 3 |\n| FR-5 | US-5 | 4 |\n| FR-6 | US-6 | 5 |\n| NFR-1 | US-2, US-3, US-5 | 1, 2, 4 |\n| NFR-2 | US-1, US-3 | 0, 2 |\n| NFR-3 | US-1, US-2, US-3, US-4, US-5, US-6 | 0\u20135 |\n\nUncovered requirements: none.",
+        "workflow": "truxt-deep-plan/v2",
+        "metadata": {
+          "schema": "truxt-axiom/stories@2",
+          "stories": [
+            {
+              "id": "US-1",
+              "statement": "As a developer, I want fresh baseline compatibility evidence so that I can distinguish existing behavior from remediation effects.",
+              "requirementRefs": [
+                "FR-1",
+                "NFR-2",
+                "NFR-3"
+              ],
+              "acceptanceCriteria": [
+                "Given baseline dff02375d83394d6f03ce2127e35e62fadc269ab before dependency or test changes, when all existing tests run, then preserve actual output showing 49 passing cases, commands, revision, tool versions and counts (canonical criterion 0).",
+                "Given controlled upstream mocks and local HTTP requests, when compatibility tests run, then GET / returns 200 with expected service rows and UTC freshness; /health/live stays 200 without upstream calls during healthy, failing and pending probes; /health/ready returns 200 on success, 503 for HTTP failure, connection error and timeout, and 200 after recovery, preserving the 2000 ms timeout.",
+                "Given the full existing suite, when remaining cases run, then preserve /health/upstream success and 502/error behavior and all metrics, freshness, service ordering, promo-code and security-floor assertions without external service changes."
+              ]
+            },
+            {
+              "id": "US-2",
+              "statement": "As a developer, I want four meaningful proxy-trust fixtures so that the vulnerable behavior and legitimate decisions are demonstrably distinguished.",
+              "requirementRefs": [
+                "FR-2",
+                "NFR-1",
+                "NFR-3"
+              ],
+              "acceptanceCriteria": [
+                "Given verified advisory/reference evidence, when S1, S2, C1 and C2 are defined, then document each fixture's origin, trust configuration, exact input and independent expected result; S1/S2 exercise incorrect trust decisions and C1/C2 legitimate trusted/untrusted decisions. Establish attack inputs from evidence before implementation (canonical criterion 1, jointly with US-3).",
+                "Given US-1 evidence and proxy-addr 2.0.7, when the four fixtures run, then S1/S2 fail their intended security assertions while C1/C2 pass; preserve actual assertion output and version evidence, and do not count infrastructure failures.",
+                "Given advisory-precondition regression coverage under test/, when it is added, then isolate its trust configuration, keep application trust proxy disabled, avoid claims of current application exploitability, and retain the same four assertions for US-3."
+              ]
+            },
+            {
+              "id": "US-3",
+              "statement": "As a dashboard user, I want the dependency remediated while existing behavior stays compatible so that I can continue using the dashboard reliably.",
+              "requirementRefs": [
+                "FR-2",
+                "FR-3",
+                "NFR-1",
+                "NFR-2",
+                "NFR-3"
+              ],
+              "acceptanceCriteria": [
+                "Given baseline and vulnerable-regression evidence, when proxy-addr is upgraded, then installed and locked versions are 2.0.8 and diff review confirms only proxy-addr changed version; any manifest change is strictly necessary, and unrelated dependencies, existing overrides and CI remain unchanged (canonical criterion 2).",
+                "Given unchanged S1/S2/C1/C2 inputs and assertions, when run against 2.0.8, then all four pass without weakened assertions and fixed-version output links to vulnerable-version proof (canonical criterion 1).",
+                "Given the fixed candidate under the existing Node 20 compatibility context, when lint and the complete suite run, then lint succeeds and 53 cases pass, comprising 49 existing and four new, with zero failures, skips or exclusions and no suppressed or weakened tests.",
+                "Given final diff and compatibility output, when reviewed, then application trust proxy remains disabled and dashboard, metrics, promo-code and health behavior\u2014including independent liveness, the 2000 ms timeout and recovery\u2014remains unchanged without external service changes."
+              ]
+            },
+            {
+              "id": "US-4",
+              "statement": "As a delivery reviewer, I want a scoped open PR with fresh CI evidence for its exact head so that I can review the verified candidate confidently.",
+              "requirementRefs": [
+                "FR-4",
+                "NFR-3"
+              ],
+              "acceptanceCriteria": [
+                "Given https://github.com/truxt-ai/ops-dashboard/pull/106, when routing is established, then reuse it if the workflow can bind it; otherwise create one scoped candidate PR referencing PR106 and document the workflow requirement. Identify reference evidence from https://axiom-stage.truxt.ai/b560f8c8/backend/issues/AXM-707 separately and rerun required proof (canonical criterion 3).",
+                "Given the validated candidate, when delivery is verified, then capture final head SHA and hosted CI URLs, confirm passing CI belongs to that exact SHA, verify scope, and leave the PR open and unmerged.",
+                "Given a later head change, when completion is assessed, then refresh affected test, scan and CI evidence for the final head; do not merge, deploy or restart runtime services."
+              ]
+            },
+            {
+              "id": "US-5",
+              "statement": "As a delivery reviewer, I want comparable baseline and final-head vulnerability reports so that I can verify the selected finding disappeared without new findings or hidden inventory changes.",
+              "requirementRefs": [
+                "FR-5",
+                "NFR-1",
+                "NFR-3"
+              ],
+              "acceptanceCriteria": [
+                "Given the named baseline and final exact PR head, when OSV 2.6.0 scans both, then use comparable settings, all packages, no ignores and live OSV API; preserve raw reports, actual commands, versions, timestamps, settings and revision identities (canonical criterion 4).",
+                "Given complete reports, when every finding is compared using package/version identities and advisory aliases, then the CVE-2026-90711 / GHSA-jqcg-44mw-7w3h alias group disappears, additions are empty, and all remaining findings are explicitly listed with the other 49 retained as open.",
+                "Given inventory drift, count discrepancies, API failures or incomplete scans, when assessed, then explain discrepancies and acceptance impact without silently changing scope or claiming completion; counts alone, suppressions and historical scans are insufficient."
+              ]
+            },
+            {
+              "id": "US-6",
+              "statement": "As a delivery reviewer, I want a concise report linked to durable proof and actual usage so that I can audit delivery after the execution workspace is cleaned.",
+              "requirementRefs": [
+                "FR-6",
+                "NFR-3"
+              ],
+              "acceptanceCriteria": [
+                "Given completed verification, when publishing under original task 4efa3315-df53-4a8b-a935-fbc7ba0bacac, then provide one short table with Existing tests, Security regression, Full suite, CI, Rescan and Usage rows linking complete actual command logs, test counts, PR/CI URLs, final SHA, raw scans, full comparison and actual usage; keep operational prompts and intermediate logs outside the main description (canonical criterion 5).",
+                "Given baseline, vulnerable-regression, fixed-candidate and reference evidence, when indexing proof, then identify origins and revisions separately, follow every link, and confirm candidate tests, CI and final scan identify the same final head.",
+                "Given .axiom cleanup, when completion is considered, then upload evidence to Axiom task attachments or preserve it outside .axiom and verify durable accessibility; missing evidence cannot count as passing.",
+                "Given the 50\u2013200k fresh input/output token estimate and up to $10 planning allowance, when reporting usage, then distinguish estimates and limits from actual input tokens, output tokens and cost, identify planning usage separately, and report missing accounting as a completion gap rather than inventing observed usage."
+              ]
+            }
+          ]
+        },
+        "checkoutObservation": {
+          "fence": 1,
+          "hostId": "8644ef5f-d036-49ba-9bed-3e1fa22d8801",
+          "schema": "truxt-axiom/planning-checkout@1",
+          "omitted": [],
+          "sessionId": "61a1a8b6-9644-4fbb-9d4c-e66c6e8444c8",
+          "observedAt": "2026-10-26T07:13:29.366Z",
+          "repositories": [
+            {
+              "clean": true,
+              "files": [],
+              "configDigest": "6fe350b011e718af048152adb69eae9cf17d086f27d38653b3554cc8c5869d11",
+              "repositoryId": "fdedfb0e-894e-490e-93f5-16f9e73699f6",
+              "requestedRef": "master",
+              "resolvedCommit": "dff02375d83394d6f03ce2127e35e62fadc269ab"
+            }
+          ],
+          "planningRunId": "ca3f22b1-a130-4529-884a-bd26fb38531f"
+        }
+      },
+      {
+        "id": "3910fa7a-f24e-41ef-857a-45d0fe3b6f55",
+        "key": "design",
+        "digest": "72cdce49b59050ccd58fe8d4dddb44bcf1a1dae808986de19fc5524bb24ffd52",
+        "markdown": "# Application design and units of work\n\nThis design belongs to original execution task `4efa3315-df53-4a8b-a935-fbc7ba0bacac`, with Raunak Poonia as the named developer. It creates no replacement task and authorizes no execution during planning. The deliverable is a scoped, open, unmerged PR remediating CVE-2026-90711 / GHSA-jqcg-44mw-7w3h through proxy-addr 2.0.7 \u2192 2.0.8, with fresh compatibility, regression, CI, vulnerability and usage evidence. Retain the other 49 findings as open.\n\n## Repository grounding\n\nRead-only inspection confirmed HEAD `dff02375d83394d6f03ce2127e35e62fadc269ab`. Read `package.json`, the relevant Express and proxy-addr entries of `package-lock.json`, all of `src/server.js`, all five existing test files, `.github/workflows/ci.yml`, `.eslintrc.json` and `.eslintignore`.\n\nThe lockfile resolves proxy-addr 2.0.7 through Express's `~2.0.7` requirement. The application has no trust-proxy setting. Existing tests use Node's test runner, local HTTP servers and controlled Axios mocks; static expansion gives 9 health + 8 freshness + 14 service-health + 15 promo-code + 3 smoke cases = 49. The CI workflow uses Node 20, `npm ci`, `npm run lint` and `npm test`. These are file observations, not execution results. No tests, installations, scans, network requests or mutations occurred.\n\nOnly the primary repository was inspected. Selected context documents and supplied attachment references are empty; no omitted context is listed. PR106, AXM-707, the live advisory and release contents remain unverified execution references. Runtime-owned checkout and attachment receipts are not manufactured by this document.\n\n## Components\n\n| Component | State and paths | Design responsibility |\n| --- | --- | --- |\n| Dependency resolution | Existing, changed: `package-lock.json`; existing, conditional change: `package.json` | Prefer updating only proxy-addr's locked version, resolved artifact and integrity metadata. Express's existing range admits 2.0.8. Preserve unrelated versions and overrides; change the manifest only if demonstrated necessary. |\n| Security regression | Proposed: `test/proxy-addr.test.js` | Four Node test cases, S1/S2/C1/C2, exercising the installed dependency under the verified advisory precondition. Use strict assertions and independently justified expectations. |\n| Application | Existing, verification only: `src/server.js` | Preserve default disabled trust proxy, dashboard and promo-code routes, metrics, health responses, 2000 ms timeout and recovery. No production configuration change. |\n| Compatibility suite | Existing, verification only: `test/health.test.js`, `test/health-freshness.test.js`, `test/service-health.test.js`, `test/promo-codes.test.js`, `test/smoke.test.js` | Run all 49 existing cases before changes and as part of the final suite. Preserve current assertions, mocks and security floors. |\n| Hosted validation | Existing, verification only: `.github/workflows/ci.yml` | Use unchanged Node 20 installation, lint and test jobs; bind successful hosted results to the exact final PR head. |\n| Evidence package | Proposed external execution artifacts, not application files | Preserve raw logs, fixture provenance, scan reports, complete comparison, PR/CI identity and actual usage under the original task. `proof/` paths below are intended paths relative to a durable evidence root outside `.axiom`, or attachment names, not proposed repository additions. |\n\n## Interfaces and data\n\nNo application APIs, events, persistent schemas or migrations change. GET `/` retains dashboard rendering, service ordering and UTC freshness; `/api/promo-codes` retains its existing active-code behavior. `/health/live` remains independent of upstream probes. `/health/ready` returns 200 on success and 503 on upstream failure, connection error or timeout, returning to 200 after recovery. `/health/upstream` preserves its success payload and 502/error response. Existing metrics and promo-code assertions remain intact.\n\nThe regression component will exercise the proxy-addr implementation actually resolved by Express. Record that module resolution and its installed version rather than assuming a separately installed copy is representative. Prefer a direct dependency fixture with explicit trust configuration and request/address inputs. If verified advisory behavior requires Express request handling, use a separate test-only Express instance with local HTTP requests and lifecycle cleanup; never enable trust proxy on the exported application. This is a bounded fixture choice within the same four-case contract.\n\nEach fixture records: stable case ID; advisory/reference origin; trust configuration; exact inputs; independent expected decision; and assertion rationale. S1 and S2 must exercise two evidence-backed security cases. C1 and C2 cover legitimate trusted and untrusted decisions. Expected results must not be computed by the function being tested or selected merely because versions differ. Exact payloads cannot be specified from the unverified references available in this stage. Establishing them is a prerequisite to implementation in UoW-2.\n\nThe vulnerable proof uses the baseline dependency graph plus the proposed test file, identified by its content digest. The fixed proof uses the identical test bytes and assertions with proxy-addr 2.0.8. No version-conditional expectations, expected-failure wrappers, skips or exclusions are allowed. A focused regression run is additional evidence; it does not replace the full suite.\n\nEvery execution evidence record identifies origin (baseline, vulnerable regression, fixed candidate or historical reference), revision, any test-only overlay, command, tool versions, timestamps, exit status, counts and durable artifact location. Preserve both successful and failing raw output. Candidate logs, CI and final scan must resolve to the same final head SHA. Any head movement requires refreshing affected proof before completion.\n\nScan records retain original OSV 2.6.0 reports and effective settings: all packages, no ignores and live API access. Compare complete inventories using ecosystem/package identity, package versions and advisory alias groups, preserving occurrence details. Report added, removed and retained findings; version changes must remain visible without confusing them with new advisory groups. Require the selected CVE/GHSA group to disappear, additions to be empty and the other 49 findings to remain explicitly listed as open. API failures, partial reports or unexplained inventory discrepancies cannot pass. Comparable scans close in time reduce live-data drift; repeat comparable captures if drift prevents a sound comparison.\n\n## Key flows\n\n```mermaid\nflowchart TD\n  A[Baseline SHA: fresh 49-case run and baseline scan] --> B[Verify advisory and reference provenance]\n  B --> C[Same four fixtures on 2.0.7: two assertion failures and two passing controls]\n  C --> D[Only proxy-addr upgraded to 2.0.8]\n  D --> E[Four passing regressions, lint, full 53-case suite]\n  E --> F[Bind PR106 or required scoped candidate; capture final head]\n  F --> G[Hosted CI and live OSV scan on exact head]\n  G --> H[Complete finding comparison and durable six-row QA report]\n  G -->|Head changes| E\n```\n\nEvidence preservation starts with the baseline and continues throughout. PR routing may be researched early, but reference results never replace fresh execution. If PR106 can be bound, validate that candidate after independently capturing the baseline and vulnerable proof. Otherwise create one workflow-required scoped PR referencing PR106 and record why reuse was unavailable.\n\n## Units of work\n\nThese are cohesive slices within the original task, not replacement tickets. Sizes describe relative work, not observed token usage.\n\n### UoW-1 \u2014 Capture baseline and establish evidence provenance \u2014 M\n\nDelivers US-1 and the baseline portion of US-5; covers FR-1, FR-5, NFR-2 and NFR-3. No unit dependencies. Read the dependency files, application, five existing test files and CI configuration. Establish a durable evidence root and revision/tool record. During authorized execution, install from the named baseline under Node 20, run all 49 existing tests before adding tests or changing dependencies, and capture a complete live OSV 2.6.0 baseline scan with all packages and no ignores.\n\nVerify dashboard HTTP rendering and freshness, liveness independence during healthy/failing/pending upstream states, readiness success/failure/timeout/recovery, legacy upstream responses, metrics, promo-code cases and existing security floors. Preserve raw outputs and actual counts. A failed baseline or incomplete scan is an unresolved gate, not permission to suppress tests or expand remediation.\n\n### UoW-2 \u2014 Establish and reproduce four security fixtures \u2014 L\n\nDelivers US-2; covers FR-2, NFR-1 and NFR-3. Depends on UoW-1. Proposed component: `test/proxy-addr.test.js`; inspect dependency resolution and the application boundary. Read the advisory, release information and reference evidence during authorized execution, recording origins and distinguishing historical results. Establish S1/S2/C1/C2 with exact trust inputs and independently justified outcomes.\n\nRun the four cases against installed 2.0.7. Require S1/S2 to fail their intended security assertions and C1/C2 to pass; import, network, timeout or setup failures do not qualify. Preserve fixture bytes/digest, dependency resolution and assertion output. Keep application trust proxy disabled. This is the riskiest unit because advisory details and release behavior are unverified: unsupported inputs or an incorrect target identity invalidate the core proof. Resolve mismatches before continuing rather than inventing a reproduction or claiming application exploitability.\n\n### UoW-3 \u2014 Apply and validate the bounded upgrade \u2014 M\n\nDelivers US-3; covers FR-2, FR-3, NFR-1, NFR-2 and NFR-3. Depends on UoW-2. Change `package-lock.json`, retain the four regression cases and change `package.json` only if strictly necessary. Review all dependency entries and the complete diff to exclude unrelated upgrades, existing-test weakening and CI changes.\n\nVerify installed and locked proxy-addr 2.0.8, including the copy resolved by Express. Run unchanged regression fixtures: four pass. Run lint and the complete suite under Node 20: 53 cases pass, comprising 49 existing and four new, with no failures, skips or exclusions. Review application behavior and default trust configuration. Lockfile churn or an unrelated dependency update fails the scope gate.\n\n### UoW-4 \u2014 Bind the candidate and prove exact-head hosted CI \u2014 M\n\nDelivers US-4; covers FR-4 and NFR-3. Depends on UoW-3. Use unchanged `.github/workflows/ci.yml`. Prefer PR106 when the delivery workflow can bind it; otherwise create one scoped PR referencing PR106 and document that workflow requirement. Inspect the chosen candidate's actual diff, capture its final head SHA and rerun required proof for that candidate. Confirm hosted CI passes on that exact head, recording check URLs and SHA. Leave the PR open and unmerged. A changed head invalidates affected results and reopens validation.\n\n### UoW-5 \u2014 Verify the complete vulnerability delta \u2014 M\n\nDelivers US-5; covers FR-5, NFR-1 and NFR-3. Depends on UoW-1 and UoW-4. Scan the exact final head using OSV 2.6.0, all packages, no ignores, live API and settings comparable to the baseline. Preserve raw reports, commands, settings, timestamps and revisions. Compare every finding with package/version identities and alias groups. Require target removal, no additions and an explicit retained inventory of the other 49 open findings. Explain drift and discrepancies without silently changing scope or claiming completion. Unavailable APIs and incomplete reports remain failed verification gates.\n\n### UoW-6 \u2014 Publish durable QA and actual usage \u2014 S\n\nDelivers US-6; covers FR-6 and NFR-3. Depends on UoW-1 through UoW-5. Publish under the original task one short result table with exactly the rows Existing tests, Security regression, Full suite, CI, Rescan and Usage. Link full command logs, test counts, fixture proof, PR/CI URLs, final SHA, raw scans, full comparison and usage records. Keep operational prompts and intermediate logs outside the main description.\n\nFollow every proof link and verify that candidate tests, hosted CI and the final scan identify the same final head. Upload evidence to Axiom attachments or preserve it outside `.axiom` and verify durable accessibility before completion. Distinguish actual fresh input tokens, output tokens and cost from the supplied 50\u2013200k token estimate; identify planning usage separately against the up-to-$10 planning allowance. Missing usage accounting is an explicit completion gap, never an estimated result presented as actual.\n\n## Acceptance coverage\n\n`sourceTask.acceptanceCriteria` is null. Preserve approved canonical indices 0\u20135 as follows; all results below are required future outcomes, not produced evidence.\n\n| Index | Units/checks | Required observable proof |\n| --- | --- | --- |\n| 0 | UoW-1; CHECK-1 | Fresh baseline run: 49 passes before changes; real local HTTP dashboard rendering with expected rows/UTC freshness; independent liveness; readiness 200/503 and recovery for HTTP errors, connection errors and timeouts; legacy upstream success/502; all existing metrics, promo-code and security-floor cases. |\n| 1 | UoW-2/3; CHECK-2/3 | Four sourced fixtures with trust configuration, exact inputs and independent expectations. On 2.0.7, S1/S2 fail intended assertions and C1/C2 pass. Identical fixtures all pass on 2.0.8. |\n| 2 | UoW-3; CHECK-3/4 | Installed/locked 2.0.8; only selected dependency upgraded; lint passes; 53 tests pass with no failures, skips or exclusions; application trust remains disabled; no weakened tests or CI changes. |\n| 3 | UoW-4; CHECK-5 | Scoped PR106 reuse or documented workflow-required candidate referencing it; fresh hosted CI succeeds on final SHA; PR open and unmerged; head changes trigger refreshed proof. |\n| 4 | UoW-1/5; CHECK-6 | Comparable complete OSV 2.6.0 live scans; all packages/no ignores; raw reports and full comparison; target absent, no additions, other 49 explicitly open; discrepancies explained and unresolved verification not passed. |\n| 5 | UoW-6; CHECK-7 | Six-row QA table with functioning durable links, raw logs/counts, aligned PR/CI/SHA/scans, distinct evidence origins and actual input/output tokens/cost including separate planning usage. |\n\nNo merge, deployment, runtime restart, external service change, test suppression, unrelated remediation or CI change is authorized. No new performance target or benchmark is introduced.\n\n## Alternatives and decisions\n\nSelected: lockfile-focused remediation plus one isolated four-case regression file and external durable proof. It fits Express's existing dependency range and the Node test runner without changing application behavior or CI. A manifest pin/override is conditional on demonstrated necessity, not the default. Broad dependency refreshes and production trust-proxy changes violate the approved scope. PR106 reuse is preferred; a separate PR is permitted only when the delivery workflow requires a separate candidate.\n\n## Assumptions, gaps and issues with earlier stages\n\nThe supplied advisory identity, fixed version and remaining count are approved targets pending execution verification. Fixture payloads, release contents, PR binding, durable storage accessibility and runtime usage records remain execution checks. None relaxes acceptance. The exact fixture API may be adjusted to verified advisory evidence without changing the four-case contract or production configuration. No consequential product question is unresolved.\n\nNo issues with earlier stages were identified. Earlier approved artifacts are lineage, not selected context documents. Raw intake is preserved separately from normalized requirements: intake artifact `1b95c008-e42b-4c2f-996d-e31b27f03ded`, digest `447d95d8213e911eba31f3c8d33da6f3c24a1d3bed166bc1342db293ca1c8902`; requirements artifact `ef4282d6-ff89-429e-ae67-2408943ef865`, digest `101b7c3b4c82f93fbf69749c8618c2f041ca36b33af80ed72059306d200727e7`; stories artifact `51d14a19-cf2e-40c3-8560-586142c39d9e`, digest `8749c53b2c7a5d7759da8d0ca8513a6c4260090cec14647498acc56296cf9432`. Original task input digest: `6865d0365b4aa6fc4b7391f63024a268d7d3acb01d7405c2131c015f5e62729d`.\n",
+        "workflow": "truxt-deep-plan/v2",
+        "metadata": {
+          "units": [
+            {
+              "id": "UoW-1",
+              "files": [
+                {
+                  "path": "package.json",
+                  "state": "existing"
+                },
+                {
+                  "path": "package-lock.json",
+                  "state": "existing"
+                },
+                {
+                  "path": "src/server.js",
+                  "state": "existing"
+                },
+                {
+                  "path": "test/health.test.js",
+                  "state": "existing"
+                },
+                {
+                  "path": "test/health-freshness.test.js",
+                  "state": "existing"
+                },
+                {
+                  "path": "test/service-health.test.js",
+                  "state": "existing"
+                },
+                {
+                  "path": "test/promo-codes.test.js",
+                  "state": "existing"
+                },
+                {
+                  "path": "test/smoke.test.js",
+                  "state": "existing"
+                },
+                {
+                  "path": ".github/workflows/ci.yml",
+                  "state": "existing"
+                }
+              ],
+              "risks": [
+                "Baseline failures must remain visible.",
+                "Incomplete scans cannot establish the baseline inventory."
+              ],
+              "dependsOn": [],
+              "storyRefs": [
+                "US-1",
+                "US-5"
+              ],
+              "interfaces": [
+                "Baseline revision and tool provenance",
+                "Existing local HTTP and controlled-upstream compatibility tests",
+                "Complete live OSV baseline report"
+              ],
+              "researchRefs": [
+                "R-1",
+                "R-2",
+                "R-3",
+                "R-4",
+                "R-5",
+                "R-6",
+                "R-7",
+                "R-8",
+                "R-9"
+              ],
+              "testStrategy": "At the named immutable baseline under Node 20, run npm ci and npm test before test/dependency changes; require 49 passes and preserve all compatibility coverage. Capture an OSV 2.6.0 scan with all packages, no ignores and live API access.",
+              "requirementRefs": [
+                "FR-1",
+                "FR-5",
+                "NFR-2",
+                "NFR-3"
+              ]
+            },
+            {
+              "id": "UoW-2",
+              "files": [
+                {
+                  "path": "test/proxy-addr.test.js",
+                  "state": "proposed"
+                },
+                {
+                  "path": "package.json",
+                  "state": "existing"
+                },
+                {
+                  "path": "package-lock.json",
+                  "state": "existing"
+                },
+                {
+                  "path": "src/server.js",
+                  "state": "existing"
+                }
+              ],
+              "risks": [
+                "Riskiest unit: advisory identity, release behavior and exact triggering inputs remain unverified.",
+                "Infrastructure failures are not security reproduction.",
+                "Test trust settings must never change the production app."
+              ],
+              "dependsOn": [
+                "UoW-1"
+              ],
+              "storyRefs": [
+                "US-2"
+              ],
+              "interfaces": [
+                "Four sourced trust-decision fixtures",
+                "Installed dependency resolved by Express",
+                "Vulnerable assertion output and fixture digest"
+              ],
+              "researchRefs": [
+                "R-1",
+                "R-2",
+                "R-3",
+                "R-10",
+                "R-11"
+              ],
+              "testStrategy": "Verify advisory and reference inputs, then run exactly four strict cases on 2.0.7. Require two intended security assertion failures and two passing safe controls; record inputs, trust configuration, expected decisions, origins and identical test bytes for fixed validation.",
+              "requirementRefs": [
+                "FR-2",
+                "NFR-1",
+                "NFR-3"
+              ]
+            },
+            {
+              "id": "UoW-3",
+              "files": [
+                {
+                  "path": "package-lock.json",
+                  "state": "existing"
+                },
+                {
+                  "path": "package.json",
+                  "state": "existing"
+                },
+                {
+                  "path": "test/proxy-addr.test.js",
+                  "state": "proposed"
+                },
+                {
+                  "path": "src/server.js",
+                  "state": "existing"
+                },
+                {
+                  "path": "test/health.test.js",
+                  "state": "existing"
+                },
+                {
+                  "path": "test/health-freshness.test.js",
+                  "state": "existing"
+                },
+                {
+                  "path": "test/service-health.test.js",
+                  "state": "existing"
+                },
+                {
+                  "path": "test/promo-codes.test.js",
+                  "state": "existing"
+                },
+                {
+                  "path": "test/smoke.test.js",
+                  "state": "existing"
+                },
+                {
+                  "path": ".github/workflows/ci.yml",
+                  "state": "existing"
+                }
+              ],
+              "risks": [
+                "Lockfile generation may change unrelated dependencies.",
+                "Candidate reuse requires validating actual candidate bytes rather than assuming equivalence."
+              ],
+              "dependsOn": [
+                "UoW-2"
+              ],
+              "storyRefs": [
+                "US-3"
+              ],
+              "interfaces": [
+                "Only proxy-addr dependency resolution changes",
+                "Unchanged regression assertion contract",
+                "Full-suite and lint evidence"
+              ],
+              "researchRefs": [
+                "R-1",
+                "R-2",
+                "R-3",
+                "R-4",
+                "R-5",
+                "R-6",
+                "R-7",
+                "R-8",
+                "R-9"
+              ],
+              "testStrategy": "Verify installed and locked 2.0.8, including Express resolution. Run the unchanged four regressions, npm run lint and npm test under Node 20. Require four regression passes and 53 full-suite passes with no failures, skips or exclusions; inspect full diff for scope and behavior preservation.",
+              "requirementRefs": [
+                "FR-2",
+                "FR-3",
+                "NFR-1",
+                "NFR-2",
+                "NFR-3"
+              ]
+            },
+            {
+              "id": "UoW-4",
+              "files": [
+                {
+                  "path": ".github/workflows/ci.yml",
+                  "state": "existing"
+                }
+              ],
+              "risks": [
+                "PR movement invalidates affected proof.",
+                "Historical reference checks cannot replace fresh execution."
+              ],
+              "dependsOn": [
+                "UoW-3"
+              ],
+              "storyRefs": [
+                "US-4"
+              ],
+              "interfaces": [
+                "Delivery workflow PR binding",
+                "Final head SHA and hosted CI checks",
+                "Open and unmerged PR status"
+              ],
+              "researchRefs": [
+                "R-9",
+                "R-10",
+                "R-11"
+              ],
+              "testStrategy": "Prefer binding PR106; otherwise document the workflow requirement and create one scoped candidate referencing it. Capture the actual final head, rerun required candidate proof, and confirm fresh successful hosted CI belongs to that SHA. Verify scope and open/unmerged status.",
+              "requirementRefs": [
+                "FR-4",
+                "NFR-3"
+              ]
+            },
+            {
+              "id": "UoW-5",
+              "files": [
+                {
+                  "path": "package.json",
+                  "state": "existing"
+                },
+                {
+                  "path": "package-lock.json",
+                  "state": "existing"
+                }
+              ],
+              "risks": [
+                "Live vulnerability data can drift.",
+                "API failure, partial scans or count-only comparisons invalidate evidence."
+              ],
+              "dependsOn": [
+                "UoW-1",
+                "UoW-4"
+              ],
+              "storyRefs": [
+                "US-5"
+              ],
+              "interfaces": [
+                "Exact-head live OSV report",
+                "Complete package/version and advisory-alias comparison"
+              ],
+              "researchRefs": [
+                "R-1",
+                "R-2"
+              ],
+              "testStrategy": "Run OSV 2.6.0 at the final head with settings comparable to baseline, all packages, no ignores and live API. Preserve raw reports and compare all findings. Require selected alias group removal, zero additions and explicit reporting of the other 49 open findings; explain discrepancies without passing unresolved results.",
+              "requirementRefs": [
+                "FR-5",
+                "NFR-1",
+                "NFR-3"
+              ]
+            },
+            {
+              "id": "UoW-6",
+              "files": [],
+              "risks": [
+                "Temporary-only evidence does not satisfy completion.",
+                "Absent usage records cannot be replaced by estimates."
+              ],
+              "dependsOn": [
+                "UoW-1",
+                "UoW-2",
+                "UoW-3",
+                "UoW-4",
+                "UoW-5"
+              ],
+              "storyRefs": [
+                "US-6"
+              ],
+              "interfaces": [
+                "Original task evidence attachments or durable external root",
+                "Six-row QA report",
+                "Actual runtime token and cost accounting"
+              ],
+              "researchRefs": [
+                "R-10",
+                "R-11"
+              ],
+              "testStrategy": "Follow every evidence link, verify all candidate identities agree, confirm evidence survives .axiom cleanup, and reconcile actual input/output tokens and cost with separate planning usage. Publish only the concise six-row main table linked to complete proof.",
+              "requirementRefs": [
+                "FR-6",
+                "NFR-3"
+              ]
+            }
+          ],
+          "checks": [
+            {
+              "id": "CHECK-1",
+              "method": "command",
+              "evidence": [
+                {
+                  "kind": "test_result",
+                  "path": "proof/baseline/tests.txt"
+                },
+                {
+                  "kind": "log",
+                  "path": "proof/baseline/provenance.txt"
+                }
+              ],
+              "procedure": "During execution, verify baseline dff02375d83394d6f03ce2127e35e62fadc269ab and Node 20, run npm ci and npm test before adding tests or updating dependencies, and retain command/tool/revision records. Check all existing HTTP dashboard, freshness, liveness, readiness failure/timeout/recovery, legacy upstream, metrics, promo-code and security-floor cases.",
+              "expectedResult": "49 existing cases pass with their original assertions and no exclusions; controlled upstream tests preserve the 2000 ms timeout and require no external service changes.",
+              "requirementRefs": [
+                "FR-1",
+                "NFR-2",
+                "NFR-3"
+              ]
+            },
+            {
+              "id": "CHECK-2",
+              "method": "command",
+              "evidence": [
+                {
+                  "kind": "test_result",
+                  "path": "proof/vulnerable/regression.txt"
+                },
+                {
+                  "kind": "document",
+                  "path": "proof/fixtures.md"
+                }
+              ],
+              "procedure": "After documenting advisory-backed fixture inputs and provenance, run node --test test/proxy-addr.test.js against installed 2.0.7 resolved by Express. Preserve exact fixture bytes/digest, trust configuration, commands and full assertion output.",
+              "expectedResult": "S1 and S2 fail intended security assertions, C1 and C2 pass, and no infrastructure failure substitutes for an assertion failure. Production trust proxy stays disabled.",
+              "requirementRefs": [
+                "FR-2",
+                "NFR-1",
+                "NFR-3"
+              ]
+            },
+            {
+              "id": "CHECK-3",
+              "method": "command",
+              "evidence": [
+                {
+                  "kind": "test_result",
+                  "path": "proof/candidate/regression.txt"
+                },
+                {
+                  "kind": "test_result",
+                  "path": "proof/candidate/full-suite.txt"
+                },
+                {
+                  "kind": "log",
+                  "path": "proof/candidate/lint-and-versions.txt"
+                }
+              ],
+              "procedure": "At the final candidate under Node 20, verify installed/locked proxy-addr 2.0.8 and Express resolution; run unchanged node --test test/proxy-addr.test.js, npm run lint and npm test. Preserve candidate SHA, versions, commands and outputs.",
+              "expectedResult": "All four unchanged regressions pass; lint passes; all 53 existing-plus-new cases pass with zero failures, skips or exclusions and preserved application compatibility.",
+              "requirementRefs": [
+                "FR-2",
+                "FR-3",
+                "NFR-1",
+                "NFR-2",
+                "NFR-3"
+              ]
+            },
+            {
+              "id": "CHECK-4",
+              "method": "manual",
+              "evidence": [
+                {
+                  "kind": "document",
+                  "path": "proof/scope-review.md"
+                },
+                {
+                  "kind": "log",
+                  "path": "proof/candidate/diff.txt"
+                }
+              ],
+              "procedure": "Developer reviews complete baseline-to-final diff and all dependency versions; compare vulnerable/fixed fixture bytes, inspect application trust configuration and ensure existing tests, overrides and CI are preserved. Justify any strictly necessary manifest change.",
+              "expectedResult": "Only proxy-addr is upgraded, four meaningful cases are added without weakened assertions, application trust proxy remains disabled, existing behavior and CI are unchanged, and no unrelated findings are remediated or suppressed.",
+              "requirementRefs": [
+                "FR-3",
+                "NFR-1",
+                "NFR-2",
+                "NFR-3"
+              ]
+            },
+            {
+              "id": "CHECK-5",
+              "method": "command",
+              "evidence": [
+                {
+                  "kind": "ci",
+                  "path": "proof/delivery/ci.json"
+                },
+                {
+                  "kind": "log",
+                  "path": "proof/delivery/pr.json"
+                }
+              ],
+              "procedure": "Use delivery/GitHub tooling during execution to record PR106 binding or the documented workflow-required candidate, PR diff/status/final head and hosted CI run URLs with head SHA. Refresh affected proof after any head change.",
+              "expectedResult": "One scoped open, unmerged candidate has fresh passing hosted CI on its exact final head; reference evidence is separately identified and no merge, deployment or runtime restart occurs.",
+              "requirementRefs": [
+                "FR-4",
+                "NFR-3"
+              ]
+            },
+            {
+              "id": "CHECK-6",
+              "method": "command",
+              "evidence": [
+                {
+                  "kind": "log",
+                  "path": "proof/scans/baseline.json"
+                },
+                {
+                  "kind": "log",
+                  "path": "proof/scans/final-head.json"
+                },
+                {
+                  "kind": "document",
+                  "path": "proof/scans/comparison.md"
+                },
+                {
+                  "kind": "log",
+                  "path": "proof/scans/commands.txt"
+                }
+              ],
+              "procedure": "Capture baseline and exact-head OSV 2.6.0 raw reports using comparable all-package/no-ignore/live-API settings; record actual commands, timestamps, tool versions and revisions. Compare every package/version occurrence and advisory alias group, preserving additions, removals and retained inventory.",
+              "expectedResult": "Complete scans show the selected CVE/GHSA alias group removed, no additions and the other 49 findings explicitly retained as open. Drift or inventory discrepancies are explained; incomplete or unresolved verification does not pass.",
+              "requirementRefs": [
+                "FR-5",
+                "NFR-1",
+                "NFR-3"
+              ]
+            },
+            {
+              "id": "CHECK-7",
+              "method": "manual",
+              "evidence": [
+                {
+                  "kind": "document",
+                  "path": "proof/qa-report.md"
+                },
+                {
+                  "kind": "document",
+                  "path": "proof/evidence-index.md"
+                },
+                {
+                  "kind": "log",
+                  "path": "proof/usage.json"
+                }
+              ],
+              "procedure": "Developer and delivery reviewer inspect the original task's six-row QA report, follow every proof link, verify durable storage outside .axiom or task attachments, reconcile final SHA across tests/CI/scans, and inspect actual token/cost records with planning usage separated from estimates.",
+              "expectedResult": "Existing tests, Security regression, Full suite, CI, Rescan and Usage rows link complete fresh proof with distinct baseline/vulnerable/fixed/reference origins. Actual input/output tokens and cost are reported separately from the 50\u2013200k estimate and up-to-$10 planning allowance; missing proof or accounting remains a completion gap.",
+              "requirementRefs": [
+                "FR-6",
+                "NFR-3"
+              ]
+            }
+          ],
+          "schema": "truxt-axiom/design@2",
+          "sources": [
+            {
+              "id": "R-1",
+              "kind": "repository",
+              "path": "package.json",
+              "repositoryId": "fdedfb0e-894e-490e-93f5-16f9e73699f6"
+            },
+            {
+              "id": "R-2",
+              "kind": "repository",
+              "path": "package-lock.json",
+              "repositoryId": "fdedfb0e-894e-490e-93f5-16f9e73699f6"
+            },
+            {
+              "id": "R-3",
+              "kind": "repository",
+              "path": "src/server.js",
+              "repositoryId": "fdedfb0e-894e-490e-93f5-16f9e73699f6"
+            },
+            {
+              "id": "R-4",
+              "kind": "repository",
+              "path": "test/health.test.js",
+              "repositoryId": "fdedfb0e-894e-490e-93f5-16f9e73699f6"
+            },
+            {
+              "id": "R-5",
+              "kind": "repository",
+              "path": "test/health-freshness.test.js",
+              "repositoryId": "fdedfb0e-894e-490e-93f5-16f9e73699f6"
+            },
+            {
+              "id": "R-6",
+              "kind": "repository",
+              "path": "test/service-health.test.js",
+              "repositoryId": "fdedfb0e-894e-490e-93f5-16f9e73699f6"
+            },
+            {
+              "id": "R-7",
+              "kind": "repository",
+              "path": "test/promo-codes.test.js",
+              "repositoryId": "fdedfb0e-894e-490e-93f5-16f9e73699f6"
+            },
+            {
+              "id": "R-8",
+              "kind": "repository",
+              "path": "test/smoke.test.js",
+              "repositoryId": "fdedfb0e-894e-490e-93f5-16f9e73699f6"
+            },
+            {
+              "id": "R-9",
+              "kind": "repository",
+              "path": ".github/workflows/ci.yml",
+              "repositoryId": "fdedfb0e-894e-490e-93f5-16f9e73699f6"
+            },
+            {
+              "id": "R-10",
+              "url": "https://github.com/truxt-ai/ops-dashboard/pull/106",
+              "kind": "provided_reference",
+              "title": "Reference remediation PR106",
+              "excerpt": "Supplied reference implementation; prefer validating this candidate when the delivery workflow can bind its exact PR. Required proof must be rerun.",
+              "verification": "unverified"
+            },
+            {
+              "id": "R-11",
+              "url": "https://axiom-stage.truxt.ai/b560f8c8/backend/issues/AXM-707",
+              "kind": "provided_reference",
+              "title": "Reference execution evidence",
+              "excerpt": "Supplied independently reproduced evidence; historical results must remain distinct from fresh execution.",
+              "verification": "unverified"
+            }
+          ],
+          "alternatives": [
+            {
+              "id": "chosen",
+              "tradeoffs": [
+                "Minimizes dependency and application changes but requires explicit resolution and lockfile-diff verification.",
+                "Advisory-backed fixture discovery is an execution prerequisite because exact payloads are not verified during read-only planning.",
+                "Durable evidence and exact-head verification add operational work but are necessary acceptance deliverables."
+              ],
+              "description": "Update the proxy-addr lockfile resolution, add one isolated four-case regression file, preserve application and CI behavior, and deliver durable fresh evidence through PR106 when bindable."
+            },
+            {
+              "id": "manifest-pin",
+              "tradeoffs": [
+                "Makes the version constraint explicit but changes dependency policy unnecessarily when Express's existing range admits 2.0.8.",
+                "Use only if execution establishes that a manifest change is strictly necessary."
+              ],
+              "description": "Add a proxy-addr manifest override as well as updating the lockfile."
+            }
+          ],
+          "dispositions": [
+            {
+              "mode": "executable",
+              "unitRefs": [
+                "UoW-1"
+              ],
+              "checkRefs": [
+                "CHECK-1"
+              ],
+              "rationale": "Fresh baseline execution establishes all 49 existing compatibility cases before changes.",
+              "requirementRef": "FR-1"
+            },
+            {
+              "mode": "executable",
+              "unitRefs": [
+                "UoW-2",
+                "UoW-3"
+              ],
+              "checkRefs": [
+                "CHECK-2",
+                "CHECK-3"
+              ],
+              "rationale": "Identical sourced fixtures establish two vulnerable assertion failures, passing controls and four fixed-version passes.",
+              "requirementRef": "FR-2"
+            },
+            {
+              "mode": "executable",
+              "unitRefs": [
+                "UoW-3"
+              ],
+              "checkRefs": [
+                "CHECK-3",
+                "CHECK-4"
+              ],
+              "rationale": "Installed/locked version checks, lint, full-suite execution and scope review prove the bounded upgrade.",
+              "requirementRef": "FR-3"
+            },
+            {
+              "mode": "executable",
+              "unitRefs": [
+                "UoW-4"
+              ],
+              "checkRefs": [
+                "CHECK-5"
+              ],
+              "rationale": "Delivery tooling verifies the chosen open PR and fresh hosted CI on its final exact head.",
+              "requirementRef": "FR-4"
+            },
+            {
+              "mode": "executable",
+              "unitRefs": [
+                "UoW-1",
+                "UoW-5"
+              ],
+              "checkRefs": [
+                "CHECK-6"
+              ],
+              "rationale": "Comparable complete live scans and a full inventory comparison verify target removal without hidden additions.",
+              "requirementRef": "FR-5"
+            },
+            {
+              "mode": "manual",
+              "unitRefs": [
+                "UoW-6"
+              ],
+              "checkRefs": [
+                "CHECK-7"
+              ],
+              "rationale": "Developer and delivery reviewer own publication, durable-link inspection and actual usage reconciliation under the original task.",
+              "requirementRef": "FR-6"
+            },
+            {
+              "mode": "cross_cutting",
+              "unitRefs": [
+                "UoW-2",
+                "UoW-3",
+                "UoW-5"
+              ],
+              "checkRefs": [
+                "CHECK-2",
+                "CHECK-3",
+                "CHECK-4",
+                "CHECK-6"
+              ],
+              "rationale": "Fixture isolation, default application trust, unchanged security checks and retained unrelated findings span reproduction, implementation and scanning.",
+              "requirementRef": "NFR-1"
+            },
+            {
+              "mode": "cross_cutting",
+              "unitRefs": [
+                "UoW-1",
+                "UoW-3"
+              ],
+              "checkRefs": [
+                "CHECK-1",
+                "CHECK-3",
+                "CHECK-4"
+              ],
+              "rationale": "Baseline and final Node 20 compatibility evidence preserve rendering, metrics, promo codes, independent liveness, timeout and readiness recovery.",
+              "requirementRef": "NFR-2"
+            },
+            {
+              "mode": "cross_cutting",
+              "unitRefs": [
+                "UoW-1",
+                "UoW-2",
+                "UoW-3",
+                "UoW-4",
+                "UoW-5",
+                "UoW-6"
+              ],
+              "checkRefs": [
+                "CHECK-1",
+                "CHECK-2",
+                "CHECK-3",
+                "CHECK-4",
+                "CHECK-5",
+                "CHECK-6",
+                "CHECK-7"
+              ],
+              "rationale": "Every slice records actual provenance and revision identity, distinguishes references from fresh results and preserves durable reproducible proof without inventing missing results.",
+              "requirementRef": "NFR-3"
+            }
+          ],
+          "decisionReason": "The inspected Express range admits 2.0.8, existing Node tests support isolated regression coverage, and unchanged production trust settings and CI satisfy the bounded maintenance scope.",
+          "selectedAlternative": "chosen"
+        },
+        "checkoutObservation": {
+          "fence": 1,
+          "hostId": "8644ef5f-d036-49ba-9bed-3e1fa22d8801",
+          "schema": "truxt-axiom/planning-checkout@1",
+          "omitted": [],
+          "sessionId": "113085d5-a8df-4ed3-a45d-79a64074eda7",
+          "observedAt": "2026-10-26T07:19:58.285Z",
+          "repositories": [
+            {
+              "clean": true,
+              "files": [
+                {
+                  "path": "package.json",
+                  "bytes": 635,
+                  "sha256": "79d314a40b2521c17ddbdc62a59dfd3654daf01b053c7295b95c5af75c122463",
+                  "observedBy": "daemon"
+                },
+                {
+                  "path": "package-lock.json",
+                  "bytes": 78522,
+                  "sha256": "f290ad3809f8fe38dc67c16dd43a9c7d13cf13af66d0b995beeb5801b0462a33",
+                  "observedBy": "daemon"
+                },
+                {
+                  "path": "src/server.js",
+                  "bytes": 2587,
+                  "sha256": "09c7372a75e4dae9d2b16899f938be791c8c3877aabc8e0d150be7807e8b6f96",
+                  "observedBy": "daemon"
+                },
+                {
+                  "path": "test/health.test.js",
+                  "bytes": 5368,
+                  "sha256": "6f1688e3c64eb451dc51327f53ebeb263d28ac2fa44f4f455d85b0b2f70c1c90",
+                  "observedBy": "daemon"
+                },
+                {
+                  "path": "test/health-freshness.test.js",
+                  "bytes": 4195,
+                  "sha256": "91fda98efd2dd6be112e25d1861a5d9e566bee7c4534c86fb9264793b45c705d",
+                  "observedBy": "daemon"
+                },
+                {
+                  "path": "test/service-health.test.js",
+                  "bytes": 5075,
+                  "sha256": "c6d92f80fd77b78f37e4000dee93030e835e5cb24f01f6e0acc63355568aa510",
+                  "observedBy": "daemon"
+                },
+                {
+                  "path": "test/promo-codes.test.js",
+                  "bytes": 4036,
+                  "sha256": "c211dbb3146f091e944f64298b1790b2b087b74b5e827c71c1b845a53ec4f80b",
+                  "observedBy": "daemon"
+                },
+                {
+                  "path": "test/smoke.test.js",
+                  "bytes": 1272,
+                  "sha256": "b7593b3490e12dea6331b6b3526a783fbcfbdc9329d7e4d9a7148a9b6ab05b96",
+                  "observedBy": "daemon"
+                },
+                {
+                  "path": ".github/workflows/ci.yml",
+                  "bytes": 396,
+                  "sha256": "189ac619dab68e5c78c4a69c5a8a2efe5b6b174dfc265fc35e5e0b5c124352e0",
+                  "observedBy": "daemon"
+                }
+              ],
+              "configDigest": "6fe350b011e718af048152adb69eae9cf17d086f27d38653b3554cc8c5869d11",
+              "repositoryId": "fdedfb0e-894e-490e-93f5-16f9e73699f6",
+              "requestedRef": "master",
+              "resolvedCommit": "dff02375d83394d6f03ce2127e35e62fadc269ab"
+            }
+          ],
+          "planningRunId": "0db1843d-07ad-4da6-af4e-8500df9effac"
+        }
+      }
+    ]
+  }
+}

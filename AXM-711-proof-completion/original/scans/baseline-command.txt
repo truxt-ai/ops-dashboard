@@ -1,0 +1,12 @@
+Start: 2026-10-26T08:40:55.630263+00:00
+Revision: dff02375d83394d6f03ce2127e35e62fadc269ab
+CWD: /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0
+Command: /data/work-root/qa-evidence/AXM-708-db9dc0/tools/osv-scanner scan source --lockfile package-lock.json --config /data/work-root/qa-evidence/AXM-708-db9dc0/scans/osv-scanner.toml --no-ignore --all-packages --all-vulns --format json --output-file /data/work-root/qa-evidence/AXM-708-db9dc0/scans/baseline.json
+Node bin: /data/work-root/qa-evidence/AXM-708-db9dc0/tools/node-v20.20.2-linux-arm64/bin
+
+Starting filesystem walk for root: /
+Scanned /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json file and found 175 packages
+End status: 0 dirs visited, 1 inodes visited, 1 Extract calls, 5.456214ms elapsed, 5.456294ms wall time
+
+End: 2026-10-26T08:40:58.211227+00:00
+Exit status: 1

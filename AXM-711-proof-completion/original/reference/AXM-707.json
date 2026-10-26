@@ -1,0 +1,14 @@
+{
+  "id": "4a5bde09-a6a8-4d44-8e78-83288dc70be5",
+  "identifier": "AXM-707",
+  "title": "proxy-addr fixed — 53 tests passing",
+  "description": "proxy-addr upgraded from 2.0.7 to 2.0.8. The selected critical finding is absent from the exact-head rescan; existing application tests remain green.\n\n| Verification | Result |\n| --- | --- |\n| Existing tests before change | 49 passed |\n| New security regression before fix | 2 failed as expected; 2 controls passed |\n| New security regression after fix | 4 passed |\n| Existing + new tests after fix | 53 passed; 0 failed |\n| Lint and hosted CI | Passed on PR head |\n| Dependency rescan | Selected finding removed; 0 new findings; 49 others remain |\n\nFull QA report, red/green test logs, CI output, test catalog, raw rescan and the complete proof bundle are attached in **Files** below.\n\n[Pull request #106](https://github.com/truxt-ai/ops-dashboard/pull/106) · [CI execution](https://github.com/truxt-ai/ops-dashboard/actions/runs/40281260398/job/121434854922) · [Original scan report](https://axiom-stage.truxt.ai/b560f8c8/backend/issues/AXM-698)\n\nCommit: `2b6a64fb5edc323081162457b989878a36c686ff`. Existing HTTP integration coverage includes dashboard rendering, liveness/readiness, upstream failures and recovery. No existing tests were disabled. Change scope: package.json, package-lock.json and four regression/control cases in test/proxy-addr-security.test.js.\n\nFinding: CVE-2026-90711 / GHSA-jqcg-44mw-7w3h. OSV Scanner 2.6.0, live OSV API, identical coverage and configuration: 175 package versions before and after; canonical findings 50 → 49. Remaining: 1 critical, 22 high, 22 medium, 4 low. The tests exercise the advisory's proxy-trust precondition; this application's trust-proxy setting remains disabled.\n\n| Capacity and ownership | Recorded value |\n| --- | --- |\n| Developer | Raunak Poonia |\n| Agent / model | Security Remediation / Codex gpt-6-astra |\n| Planning estimate | 50–200k fresh input/output tokens; up to $10 allowance |\n| Actual fresh input / output | 108,393 / 10,347 tokens |\n| Cached input | 2,219,264 tokens |\n| Total processed, including cache | 2,338,004 tokens |\n| Recorded execution cost | $3.82 |\n| Execution duration | 7m 35s |\n\nThe PR remains open for review. Results cover the tested application behavior and selected dependency finding. This completed task used native Axiom execution; the separate Verified Delivery validation is tracked in [AXM-708](https://axiom-stage.truxt.ai/b560f8c8/backend/issues/AXM-708).\n",
+  "status": "in_review",
+  "priority": "critical",
+  "parentId": "f48f4525-d8f4-4ccb-ad0f-0ce43990c175",
+  "projectId": "b7ee50ee-2ea6-4719-a57a-f8237f0d75ea",
+  "assigneeAgentId": "1be3dfa3-1e60-490c-921c-4bf25551fa2f",
+  "assigneeUserId": "4719b0b0-2b2b-48e8-b7e4-d5fef638d4c4",
+  "createdAt": "2026-10-26T06:35:17.098Z",
+  "updatedAt": "2026-10-26T07:00:41.498Z"
+}

@@ -1,0 +1,13 @@
+{
+  "command": [
+    "node",
+    "--test",
+    "test/proxy-addr-security.test.js"
+  ],
+  "cwd": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0",
+  "revision": "712d9c36395d58996689763523d7fe8ba9b7fbae",
+  "started_at": "2026-10-26T08:52:26.811039+00:00",
+  "ended_at": "2026-10-26T08:52:26.996990+00:00",
+  "exit_code": 0,
+  "log": "/data/work-root/qa-evidence/AXM-708-db9dc0/candidate/regression.txt"
+}

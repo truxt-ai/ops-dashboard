@@ -1,0 +1,520 @@
+Start: 2026-10-26T08:56:34.828892+00:00
+Revision: 712d9c36395d58996689763523d7fe8ba9b7fbae
+CWD: /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0
+Command: gh run view 40295522832 --repo truxt-ai/ops-dashboard --log
+Node bin: /data/work-root/qa-evidence/AXM-708-db9dc0/tools/node-v20.20.2-linux-arm64/bin
+
+build	Set up job	﻿2026-10-26T08:54:19.1479823Z Current runner version: '2.338.0'
+build	Set up job	2026-10-26T08:54:19.1516990Z ##[group]Runner Image Provisioner
+build	Set up job	2026-10-26T08:54:19.1518591Z Hosted Compute Agent
+build	Set up job	2026-10-26T08:54:19.1520026Z Version: 20261021.618
+build	Set up job	2026-10-26T08:54:19.1521054Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+build	Set up job	2026-10-26T08:54:19.1522396Z Build Date: 2026-10-21T00:45:21Z
+build	Set up job	2026-10-26T08:54:19.1523543Z Worker ID: {1362e85c-f1d2-4ae3-a2e8-ca621a19cc46}
+build	Set up job	2026-10-26T08:54:19.1524842Z Region: eastus
+build	Set up job	2026-10-26T08:54:19.1525820Z Cloud: Azure
+build	Set up job	2026-10-26T08:54:19.1526901Z ##[endgroup]
+build	Set up job	2026-10-26T08:54:19.1529244Z ##[group]Operating System
+build	Set up job	2026-10-26T08:54:19.1530661Z Ubuntu
+build	Set up job	2026-10-26T08:54:19.1531702Z 24.04.5
+build	Set up job	2026-10-26T08:54:19.1532501Z LTS
+build	Set up job	2026-10-26T08:54:19.1533629Z ##[endgroup]
+build	Set up job	2026-10-26T08:54:19.1534599Z ##[group]Runner Image
+build	Set up job	2026-10-26T08:54:19.1535552Z Image: ubuntu-24.04
+build	Set up job	2026-10-26T08:54:19.1536645Z Version: 20261012.334.1
+build	Set up job	2026-10-26T08:54:19.1538483Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+build	Set up job	2026-10-26T08:54:19.1541986Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+build	Set up job	2026-10-26T08:54:19.1543642Z ##[endgroup]
+build	Set up job	2026-10-26T08:54:19.1549715Z ##[group]GITHUB_TOKEN Permissions
+build	Set up job	2026-10-26T08:54:19.1552985Z Actions: write
+build	Set up job	2026-10-26T08:54:19.1554015Z ArtifactMetadata: write
+build	Set up job	2026-10-26T08:54:19.1555813Z Attestations: write
+build	Set up job	2026-10-26T08:54:19.1557223Z Checks: write
+build	Set up job	2026-10-26T08:54:19.1558222Z CodeQuality: write
+build	Set up job	2026-10-26T08:54:19.1559552Z Contents: write
+build	Set up job	2026-10-26T08:54:19.1560532Z CopilotRequests: write
+build	Set up job	2026-10-26T08:54:19.1561629Z Deployments: write
+build	Set up job	2026-10-26T08:54:19.1562620Z Discussions: write
+build	Set up job	2026-10-26T08:54:19.1563490Z Drives: write
+build	Set up job	2026-10-26T08:54:19.1564617Z Issues: write
+build	Set up job	2026-10-26T08:54:19.1565672Z Metadata: read
+build	Set up job	2026-10-26T08:54:19.1566503Z Models: read
+build	Set up job	2026-10-26T08:54:19.1567568Z Packages: write
+build	Set up job	2026-10-26T08:54:19.1568516Z Pages: write
+build	Set up job	2026-10-26T08:54:19.1570070Z PullRequests: write
+build	Set up job	2026-10-26T08:54:19.1571191Z RepositoryProjects: write
+build	Set up job	2026-10-26T08:54:19.1572363Z SecurityEvents: write
+build	Set up job	2026-10-26T08:54:19.1573354Z Statuses: write
+build	Set up job	2026-10-26T08:54:19.1574306Z VulnerabilityAlerts: read
+build	Set up job	2026-10-26T08:54:19.1575483Z ##[endgroup]
+build	Set up job	2026-10-26T08:54:19.1578594Z Secret source: Actions
+build	Set up job	2026-10-26T08:54:19.1580571Z Cache mode: write
+build	Set up job	2026-10-26T08:54:19.1581872Z Prepare workflow directory
+build	Set up job	2026-10-26T08:54:19.2062427Z Prepare all required actions
+build	Set up job	2026-10-26T08:54:19.2135197Z Getting action download info
+build	Set up job	2026-10-26T08:54:19.4229114Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+build	Set up job	2026-10-26T08:54:19.5248820Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+build	Set up job	2026-10-26T08:54:19.7078572Z Complete job name: build
+build	Run actions/checkout@v4	﻿2026-10-26T08:54:19.8008710Z ##[group]Run actions/checkout@v4
+build	Run actions/checkout@v4	2026-10-26T08:54:19.8009970Z with:
+build	Run actions/checkout@v4	2026-10-26T08:54:19.8010439Z   repository: truxt-ai/ops-dashboard
+build	Run actions/checkout@v4	2026-10-26T08:54:19.8014192Z   token: ***
+build	Run actions/checkout@v4	2026-10-26T08:54:19.8014652Z   ssh-strict: true
+build	Run actions/checkout@v4	2026-10-26T08:54:19.8015084Z   ssh-user: git
+build	Run actions/checkout@v4	2026-10-26T08:54:19.8015526Z   persist-credentials: true
+build	Run actions/checkout@v4	2026-10-26T08:54:19.8016004Z   clean: true
+build	Run actions/checkout@v4	2026-10-26T08:54:19.8016441Z   sparse-checkout-cone-mode: true
+build	Run actions/checkout@v4	2026-10-26T08:54:19.8016954Z   fetch-depth: 1
+build	Run actions/checkout@v4	2026-10-26T08:54:19.8017370Z   fetch-tags: false
+build	Run actions/checkout@v4	2026-10-26T08:54:19.8017806Z   show-progress: true
+build	Run actions/checkout@v4	2026-10-26T08:54:19.8018235Z   lfs: false
+build	Run actions/checkout@v4	2026-10-26T08:54:19.8018641Z   submodules: false
+build	Run actions/checkout@v4	2026-10-26T08:54:19.8019080Z   set-safe-directory: true
+build	Run actions/checkout@v4	2026-10-26T08:54:19.8019939Z   allow-unsafe-pr-checkout: false
+build	Run actions/checkout@v4	2026-10-26T08:54:19.8020766Z ##[endgroup]
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9039754Z Syncing repository: truxt-ai/ops-dashboard
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9041847Z ##[group]Getting Git version info
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9042685Z Working directory is '/home/runner/work/ops-dashboard/ops-dashboard'
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9043838Z [command]/usr/bin/git version
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9122409Z git version 2.55.0
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9143636Z ##[endgroup]
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9157732Z Temporarily overriding HOME='/home/runner/work/_temp/cb6db5d0-e636-4fde-929f-ee589eb8bf31' before making global git config changes
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9160349Z Adding repository directory to the temporary git global config as a safe directory
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9163338Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ops-dashboard/ops-dashboard
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9223235Z Deleting the contents of '/home/runner/work/ops-dashboard/ops-dashboard'
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9227398Z ##[group]Initializing the repository
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9232069Z [command]/usr/bin/git init /home/runner/work/ops-dashboard/ops-dashboard
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9419263Z hint: Using 'master' as the name for the initial branch. This default branch name
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9422214Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9423583Z hint: to use in all of your new repositories, which will suppress this warning,
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9424590Z hint: call:
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9425155Z hint:
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9425840Z hint: 	git config --global init.defaultBranch <name>
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9426670Z hint:
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9427544Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9429087Z hint: 'development'. The just-created branch can be renamed via this command:
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9430662Z hint:
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9431091Z hint: 	git branch -m <name>
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9431562Z hint:
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9432358Z hint: Disable this message with "git config set advice.defaultBranchName false"
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9433670Z Initialized empty Git repository in /home/runner/work/ops-dashboard/ops-dashboard/.git/
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9435623Z [command]/usr/bin/git remote add origin https://github.com/truxt-ai/ops-dashboard
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9483694Z ##[endgroup]
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9484489Z ##[group]Disabling automatic garbage collection
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9489450Z [command]/usr/bin/git config --local gc.auto 0
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9522571Z ##[endgroup]
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9524034Z ##[group]Setting up auth
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9530327Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9562180Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9909651Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build	Run actions/checkout@v4	2026-10-26T08:54:19.9943529Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build	Run actions/checkout@v4	2026-10-26T08:54:20.0166458Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build	Run actions/checkout@v4	2026-10-26T08:54:20.0197817Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build	Run actions/checkout@v4	2026-10-26T08:54:20.0419091Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+build	Run actions/checkout@v4	2026-10-26T08:54:20.0456602Z ##[endgroup]
+build	Run actions/checkout@v4	2026-10-26T08:54:20.0465443Z ##[group]Fetching the repository
+build	Run actions/checkout@v4	2026-10-26T08:54:20.0466970Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +85c2b106ee0987d9db47756208e3ac90db17a4e2:refs/remotes/pull/107/merge
+build	Run actions/checkout@v4	2026-10-26T08:54:20.2939625Z From https://github.com/truxt-ai/ops-dashboard
+build	Run actions/checkout@v4	2026-10-26T08:54:20.2941613Z  * [new ref]         85c2b106ee0987d9db47756208e3ac90db17a4e2 -> pull/107/merge
+build	Run actions/checkout@v4	2026-10-26T08:54:20.2945355Z ##[endgroup]
+build	Run actions/checkout@v4	2026-10-26T08:54:20.2947037Z ##[group]Determining the checkout info
+build	Run actions/checkout@v4	2026-10-26T08:54:20.2948992Z ##[endgroup]
+build	Run actions/checkout@v4	2026-10-26T08:54:20.2954779Z [command]/usr/bin/git sparse-checkout disable
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3003629Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3039466Z ##[group]Checking out the ref
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3045116Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/107/merge
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3112536Z Note: switching to 'refs/remotes/pull/107/merge'.
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3113614Z 
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3114294Z You are in 'detached HEAD' state. You can look around, make experimental
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3115464Z changes and commit them, and you can discard any commits you make in this
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3116628Z state without impacting any branches by switching back to a branch.
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3117688Z 
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3118203Z If you want to create a new branch to retain commits you create, you may
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3119720Z do so (now or later) by using -c with the switch command. Example:
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3121022Z 
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3121596Z   git switch -c <new-branch-name>
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3122439Z 
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3122969Z Or undo this operation with:
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3123781Z 
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3124294Z   git switch -
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3125014Z 
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3126043Z Turn off this advice by setting config variable advice.detachedHead to false
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3127539Z 
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3128856Z HEAD is now at 85c2b10 Merge 712d9c36395d58996689763523d7fe8ba9b7fbae into dff02375d83394d6f03ce2127e35e62fadc269ab
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3132963Z ##[endgroup]
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3166734Z [command]/usr/bin/git log -1 --format=%H
+build	Run actions/checkout@v4	2026-10-26T08:54:20.3188861Z 85c2b106ee0987d9db47756208e3ac90db17a4e2
+build	Setup Node	﻿2026-10-26T08:54:20.3574082Z ##[group]Run actions/setup-node@v4
+build	Setup Node	2026-10-26T08:54:20.3574864Z with:
+build	Setup Node	2026-10-26T08:54:20.3575320Z   node-version: 20
+build	Setup Node	2026-10-26T08:54:20.3575779Z   cache: npm
+build	Setup Node	2026-10-26T08:54:20.3576257Z   always-auth: false
+build	Setup Node	2026-10-26T08:54:20.3576743Z   check-latest: false
+build	Setup Node	2026-10-26T08:54:20.3581169Z   token: ***
+build	Setup Node	2026-10-26T08:54:20.3581674Z ##[endgroup]
+build	Setup Node	2026-10-26T08:54:20.5044589Z Attempting to download 20...
+build	Setup Node	2026-10-26T08:54:20.5159556Z (node:2201) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+build	Setup Node	2026-10-26T08:54:20.5161870Z (Use `node --trace-deprecation ...` to show where the warning was created)
+build	Setup Node	2026-10-26T08:54:20.9217237Z Acquiring 20.20.2 - x64 from https://github.com/actions/node-versions/releases/download/20.20.2-23521894959/node-20.20.2-linux-x64.tar.gz
+build	Setup Node	2026-10-26T08:54:21.2317052Z Extracting ...
+build	Setup Node	2026-10-26T08:54:21.2443360Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/076eaf78-8839-47af-9335-9eda520c8ada -f /home/runner/work/_temp/4d360f89-fdbe-47b2-b860-981de94c64b2
+build	Setup Node	2026-10-26T08:54:22.2525269Z Adding to the cache ...
+build	Setup Node	2026-10-26T08:54:23.9031787Z ##[group]Environment details
+build	Setup Node	2026-10-26T08:54:24.1327371Z node: v20.20.2
+build	Setup Node	2026-10-26T08:54:24.1328341Z npm: 10.8.2
+build	Setup Node	2026-10-26T08:54:24.1329054Z yarn: 1.22.22
+build	Setup Node	2026-10-26T08:54:24.1330617Z ##[endgroup]
+build	Setup Node	2026-10-26T08:54:24.1351393Z [command]/opt/hostedtoolcache/node/20.20.2/x64/bin/npm config get cache
+build	Setup Node	2026-10-26T08:54:24.2420361Z /home/runner/.npm
+build	Setup Node	2026-10-26T08:54:24.3117281Z npm cache is not found
+build	Install dependencies	﻿2026-10-26T08:54:24.3335462Z ##[group]Run npm ci
+build	Install dependencies	2026-10-26T08:54:24.3335954Z [36;1mnpm ci[0m
+build	Install dependencies	2026-10-26T08:54:24.3617027Z shell: /usr/bin/bash -e {0}
+build	Install dependencies	2026-10-26T08:54:24.3617468Z ##[endgroup]
+build	Install dependencies	2026-10-26T08:54:25.8824500Z npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+build	Install dependencies	2026-10-26T08:54:25.8850502Z npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+build	Install dependencies	2026-10-26T08:54:25.9432168Z npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+build	Install dependencies	2026-10-26T08:54:25.9927475Z npm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+build	Install dependencies	2026-10-26T08:54:26.0079602Z npm warn deprecated @humanwhocodes/config-array@0.11.14: Use @eslint/config-array instead
+build	Install dependencies	2026-10-26T08:54:26.5973806Z npm warn deprecated eslint@8.57.0: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+build	Install dependencies	2026-10-26T08:54:26.6875070Z 
+build	Install dependencies	2026-10-26T08:54:26.6876147Z added 181 packages, and audited 182 packages in 2s
+build	Install dependencies	2026-10-26T08:54:26.6876726Z 
+build	Install dependencies	2026-10-26T08:54:26.6877081Z 40 packages are looking for funding
+build	Install dependencies	2026-10-26T08:54:26.6877667Z   run `npm fund` for details
+build	Install dependencies	2026-10-26T08:54:26.7058857Z 
+build	Install dependencies	2026-10-26T08:54:26.7060263Z 10 vulnerabilities (3 low, 1 moderate, 5 high, 1 critical)
+build	Install dependencies	2026-10-26T08:54:26.7060900Z 
+build	Install dependencies	2026-10-26T08:54:26.7061388Z To address issues that do not require attention, run:
+build	Install dependencies	2026-10-26T08:54:26.7062028Z   npm audit fix
+build	Install dependencies	2026-10-26T08:54:26.7062341Z 
+build	Install dependencies	2026-10-26T08:54:26.7062610Z To address all issues, run:
+build	Install dependencies	2026-10-26T08:54:26.7063107Z   npm audit fix --force
+build	Install dependencies	2026-10-26T08:54:26.7063430Z 
+build	Install dependencies	2026-10-26T08:54:26.7063644Z Run `npm audit` for details.
+build	Lint	﻿2026-10-26T08:54:26.7239184Z ##[group]Run npm run lint
+build	Lint	2026-10-26T08:54:26.7239850Z [36;1mnpm run lint[0m
+build	Lint	2026-10-26T08:54:26.7303846Z shell: /usr/bin/bash -e {0}
+build	Lint	2026-10-26T08:54:26.7304131Z ##[endgroup]
+build	Lint	2026-10-26T08:54:26.8466704Z 
+build	Lint	2026-10-26T08:54:26.8467450Z > axiom-demo-dashboard@1.0.0 lint
+build	Lint	2026-10-26T08:54:26.8467861Z > eslint .
+build	Lint	2026-10-26T08:54:26.8468006Z 
+build	Test	﻿2026-10-26T08:54:27.2689130Z ##[group]Run npm test
+build	Test	2026-10-26T08:54:27.2689975Z [36;1mnpm test[0m
+build	Test	2026-10-26T08:54:27.2751289Z shell: /usr/bin/bash -e {0}
+build	Test	2026-10-26T08:54:27.2751569Z ##[endgroup]
+build	Test	2026-10-26T08:54:27.3931793Z 
+build	Test	2026-10-26T08:54:27.3932536Z > axiom-demo-dashboard@1.0.0 test
+build	Test	2026-10-26T08:54:27.3933018Z > node --test
+build	Test	2026-10-26T08:54:27.3933187Z 
+build	Test	2026-10-26T08:54:27.4431357Z TAP version 13
+build	Test	2026-10-26T08:54:27.6750920Z # (node:2303) ExperimentalWarning: The MockTimers API is an experimental feature and might change at any time
+build	Test	2026-10-26T08:54:27.6752982Z # (Use `node --trace-warnings ...` to show where the warning was created)
+build	Test	2026-10-26T08:54:27.7121050Z # Subtest: TC-01: successful metrics build records its completion and renders fresh UTC time
+build	Test	2026-10-26T08:54:27.7122982Z ok 1 - TC-01: successful metrics build records its completion and renders fresh UTC time
+build	Test	2026-10-26T08:54:27.7149976Z   ---
+build	Test	2026-10-26T08:54:27.7180325Z   duration_ms: 19.071057
+build	Test	2026-10-26T08:54:27.7210231Z   ...
+build	Test	2026-10-26T08:54:27.7211069Z # Subtest: refresh clock is read after calculation, and never after failed calculation
+build	Test	2026-10-26T08:54:27.7212522Z ok 2 - refresh clock is read after calculation, and never after failed calculation
+build	Test	2026-10-26T08:54:27.7240048Z   ---
+build	Test	2026-10-26T08:54:27.7270014Z   duration_ms: 1.25623
+build	Test	2026-10-26T08:54:27.7271505Z   ...
+build	Test	2026-10-26T08:54:27.7300633Z # Subtest: TC-02: stale rendering preserves the snapshot timestamp with text and styling
+build	Test	2026-10-26T08:54:27.7330502Z ok 3 - TC-02: stale rendering preserves the snapshot timestamp with text and styling
+build	Test	2026-10-26T08:54:27.7360014Z   ---
+build	Test	2026-10-26T08:54:27.7376991Z   duration_ms: 1.223609
+build	Test	2026-10-26T08:54:27.7400080Z   ...
+build	Test	2026-10-26T08:54:27.7420340Z # Subtest: TC-03: snapshot aged 299999 ms is fresh
+build	Test	2026-10-26T08:54:27.7460289Z ok 4 - TC-03: snapshot aged 299999 ms is fresh
+build	Test	2026-10-26T08:54:27.7476984Z   ---
+build	Test	2026-10-26T08:54:27.7490319Z   duration_ms: 2.215094
+build	Test	2026-10-26T08:54:27.7490921Z   ...
+build	Test	2026-10-26T08:54:27.7491760Z # Subtest: TC-03: snapshot aged 300000 ms is fresh
+build	Test	2026-10-26T08:54:27.7492648Z ok 5 - TC-03: snapshot aged 300000 ms is fresh
+build	Test	2026-10-26T08:54:27.7493336Z   ---
+build	Test	2026-10-26T08:54:27.7493845Z   duration_ms: 0.57193
+build	Test	2026-10-26T08:54:27.7494365Z   ...
+build	Test	2026-10-26T08:54:27.7495013Z # Subtest: TC-03: snapshot aged 300001 ms is stale
+build	Test	2026-10-26T08:54:27.7495842Z ok 6 - TC-03: snapshot aged 300001 ms is stale
+build	Test	2026-10-26T08:54:27.7496493Z   ---
+build	Test	2026-10-26T08:54:27.7496985Z   duration_ms: 0.497061
+build	Test	2026-10-26T08:54:27.7497513Z   ...
+build	Test	2026-10-26T08:54:27.7498339Z # Subtest: TC-04: UTC date boundary uses zero-padded UTC hours and minutes
+build	Test	2026-10-26T08:54:27.7500244Z ok 7 - TC-04: UTC date boundary uses zero-padded UTC hours and minutes
+build	Test	2026-10-26T08:54:27.7501046Z   ---
+build	Test	2026-10-26T08:54:27.7501602Z   duration_ms: 0.482863
+build	Test	2026-10-26T08:54:27.7502143Z   ...
+build	Test	2026-10-26T08:54:27.7503080Z # Subtest: TC-05: GET / wires the build timestamp into the actual dashboard
+build	Test	2026-10-26T08:54:27.7504252Z ok 8 - TC-05: GET / wires the build timestamp into the actual dashboard
+build	Test	2026-10-26T08:54:27.7505054Z   ---
+build	Test	2026-10-26T08:54:27.7505542Z   duration_ms: 73.457539
+build	Test	2026-10-26T08:54:27.7506074Z   ...
+build	Test	2026-10-26T08:54:27.8511259Z # Subtest: health endpoints (AXM-666 / TD-84, UoW-1)
+build	Test	2026-10-26T08:54:27.8512434Z     # Subtest: TC-01: liveness ignores healthy upstream
+build	Test	2026-10-26T08:54:27.8513401Z     ok 1 - TC-01: liveness ignores healthy upstream
+build	Test	2026-10-26T08:54:27.8514167Z       ---
+build	Test	2026-10-26T08:54:27.8514697Z       duration_ms: 21.566394
+build	Test	2026-10-26T08:54:27.8515260Z       ...
+build	Test	2026-10-26T08:54:27.8515900Z     # Subtest: TC-02: liveness ignores failing upstream
+build	Test	2026-10-26T08:54:27.8516775Z     ok 2 - TC-02: liveness ignores failing upstream
+build	Test	2026-10-26T08:54:27.8517471Z       ---
+build	Test	2026-10-26T08:54:27.8517975Z       duration_ms: 6.449886
+build	Test	2026-10-26T08:54:27.8518532Z       ...
+build	Test	2026-10-26T08:54:27.8519491Z     # Subtest: TC-03: readiness probes upstream with the existing timeout
+build	Test	2026-10-26T08:54:27.8520624Z     ok 3 - TC-03: readiness probes upstream with the existing timeout
+build	Test	2026-10-26T08:54:27.8522124Z       ---
+build	Test	2026-10-26T08:54:27.8522705Z       duration_ms: 5.17446
+build	Test	2026-10-26T08:54:27.8523346Z       ...
+build	Test	2026-10-26T08:54:27.8524224Z     # Subtest: TC-04: readiness identifies upstream on HTTP failure
+build	Test	2026-10-26T08:54:27.8525527Z     ok 4 - TC-04: readiness identifies upstream on HTTP failure
+build	Test	2026-10-26T08:54:27.8526649Z       ---
+build	Test	2026-10-26T08:54:27.8527296Z       duration_ms: 4.546665
+build	Test	2026-10-26T08:54:27.8527993Z       ...
+build	Test	2026-10-26T08:54:27.8528945Z     # Subtest: TC-04: readiness identifies upstream on connection error
+build	Test	2026-10-26T08:54:27.8530377Z     ok 5 - TC-04: readiness identifies upstream on connection error
+build	Test	2026-10-26T08:54:27.8531562Z       ---
+build	Test	2026-10-26T08:54:27.8541453Z       duration_ms: 4.910216
+build	Test	2026-10-26T08:54:27.8542098Z       ...
+build	Test	2026-10-26T08:54:27.8542861Z     # Subtest: TC-04: readiness identifies upstream on timeout
+build	Test	2026-10-26T08:54:27.8543844Z     ok 6 - TC-04: readiness identifies upstream on timeout
+build	Test	2026-10-26T08:54:27.8544580Z       ---
+build	Test	2026-10-26T08:54:27.8545116Z       duration_ms: 10.637981
+build	Test	2026-10-26T08:54:27.8545763Z       ...
+build	Test	2026-10-26T08:54:27.8546807Z     # Subtest: TC-05: pending and repeated failures leave liveness available, then readiness recovers
+build	Test	2026-10-26T08:54:27.8548447Z     ok 7 - TC-05: pending and repeated failures leave liveness available, then readiness recovers
+build	Test	2026-10-26T08:54:27.8549797Z       ---
+build	Test	2026-10-26T08:54:27.8550384Z       duration_ms: 22.742836
+build	Test	2026-10-26T08:54:27.8551013Z       ...
+build	Test	2026-10-26T08:54:27.8551844Z     # Subtest: TC-06: legacy upstream success preserves the upstream status
+build	Test	2026-10-26T08:54:27.8553035Z     ok 8 - TC-06: legacy upstream success preserves the upstream status
+build	Test	2026-10-26T08:54:27.8553915Z       ---
+build	Test	2026-10-26T08:54:27.8554488Z       duration_ms: 8.177067
+build	Test	2026-10-26T08:54:27.8555128Z       ...
+build	Test	2026-10-26T08:54:27.8556072Z     # Subtest: TC-06: legacy upstream failure preserves 502 and the error field
+build	Test	2026-10-26T08:54:27.8557342Z     ok 9 - TC-06: legacy upstream failure preserves 502 and the error field
+build	Test	2026-10-26T08:54:27.8558262Z       ---
+build	Test	2026-10-26T08:54:27.8558866Z       duration_ms: 3.772448
+build	Test	2026-10-26T08:54:27.8559780Z       ...
+build	Test	2026-10-26T08:54:27.8560302Z     1..9
+build	Test	2026-10-26T08:54:27.8638540Z ok 9 - health endpoints (AXM-666 / TD-84, UoW-1)
+build	Test	2026-10-26T08:54:27.8639591Z   ---
+build	Test	2026-10-26T08:54:27.8640002Z   duration_ms: 90.614997
+build	Test	2026-10-26T08:54:27.8640449Z   type: 'suite'
+build	Test	2026-10-26T08:54:27.8640825Z   ...
+build	Test	2026-10-26T08:54:27.8641409Z # Subtest: applyPromoCode: WELCOME10 on 100 returns 90
+build	Test	2026-10-26T08:54:27.8642172Z ok 10 - applyPromoCode: WELCOME10 on 100 returns 90
+build	Test	2026-10-26T08:54:27.8643240Z   ---
+build	Test	2026-10-26T08:54:27.8643607Z   duration_ms: 2.366407
+build	Test	2026-10-26T08:54:27.8644000Z   ...
+build	Test	2026-10-26T08:54:27.8644545Z # Subtest: applyPromoCode: PRO25 on 100 returns 75
+build	Test	2026-10-26T08:54:27.8645318Z ok 11 - applyPromoCode: PRO25 on 100 returns 75
+build	Test	2026-10-26T08:54:27.8645836Z   ---
+build	Test	2026-10-26T08:54:27.8646160Z   duration_ms: 0.216364
+build	Test	2026-10-26T08:54:27.8646523Z   ...
+build	Test	2026-10-26T08:54:27.8670451Z # Subtest: applyPromoCode: LEGACY50 (inactive) on 100 returns 100
+build	Test	2026-10-26T08:54:27.8672223Z ok 12 - applyPromoCode: LEGACY50 (inactive) on 100 returns 100
+build	Test	2026-10-26T08:54:27.8700009Z   ---
+build	Test	2026-10-26T08:54:27.8730166Z   duration_ms: 0.29413
+build	Test	2026-10-26T08:54:27.8730921Z   ...
+build	Test	2026-10-26T08:54:27.8731639Z # Subtest: applyPromoCode: unknown code NOPE returns original price
+build	Test	2026-10-26T08:54:27.8732643Z ok 13 - applyPromoCode: unknown code NOPE returns original price
+build	Test	2026-10-26T08:54:27.8750180Z   ---
+build	Test	2026-10-26T08:54:27.8750843Z   duration_ms: 0.203771
+build	Test	2026-10-26T08:54:27.8751440Z   ...
+build	Test	2026-10-26T08:54:27.8752354Z # Subtest: applyPromoCode: misspelled code WELCOM10 returns original price
+build	Test	2026-10-26T08:54:27.8753601Z ok 14 - applyPromoCode: misspelled code WELCOM10 returns original price
+build	Test	2026-10-26T08:54:27.8754411Z   ---
+build	Test	2026-10-26T08:54:27.8754887Z   duration_ms: 0.200105
+build	Test	2026-10-26T08:54:27.8755397Z   ...
+build	Test	2026-10-26T08:54:27.8756308Z # Subtest: applyPromoCode: lowercase welcome10 treated same as WELCOME10
+build	Test	2026-10-26T08:54:27.8757996Z ok 15 - applyPromoCode: lowercase welcome10 treated same as WELCOME10
+build	Test	2026-10-26T08:54:27.8758832Z   ---
+build	Test	2026-10-26T08:54:27.8759568Z   duration_ms: 0.225292
+build	Test	2026-10-26T08:54:27.8760207Z   ...
+build	Test	2026-10-26T08:54:27.8760965Z # Subtest: applyPromoCode: PRO25 on 99.99 rounds to 74.99
+build	Test	2026-10-26T08:54:27.8761973Z ok 16 - applyPromoCode: PRO25 on 99.99 rounds to 74.99
+build	Test	2026-10-26T08:54:27.8762714Z   ---
+build	Test	2026-10-26T08:54:27.8763236Z   duration_ms: 0.340186
+build	Test	2026-10-26T08:54:27.8763798Z   ...
+build	Test	2026-10-26T08:54:27.8764612Z # Subtest: applyPromoCode: empty string code leaves price unchanged
+build	Test	2026-10-26T08:54:27.8765799Z ok 17 - applyPromoCode: empty string code leaves price unchanged
+build	Test	2026-10-26T08:54:27.8766618Z   ---
+build	Test	2026-10-26T08:54:27.8767133Z   duration_ms: 0.238026
+build	Test	2026-10-26T08:54:27.8767678Z   ...
+build	Test	2026-10-26T08:54:27.8768539Z # Subtest: applyPromoCode: whitespace-only code leaves price unchanged
+build	Test	2026-10-26T08:54:27.8769943Z ok 18 - applyPromoCode: whitespace-only code leaves price unchanged
+build	Test	2026-10-26T08:54:27.8770840Z   ---
+build	Test	2026-10-26T08:54:27.8771350Z   duration_ms: 0.425115
+build	Test	2026-10-26T08:54:27.8771905Z   ...
+build	Test	2026-10-26T08:54:27.8772732Z # Subtest: applyPromoCode: null code leaves price unchanged
+build	Test	2026-10-26T08:54:27.8773774Z ok 19 - applyPromoCode: null code leaves price unchanged
+build	Test	2026-10-26T08:54:27.8774523Z   ---
+build	Test	2026-10-26T08:54:27.8775029Z   duration_ms: 0.341429
+build	Test	2026-10-26T08:54:27.8775588Z   ...
+build	Test	2026-10-26T08:54:27.8776386Z # Subtest: applyPromoCode: undefined code leaves price unchanged
+build	Test	2026-10-26T08:54:27.8777521Z ok 20 - applyPromoCode: undefined code leaves price unchanged
+build	Test	2026-10-26T08:54:27.8778320Z   ---
+build	Test	2026-10-26T08:54:27.8778828Z   duration_ms: 0.248685
+build	Test	2026-10-26T08:54:27.8779592Z   ...
+build	Test	2026-10-26T08:54:27.8780456Z # Subtest: getActivePromoCodes: returns exactly WELCOME10 and PRO25
+build	Test	2026-10-26T08:54:27.8781617Z ok 21 - getActivePromoCodes: returns exactly WELCOME10 and PRO25
+build	Test	2026-10-26T08:54:27.8782433Z   ---
+build	Test	2026-10-26T08:54:27.8782939Z   duration_ms: 0.356517
+build	Test	2026-10-26T08:54:27.8783482Z   ...
+build	Test	2026-10-26T08:54:27.8784263Z # Subtest: getActivePromoCodes: LEGACY50 not in active list
+build	Test	2026-10-26T08:54:27.8785340Z ok 22 - getActivePromoCodes: LEGACY50 not in active list
+build	Test	2026-10-26T08:54:27.8786112Z   ---
+build	Test	2026-10-26T08:54:27.8786693Z   duration_ms: 0.728062
+build	Test	2026-10-26T08:54:27.8787341Z   ...
+build	Test	2026-10-26T08:54:27.8788326Z # Subtest: getActivePromoCodes: each entry has code, description, discountPercent
+build	Test	2026-10-26T08:54:27.8789983Z ok 23 - getActivePromoCodes: each entry has code, description, discountPercent
+build	Test	2026-10-26T08:54:27.8791241Z   ---
+build	Test	2026-10-26T08:54:27.8791777Z   duration_ms: 0.57228
+build	Test	2026-10-26T08:54:27.8792345Z   ...
+build	Test	2026-10-26T08:54:27.8793264Z # Subtest: getActivePromoCodes: WELCOME10 discountPercent is 10, PRO25 is 25
+build	Test	2026-10-26T08:54:27.8794566Z ok 24 - getActivePromoCodes: WELCOME10 discountPercent is 10, PRO25 is 25
+build	Test	2026-10-26T08:54:27.8795442Z   ---
+build	Test	2026-10-26T08:54:27.8795963Z   duration_ms: 0.323676
+build	Test	2026-10-26T08:54:27.8796518Z   ...
+build	Test	2026-10-26T08:54:27.8798751Z # Subtest: S1: CVE-2026-90711: ::ffff:10.0.0.0/8 does not trust an arbitrary IPv4 client
+build	Test	2026-10-26T08:54:27.8800354Z ok 25 - S1: CVE-2026-90711: ::ffff:10.0.0.0/8 does not trust an arbitrary IPv4 client
+build	Test	2026-10-26T08:54:27.8801306Z   ---
+build	Test	2026-10-26T08:54:27.8801844Z   duration_ms: 4.549562
+build	Test	2026-10-26T08:54:27.8802399Z   ...
+build	Test	2026-10-26T08:54:27.8803292Z # Subtest: S2: CVE-2026-90711: ::/1 does not trust an arbitrary IPv4 client
+build	Test	2026-10-26T08:54:27.8804499Z ok 26 - S2: CVE-2026-90711: ::/1 does not trust an arbitrary IPv4 client
+build	Test	2026-10-26T08:54:27.8805307Z   ---
+build	Test	2026-10-26T08:54:27.8805840Z   duration_ms: 0.487582
+build	Test	2026-10-26T08:54:27.8806397Z   ...
+build	Test	2026-10-26T08:54:27.8807382Z # Subtest: C1: ordinary private proxy subnets preserve the forwarded client address
+build	Test	2026-10-26T08:54:27.8808729Z ok 27 - C1: ordinary private proxy subnets preserve the forwarded client address
+build	Test	2026-10-26T08:54:27.8809838Z   ---
+build	Test	2026-10-26T08:54:27.8810382Z   duration_ms: 0.435335
+build	Test	2026-10-26T08:54:27.8810979Z   ...
+build	Test	2026-10-26T08:54:27.8812094Z # Subtest: C2: untrusted clients cannot select their address and dashboard proxy trust stays disabled
+build	Test	2026-10-26T08:54:27.8813763Z ok 28 - C2: untrusted clients cannot select their address and dashboard proxy trust stays disabled
+build	Test	2026-10-26T08:54:27.8850052Z   ---
+build	Test	2026-10-26T08:54:27.8850730Z   duration_ms: 0.353662
+build	Test	2026-10-26T08:54:27.8851183Z   ...
+build	Test	2026-10-26T08:54:27.9738436Z # Subtest: TC-01: 0/10000 is healthy without rounding
+build	Test	2026-10-26T08:54:27.9790353Z ok 29 - TC-01: 0/10000 is healthy without rounding
+build	Test	2026-10-26T08:54:27.9803520Z   ---
+build	Test	2026-10-26T08:54:27.9818178Z   duration_ms: 1.417051
+build	Test	2026-10-26T08:54:27.9828816Z   ...
+build	Test	2026-10-26T08:54:27.9840614Z # Subtest: TC-01: 99/10000 is healthy without rounding
+build	Test	2026-10-26T08:54:27.9841645Z ok 30 - TC-01: 99/10000 is healthy without rounding
+build	Test	2026-10-26T08:54:27.9842542Z   ---
+build	Test	2026-10-26T08:54:27.9843171Z   duration_ms: 0.158357
+build	Test	2026-10-26T08:54:27.9843829Z   ...
+build	Test	2026-10-26T08:54:27.9844640Z # Subtest: TC-01: 100/10000 is degraded without rounding
+build	Test	2026-10-26T08:54:27.9845724Z ok 31 - TC-01: 100/10000 is degraded without rounding
+build	Test	2026-10-26T08:54:27.9846502Z   ---
+build	Test	2026-10-26T08:54:27.9847107Z   duration_ms: 0.136134
+build	Test	2026-10-26T08:54:27.9847753Z   ...
+build	Test	2026-10-26T08:54:27.9848582Z # Subtest: TC-01: 499/10000 is degraded without rounding
+build	Test	2026-10-26T08:54:27.9849838Z ok 32 - TC-01: 499/10000 is degraded without rounding
+build	Test	2026-10-26T08:54:27.9850644Z   ---
+build	Test	2026-10-26T08:54:27.9851261Z   duration_ms: 0.15004
+build	Test	2026-10-26T08:54:27.9851909Z   ...
+build	Test	2026-10-26T08:54:27.9852725Z # Subtest: TC-01: 500/10000 is failing without rounding
+build	Test	2026-10-26T08:54:27.9853796Z ok 33 - TC-01: 500/10000 is failing without rounding
+build	Test	2026-10-26T08:54:27.9854548Z   ---
+build	Test	2026-10-26T08:54:27.9855152Z   duration_ms: 0.191127
+build	Test	2026-10-26T08:54:27.9855789Z   ...
+build	Test	2026-10-26T08:54:27.9856585Z # Subtest: TC-01: 501/10000 is failing without rounding
+build	Test	2026-10-26T08:54:27.9857620Z ok 34 - TC-01: 501/10000 is failing without rounding
+build	Test	2026-10-26T08:54:27.9858426Z   ---
+build	Test	2026-10-26T08:54:27.9859037Z   duration_ms: 0.135803
+build	Test	2026-10-26T08:54:27.9860104Z   ...
+build	Test	2026-10-26T08:54:27.9860868Z # Subtest: TC-01: 0/0 is healthy without rounding
+build	Test	2026-10-26T08:54:27.9861839Z ok 35 - TC-01: 0/0 is healthy without rounding
+build	Test	2026-10-26T08:54:27.9862596Z   ---
+build	Test	2026-10-26T08:54:27.9863184Z   duration_ms: 0.201457
+build	Test	2026-10-26T08:54:27.9863795Z   ...
+build	Test	2026-10-26T08:54:27.9864505Z # Subtest: TC-01: 5/0 is healthy without rounding
+build	Test	2026-10-26T08:54:27.9865438Z ok 36 - TC-01: 5/0 is healthy without rounding
+build	Test	2026-10-26T08:54:27.9866177Z   ---
+build	Test	2026-10-26T08:54:27.9866760Z   duration_ms: 0.140162
+build	Test	2026-10-26T08:54:27.9867911Z   ...
+build	Test	2026-10-26T08:54:27.9868715Z # Subtest: TC-01: 9999/1000000 is healthy without rounding
+build	Test	2026-10-26T08:54:27.9870036Z ok 37 - TC-01: 9999/1000000 is healthy without rounding
+build	Test	2026-10-26T08:54:27.9870803Z   ---
+build	Test	2026-10-26T08:54:27.9871443Z   duration_ms: 0.282268
+build	Test	2026-10-26T08:54:27.9872085Z   ...
+build	Test	2026-10-26T08:54:27.9872908Z # Subtest: TC-01: 49999/1000000 is degraded without rounding
+build	Test	2026-10-26T08:54:27.9874002Z ok 38 - TC-01: 49999/1000000 is degraded without rounding
+build	Test	2026-10-26T08:54:27.9874813Z   ---
+build	Test	2026-10-26T08:54:27.9875375Z   duration_ms: 0.248175
+build	Test	2026-10-26T08:54:27.9875974Z   ...
+build	Test	2026-10-26T08:54:27.9877090Z # Subtest: TC-02: severity and English name order are deterministic without mutating input
+build	Test	2026-10-26T08:54:27.9878591Z ok 39 - TC-02: severity and English name order are deterministic without mutating input
+build	Test	2026-10-26T08:54:27.9879943Z   ---
+build	Test	2026-10-26T08:54:27.9880473Z   duration_ms: 1.188744
+build	Test	2026-10-26T08:54:27.9881059Z   ...
+build	Test	2026-10-26T08:54:27.9882241Z # Subtest: TC-03: EJS renders independent mixed fixtures in health/name order with adjacent status
+build	Test	2026-10-26T08:54:27.9883920Z ok 40 - TC-03: EJS renders independent mixed fixtures in health/name order with adjacent status
+build	Test	2026-10-26T08:54:27.9884895Z   ---
+build	Test	2026-10-26T08:54:27.9885365Z   duration_ms: 13.806017
+build	Test	2026-10-26T08:54:27.9885899Z   ...
+build	Test	2026-10-26T08:54:28.0166626Z # Subtest: TC-03: repeated GET / requests preserve service row and cell order
+build	Test	2026-10-26T08:54:28.0168053Z ok 41 - TC-03: repeated GET / requests preserve service row and cell order
+build	Test	2026-10-26T08:54:28.0168582Z   ---
+build	Test	2026-10-26T08:54:28.0168949Z   duration_ms: 91.253082
+build	Test	2026-10-26T08:54:28.0169545Z   ...
+build	Test	2026-10-26T08:54:28.0170263Z # Subtest: TC-04: shipped metrics show all states and retain consistent aggregates
+build	Test	2026-10-26T08:54:28.0171054Z ok 42 - TC-04: shipped metrics show all states and retain consistent aggregates
+build	Test	2026-10-26T08:54:28.0171569Z   ---
+build	Test	2026-10-26T08:54:28.0171887Z   duration_ms: 0.437368
+build	Test	2026-10-26T08:54:28.0172225Z   ...
+build	Test	2026-10-26T08:54:28.0869790Z # Subtest: buildMetrics totals add up across services
+build	Test	2026-10-26T08:54:28.0870708Z ok 43 - buildMetrics totals add up across services
+build	Test	2026-10-26T08:54:28.0871233Z   ---
+build	Test	2026-10-26T08:54:28.0871568Z   duration_ms: 2.781785
+build	Test	2026-10-26T08:54:28.0871925Z   ...
+build	Test	2026-10-26T08:54:28.0872681Z # Subtest: brace-expansion installed and locked versions meet security floor 1.1.21
+build	Test	2026-10-26T08:54:28.0873806Z ok 44 - brace-expansion installed and locked versions meet security floor 1.1.21
+build	Test	2026-10-26T08:54:28.0874526Z   ---
+build	Test	2026-10-26T08:54:28.0874847Z   duration_ms: 1.183274
+build	Test	2026-10-26T08:54:28.0875203Z   ...
+build	Test	2026-10-26T08:54:28.0875858Z # Subtest: js-yaml installed and locked versions meet security floor 4.3.2
+build	Test	2026-10-26T08:54:28.0876811Z ok 45 - js-yaml installed and locked versions meet security floor 4.3.2
+build	Test	2026-10-26T08:54:28.0877413Z   ---
+build	Test	2026-10-26T08:54:28.0877731Z   duration_ms: 0.852195
+build	Test	2026-10-26T08:54:28.0878077Z   ...
+build	Test	2026-10-26T08:54:28.0878281Z 1..45
+build	Test	2026-10-26T08:54:28.0878501Z # tests 53
+build	Test	2026-10-26T08:54:28.0878706Z # suites 1
+build	Test	2026-10-26T08:54:28.0878917Z # pass 53
+build	Test	2026-10-26T08:54:28.0879118Z # fail 0
+build	Test	2026-10-26T08:54:28.0879560Z # cancelled 0
+build	Test	2026-10-26T08:54:28.0879792Z # skipped 0
+build	Test	2026-10-26T08:54:28.0879997Z # todo 0
+build	Test	2026-10-26T08:54:28.0882838Z # duration_ms 664.783459
+build	Post Setup Node	﻿2026-10-26T08:54:28.1073991Z Post job cleanup.
+build	Post Setup Node	2026-10-26T08:54:28.2319752Z (node:2347) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+build	Post Setup Node	2026-10-26T08:54:28.2320877Z (Use `node --trace-deprecation ...` to show where the warning was created)
+build	Post Setup Node	2026-10-26T08:54:28.2529117Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/ops-dashboard/ops-dashboard --files-from manifest.txt --use-compress-program zstdmt
+build	Post Setup Node	2026-10-26T08:54:28.4193537Z (node:2347) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+build	Post Setup Node	2026-10-26T08:54:28.5653697Z Sent 4275949 of 4275949 (100.0%), 25.8 MBs/sec
+build	Post Setup Node	2026-10-26T08:54:28.6509870Z Cache saved with the key: node-cache-Linux-x64-npm-68c6d465c8beaf990ac9c08faf86bac3192a7ee6d21b2fc23e186c4c33e691b2
+build	Post Run actions/checkout@v4	﻿2026-10-26T08:54:28.6695879Z Post job cleanup.
+build	Post Run actions/checkout@v4	2026-10-26T08:54:28.7527728Z [command]/usr/bin/git version
+build	Post Run actions/checkout@v4	2026-10-26T08:54:28.7564771Z git version 2.55.0
+build	Post Run actions/checkout@v4	2026-10-26T08:54:28.7602628Z Temporarily overriding HOME='/home/runner/work/_temp/c21578e9-c5d6-46ec-afaf-2f7933190269' before making global git config changes
+build	Post Run actions/checkout@v4	2026-10-26T08:54:28.7603664Z Adding repository directory to the temporary git global config as a safe directory
+build	Post Run actions/checkout@v4	2026-10-26T08:54:28.7607540Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ops-dashboard/ops-dashboard
+build	Post Run actions/checkout@v4	2026-10-26T08:54:28.7645879Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build	Post Run actions/checkout@v4	2026-10-26T08:54:28.7680580Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build	Post Run actions/checkout@v4	2026-10-26T08:54:28.7905857Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build	Post Run actions/checkout@v4	2026-10-26T08:54:28.7931799Z http.https://github.com/.extraheader
+build	Post Run actions/checkout@v4	2026-10-26T08:54:28.7943057Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+build	Post Run actions/checkout@v4	2026-10-26T08:54:28.7974540Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build	Post Run actions/checkout@v4	2026-10-26T08:54:28.8195203Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build	Post Run actions/checkout@v4	2026-10-26T08:54:28.8226149Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build	Complete job	﻿2026-10-26T08:54:28.8581787Z Cleaning up orphan processes
+build	Complete job	2026-10-26T08:54:28.8938891Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+
+End: 2026-10-26T08:56:37.324720+00:00
+Exit status: 0

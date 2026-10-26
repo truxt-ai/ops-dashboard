@@ -1,0 +1,10 @@
+Start: 2026-10-26T08:56:33.470002+00:00
+Revision: 712d9c36395d58996689763523d7fe8ba9b7fbae
+CWD: /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0
+Command: gh run view 40295522832 --repo truxt-ai/ops-dashboard --json databaseId,conclusion,status,headSha,url,jobs
+Node bin: /data/work-root/qa-evidence/AXM-708-db9dc0/tools/node-v20.20.2-linux-arm64/bin
+
+{"conclusion":"success","databaseId":40295522832,"headSha":"712d9c36395d58996689763523d7fe8ba9b7fbae","jobs":[{"completedAt":"2026-10-26T08:54:30Z","conclusion":"success","databaseId":121480526429,"name":"build","startedAt":"2026-10-26T08:54:18Z","status":"completed","steps":[{"conclusion":"success","name":"Set up job","number":1,"status":"completed"},{"conclusion":"success","name":"Run actions/checkout@v4","number":2,"status":"completed"},{"conclusion":"success","name":"Setup Node","number":3,"status":"completed"},{"conclusion":"success","name":"Install dependencies","number":4,"status":"completed"},{"conclusion":"success","name":"Lint","number":5,"status":"completed"},{"conclusion":"success","name":"Test","number":6,"status":"completed"},{"conclusion":"success","name":"Post Setup Node","number":11,"status":"completed"},{"conclusion":"success","name":"Post Run actions/checkout@v4","number":12,"status":"completed"},{"conclusion":"success","name":"Complete job","number":13,"status":"completed"}],"url":"https://github.com/truxt-ai/ops-dashboard/actions/runs/40295522832/job/121480526429"}],"status":"completed","url":"https://github.com/truxt-ai/ops-dashboard/actions/runs/40295522832"}
+
+End: 2026-10-26T08:56:34.796388+00:00
+Exit status: 0

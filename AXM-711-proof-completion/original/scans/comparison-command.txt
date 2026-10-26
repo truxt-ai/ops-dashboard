@@ -1,0 +1,20 @@
+Start: 2026-10-26T08:53:02.588251+00:00
+Revision: 712d9c36395d58996689763523d7fe8ba9b7fbae
+CWD: /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0
+Command: python3 /data/work-root/qa-evidence/AXM-708-db9dc0/compare-scans.py
+Node bin: /data/work-root/qa-evidence/AXM-708-db9dc0/tools/node-v20.20.2-linux-arm64/bin
+
+{
+  "baseline_packages": 175,
+  "final_packages": 175,
+  "baseline_findings": 50,
+  "final_findings": 49,
+  "added": 0,
+  "removed": 1,
+  "retained": 49
+}
+Removed: [{"ecosystem": "npm", "package": "proxy-addr", "aliases": ["CVE-2026-90711", "GHSA-jqcg-44mw-7w3h"], "occurrences": [{"version": "2.0.7", "source": {"path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json", "type": "lockfile"}, "dependency_groups": [], "severity": "9.1", "ids": ["GHSA-jqcg-44mw-7w3h"]}]}]
+Added: []
+
+End: 2026-10-26T08:53:02.635694+00:00
+Exit status: 0

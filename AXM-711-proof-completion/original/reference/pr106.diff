@@ -1,0 +1,82 @@
+diff --git a/package-lock.json b/package-lock.json
+index 4e4944a..d2d2c4d 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -1683,9 +1683,9 @@
+       }
+     },
+     "node_modules/proxy-addr": {
+-      "version": "2.0.7",
+-      "resolved": "https://registry.npmjs.org/proxy-addr/-/proxy-addr-2.0.7.tgz",
+-      "integrity": "sha512-llQsMLSUDUPT44jdrU/O37qlnifitDP+ZwrmmZcoSKyLKvtZxpyV0n2/bD/N4tBAAZ/gJEdZU7KMraoK1+XYAg==",
++      "version": "2.0.8",
++      "resolved": "https://registry.npmjs.org/proxy-addr/-/proxy-addr-2.0.8.tgz",
++      "integrity": "sha512-5nnx0yGyVUcY6t9RnWcARWtwT9F1D8O9rt08htPvnd49W1IgZtmLkhu9WfMzQj1cFxjHIO6connUNVW5k7AVyQ==",
+       "license": "MIT",
+       "dependencies": {
+         "forwarded": "0.2.0",
+@@ -1693,6 +1693,10 @@
+       },
+       "engines": {
+         "node": ">= 0.10"
++      },
++      "funding": {
++        "type": "opencollective",
++        "url": "https://opencollective.com/express"
+       }
+     },
+     "node_modules/punycode": {
+diff --git a/package.json b/package.json
+index 457f2a9..4789f72 100644
+--- a/package.json
++++ b/package.json
+@@ -21,6 +21,7 @@
+   },
+   "overrides": {
+     "brace-expansion": "^1.1.21",
+-    "js-yaml": "^4.3.2"
++    "js-yaml": "^4.3.2",
++    "proxy-addr": "^2.0.8"
+   }
+ }
+diff --git a/test/proxy-addr-security.test.js b/test/proxy-addr-security.test.js
+new file mode 100644
+index 0000000..e98cc93
+--- /dev/null
++++ b/test/proxy-addr-security.test.js
+@@ -0,0 +1,35 @@
++'use strict';
++
++const { test } = require('node:test');
++const assert = require('node:assert/strict');
++const proxyaddr = require('proxy-addr');
++const { app } = require('../src/server');
++
++for (const subnet of ['::ffff:10.0.0.0/8', '::/1']) {
++  test(`CVE-2026-90711: ${subnet} does not trust an arbitrary IPv4 client`, () => {
++    const trust = proxyaddr.compile(subnet);
++    for (const remoteAddress of ['203.0.113.9', '::ffff:203.0.113.9']) {
++      const request = {
++        headers: { 'x-forwarded-for': '192.0.2.99' },
++        connection: { remoteAddress },
++      };
++      assert.equal(trust(remoteAddress), false, 'the direct client must remain untrusted');
++      assert.equal(proxyaddr(request, trust), remoteAddress,
++        'an untrusted client must not select its address through X-Forwarded-For');
++    }
++  });
++}
++
++test('ordinary private proxy subnets still preserve the forwarded client address', () => {
++  const trust = proxyaddr.compile('10.0.0.0/8');
++  const request = {
++    headers: { 'x-forwarded-for': '198.51.100.10' },
++    connection: { remoteAddress: '10.1.2.3' },
++  };
++  assert.equal(proxyaddr(request, trust), '198.51.100.10');
++  assert.equal(trust('203.0.113.9'), false);
++});
++
++test('the dashboard keeps proxy trust disabled by default', () => {
++  assert.equal(app.get('trust proxy'), false);
++});

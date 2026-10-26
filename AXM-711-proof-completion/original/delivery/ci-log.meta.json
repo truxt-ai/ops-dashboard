@@ -1,0 +1,17 @@
+{
+  "command": [
+    "gh",
+    "run",
+    "view",
+    "40295522832",
+    "--repo",
+    "truxt-ai/ops-dashboard",
+    "--log"
+  ],
+  "cwd": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0",
+  "revision": "712d9c36395d58996689763523d7fe8ba9b7fbae",
+  "started_at": "2026-10-26T08:56:34.828892+00:00",
+  "ended_at": "2026-10-26T08:56:37.324720+00:00",
+  "exit_code": 0,
+  "log": "/data/work-root/qa-evidence/AXM-708-db9dc0/delivery/ci-log.txt"
+}

@@ -1,0 +1,1007 @@
+[
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-3g43-6gmg-66jw"
+    ],
+    "aliases": [
+      "CVE-2026-44495",
+      "GHSA-3g43-6gmg-66jw"
+    ],
+    "severity": "7.0",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-3p68-rc4w-qgx5"
+    ],
+    "aliases": [
+      "CVE-2025-62718",
+      "GHSA-3p68-rc4w-qgx5"
+    ],
+    "severity": "6.3",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-43fc-jf86-j433"
+    ],
+    "aliases": [
+      "CVE-2026-25639",
+      "GHSA-43fc-jf86-j433"
+    ],
+    "severity": "7.5",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-5c9x-8gcm-mpgx"
+    ],
+    "aliases": [
+      "CVE-2026-42034",
+      "GHSA-5c9x-8gcm-mpgx"
+    ],
+    "severity": "5.3",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-62hf-57xw-28j9"
+    ],
+    "aliases": [
+      "CVE-2026-42039",
+      "GHSA-62hf-57xw-28j9"
+    ],
+    "severity": "7.5",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-6chq-wfr3-2hj9"
+    ],
+    "aliases": [
+      "CVE-2026-42035",
+      "GHSA-6chq-wfr3-2hj9"
+    ],
+    "severity": "7.4",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-7q8q-rj6j-mhjq"
+    ],
+    "aliases": [
+      "CVE-2026-67319",
+      "GHSA-7q8q-rj6j-mhjq"
+    ],
+    "severity": "6.3",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-898c-q2cr-xwhg"
+    ],
+    "aliases": [
+      "CVE-2026-44490",
+      "GHSA-898c-q2cr-xwhg"
+    ],
+    "severity": "4.8",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-cph5-m8f7-6c5x"
+    ],
+    "aliases": [
+      "CVE-2021-3749",
+      "GHSA-cph5-m8f7-6c5x"
+    ],
+    "severity": "7.5",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-fvcv-3m26-pcqx"
+    ],
+    "aliases": [
+      "CVE-2026-40175",
+      "GHSA-fvcv-3m26-pcqx"
+    ],
+    "severity": "4.8",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-hfxv-24rg-xrqf"
+    ],
+    "aliases": [
+      "CVE-2026-44496",
+      "GHSA-hfxv-24rg-xrqf"
+    ],
+    "severity": "7.5",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-j5f8-grm9-p9fc"
+    ],
+    "aliases": [
+      "CVE-2026-44486",
+      "GHSA-j5f8-grm9-p9fc"
+    ],
+    "severity": "7.5",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-jr5f-v2jv-69x6"
+    ],
+    "aliases": [
+      "CVE-2025-27152",
+      "GHSA-jr5f-v2jv-69x6"
+    ],
+    "severity": "7.7",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-m7pr-hjqh-92cm"
+    ],
+    "aliases": [
+      "CVE-2026-42038",
+      "GHSA-m7pr-hjqh-92cm"
+    ],
+    "severity": "6.8",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-mmx7-hfxf-jppx"
+    ],
+    "aliases": [
+      "CVE-2026-67316",
+      "GHSA-mmx7-hfxf-jppx"
+    ],
+    "severity": "6.3",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-p92q-9vqr-4j8v"
+    ],
+    "aliases": [
+      "CVE-2026-44487",
+      "GHSA-p92q-9vqr-4j8v"
+    ],
+    "severity": "8.2",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-pf86-5x62-jrwf"
+    ],
+    "aliases": [
+      "CVE-2026-42033",
+      "GHSA-pf86-5x62-jrwf"
+    ],
+    "severity": "7.4",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-pjwm-pj3p-43mv"
+    ],
+    "aliases": [
+      "CVE-2026-44492",
+      "GHSA-pjwm-pj3p-43mv"
+    ],
+    "severity": "8.6",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-pmwg-cvhr-8vh7"
+    ],
+    "aliases": [
+      "CVE-2026-42043",
+      "GHSA-pmwg-cvhr-8vh7"
+    ],
+    "severity": "7.2",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-vf2m-468p-8v99"
+    ],
+    "aliases": [
+      "CVE-2026-42036",
+      "GHSA-vf2m-468p-8v99"
+    ],
+    "severity": "5.3",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-w9j2-pvgh-6h63"
+    ],
+    "aliases": [
+      "CVE-2026-42041",
+      "GHSA-w9j2-pvgh-6h63"
+    ],
+    "severity": "4.8",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-wf5p-g6vw-rhxx"
+    ],
+    "aliases": [
+      "CVE-2023-45857",
+      "GHSA-wf5p-g6vw-rhxx"
+    ],
+    "severity": "6.5",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-xhjh-pmcv-23jw"
+    ],
+    "aliases": [
+      "CVE-2026-42040",
+      "GHSA-xhjh-pmcv-23jw"
+    ],
+    "severity": "3.7",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "axios",
+      "version": "0.21.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-xx6v-rp6x-q39c"
+    ],
+    "aliases": [
+      "CVE-2026-42042",
+      "GHSA-xx6v-rp6x-q39c"
+    ],
+    "severity": "5.4",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "body-parser",
+      "version": "1.20.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-27r3-jxmh-p828"
+    ],
+    "aliases": [
+      "CVE-2026-111181",
+      "GHSA-27r3-jxmh-p828"
+    ],
+    "severity": "7.5",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "body-parser",
+      "version": "1.20.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-qwcr-r2fm-qrc7"
+    ],
+    "aliases": [
+      "CVE-2024-45590",
+      "GHSA-qwcr-r2fm-qrc7"
+    ],
+    "severity": "8.7",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "body-parser",
+      "version": "1.20.1",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-v422-hmwv-36x6"
+    ],
+    "aliases": [
+      "CVE-2026-12590",
+      "GHSA-v422-hmwv-36x6"
+    ],
+    "severity": "3.7",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "cookie",
+      "version": "0.5.0",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-pxg6-pf52-xh8x"
+    ],
+    "aliases": [
+      "CVE-2024-47764",
+      "GHSA-pxg6-pf52-xh8x"
+    ],
+    "severity": "",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "express",
+      "version": "4.18.2",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-qw6h-vgh9-j6wx"
+    ],
+    "aliases": [
+      "CVE-2024-43796",
+      "GHSA-qw6h-vgh9-j6wx"
+    ],
+    "severity": "5.0",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "express",
+      "version": "4.18.2",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-rv95-896h-c2vc"
+    ],
+    "aliases": [
+      "CVE-2024-29041",
+      "GHSA-rv95-896h-c2vc"
+    ],
+    "severity": "6.1",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "follow-redirects",
+      "version": "1.16.0",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-8r9p-f939-6h3c"
+    ],
+    "aliases": [
+      "CVE-2026-111755",
+      "GHSA-8r9p-f939-6h3c"
+    ],
+    "severity": "8.2",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "follow-redirects",
+      "version": "1.16.0",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-q3jh-wrc6-jgq8"
+    ],
+    "aliases": [
+      "CVE-2026-111756",
+      "GHSA-q3jh-wrc6-jgq8"
+    ],
+    "severity": "8.2",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "lodash",
+      "version": "4.17.4",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-29mw-wpgm-hmr9"
+    ],
+    "aliases": [
+      "CVE-2020-28500",
+      "GHSA-29mw-wpgm-hmr9"
+    ],
+    "severity": "5.3",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "lodash",
+      "version": "4.17.4",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-35jh-r3h4-6jhm"
+    ],
+    "aliases": [
+      "CVE-2021-23337",
+      "GHSA-35jh-r3h4-6jhm"
+    ],
+    "severity": "7.2",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "lodash",
+      "version": "4.17.4",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-4xc9-xhrj-v574"
+    ],
+    "aliases": [
+      "CVE-2018-16487",
+      "GHSA-4xc9-xhrj-v574"
+    ],
+    "severity": "",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "lodash",
+      "version": "4.17.4",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-f23m-r3pf-42rh"
+    ],
+    "aliases": [
+      "CVE-2026-2950",
+      "GHSA-f23m-r3pf-42rh"
+    ],
+    "severity": "6.5",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "lodash",
+      "version": "4.17.4",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-fvqr-27wr-82fm"
+    ],
+    "aliases": [
+      "CVE-2018-3721",
+      "GHSA-fvqr-27wr-82fm"
+    ],
+    "severity": "6.5",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "lodash",
+      "version": "4.17.4",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-jf85-cpcp-j695"
+    ],
+    "aliases": [
+      "CVE-2019-10744",
+      "GHSA-jf85-cpcp-j695",
+      "SNYK-JS-LODASH-450202"
+    ],
+    "severity": "9.1",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "lodash",
+      "version": "4.17.4",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-p6mc-m468-83gw"
+    ],
+    "aliases": [
+      "CVE-2020-8203",
+      "GHSA-p6mc-m468-83gw"
+    ],
+    "severity": "7.4",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "lodash",
+      "version": "4.17.4",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-r5fr-rjxr-66jc"
+    ],
+    "aliases": [
+      "CVE-2026-4800",
+      "GHSA-r5fr-rjxr-66jc"
+    ],
+    "severity": "8.1",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "lodash",
+      "version": "4.17.4",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-x5rq-j2xg-h7qm"
+    ],
+    "aliases": [
+      "CVE-2019-1010266",
+      "GHSA-x5rq-j2xg-h7qm",
+      "SNYK-JS-LODASH-73639"
+    ],
+    "severity": "6.5",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "lodash",
+      "version": "4.17.4",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-xxjr-mmjv-4gpg"
+    ],
+    "aliases": [
+      "CVE-2025-13465",
+      "GHSA-xxjr-mmjv-4gpg"
+    ],
+    "severity": "6.9",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "path-to-regexp",
+      "version": "0.1.7",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-37ch-88jc-xwx2",
+      "GHSA-9wv6-86v2-598j"
+    ],
+    "aliases": [
+      "CVE-2024-45296",
+      "CVE-2026-4867",
+      "GHSA-37ch-88jc-xwx2",
+      "GHSA-9wv6-86v2-598j"
+    ],
+    "severity": "7.7",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "path-to-regexp",
+      "version": "0.1.7",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-rhx6-c78j-4q9w"
+    ],
+    "aliases": [
+      "CVE-2024-52798",
+      "GHSA-rhx6-c78j-4q9w"
+    ],
+    "severity": "7.7",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "proxy-addr",
+      "version": "2.0.7",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-jqcg-44mw-7w3h"
+    ],
+    "aliases": [
+      "CVE-2026-90711",
+      "GHSA-jqcg-44mw-7w3h"
+    ],
+    "severity": "9.1",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "qs",
+      "version": "6.11.0",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-4mjr-xmp4-gh2g"
+    ],
+    "aliases": [
+      "CVE-2026-82417",
+      "GHSA-4mjr-xmp4-gh2g"
+    ],
+    "severity": "6.3",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "qs",
+      "version": "6.11.0",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-6rw7-vpxm-498p"
+    ],
+    "aliases": [
+      "CVE-2025-15284",
+      "GHSA-6rw7-vpxm-498p"
+    ],
+    "severity": "6.3",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "qs",
+      "version": "6.11.0",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-w7fw-mjwx-w883"
+    ],
+    "aliases": [
+      "CVE-2026-2391",
+      "GHSA-w7fw-mjwx-w883"
+    ],
+    "severity": "3.7",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "send",
+      "version": "0.18.0",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-m6fv-jmcg-4jfg"
+    ],
+    "aliases": [
+      "CVE-2024-43799",
+      "GHSA-m6fv-jmcg-4jfg"
+    ],
+    "severity": "5.0",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  },
+  {
+    "package": {
+      "name": "serve-static",
+      "version": "1.15.0",
+      "ecosystem": "npm"
+    },
+    "ids": [
+      "GHSA-cm22-4g7w-348p"
+    ],
+    "aliases": [
+      "CVE-2024-43800",
+      "GHSA-cm22-4g7w-348p"
+    ],
+    "severity": "5.0",
+    "source": {
+      "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+      "type": "lockfile"
+    },
+    "dependency_groups": []
+  }
+]

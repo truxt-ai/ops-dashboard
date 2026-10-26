@@ -1,0 +1,13 @@
+{
+  "command": [
+    "node",
+    "-e",
+    "const {createRequire}=require(\"node:module\"); const r=createRequire(require.resolve(\"express\")); console.log(JSON.stringify({node:process.version,express:require(\"express/package.json\").version,proxyAddrPath:r.resolve(\"proxy-addr\"),proxyAddrVersion:r(\"proxy-addr/package.json\").version,locked:require(\"./package-lock.json\").packages[\"node_modules/proxy-addr\"].version,trustProxy:require(\"./src/server\").app.get(\"trust proxy\")},null,2))"
+  ],
+  "cwd": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0",
+  "revision": "712d9c36395d58996689763523d7fe8ba9b7fbae",
+  "started_at": "2026-10-26T08:52:26.605948+00:00",
+  "ended_at": "2026-10-26T08:52:26.778192+00:00",
+  "exit_code": 0,
+  "log": "/data/work-root/qa-evidence/AXM-708-db9dc0/candidate/versions.txt"
+}

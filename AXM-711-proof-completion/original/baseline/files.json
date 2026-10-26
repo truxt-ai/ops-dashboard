@@ -1,0 +1,51 @@
+{
+  "captured_at": "2026-10-26T08:46:06.004111+00:00",
+  "revision": "dff02375d83394d6f03ce2127e35e62fadc269ab",
+  "files": [
+    {
+      "path": "package.json",
+      "sha256": "79d314a40b2521c17ddbdc62a59dfd3654daf01b053c7295b95c5af75c122463",
+      "bytes": 635
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "f290ad3809f8fe38dc67c16dd43a9c7d13cf13af66d0b995beeb5801b0462a33",
+      "bytes": 78522
+    },
+    {
+      "path": "src/server.js",
+      "sha256": "09c7372a75e4dae9d2b16899f938be791c8c3877aabc8e0d150be7807e8b6f96",
+      "bytes": 2587
+    },
+    {
+      "path": "test/health.test.js",
+      "sha256": "6f1688e3c64eb451dc51327f53ebeb263d28ac2fa44f4f455d85b0b2f70c1c90",
+      "bytes": 5368
+    },
+    {
+      "path": "test/health-freshness.test.js",
+      "sha256": "91fda98efd2dd6be112e25d1861a5d9e566bee7c4534c86fb9264793b45c705d",
+      "bytes": 4195
+    },
+    {
+      "path": "test/service-health.test.js",
+      "sha256": "c6d92f80fd77b78f37e4000dee93030e835e5cb24f01f6e0acc63355568aa510",
+      "bytes": 5075
+    },
+    {
+      "path": "test/promo-codes.test.js",
+      "sha256": "c211dbb3146f091e944f64298b1790b2b087b74b5e827c71c1b845a53ec4f80b",
+      "bytes": 4036
+    },
+    {
+      "path": "test/smoke.test.js",
+      "sha256": "b7593b3490e12dea6331b6b3526a783fbcfbdc9329d7e4d9a7148a9b6ab05b96",
+      "bytes": 1272
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "sha256": "189ac619dab68e5c78c4a69c5a8a2efe5b6b174dfc265fc35e5e0b5c124352e0",
+      "bytes": 396
+    }
+  ]
+}

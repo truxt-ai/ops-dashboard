@@ -1,0 +1,4114 @@
+{
+  "scanner": "OSV 2.6.0",
+  "database": "live OSV API",
+  "package_inventory": {
+    "baseline": [
+      {
+        "name": "@eslint-community/eslint-utils",
+        "version": "4.9.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@eslint-community/regexpp",
+        "version": "4.12.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@eslint/eslintrc",
+        "version": "2.1.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@eslint/js",
+        "version": "8.57.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@humanwhocodes/config-array",
+        "version": "0.11.14",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@humanwhocodes/module-importer",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@humanwhocodes/object-schema",
+        "version": "2.0.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@nodelib/fs.scandir",
+        "version": "2.1.5",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@nodelib/fs.stat",
+        "version": "2.0.5",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@nodelib/fs.walk",
+        "version": "1.2.8",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@ungap/structured-clone",
+        "version": "1.3.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "accepts",
+        "version": "1.3.8",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "acorn",
+        "version": "8.16.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "acorn-jsx",
+        "version": "5.3.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "ajv",
+        "version": "6.15.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "ansi-regex",
+        "version": "5.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "ansi-styles",
+        "version": "4.3.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "argparse",
+        "version": "2.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "array-flatten",
+        "version": "1.1.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "async",
+        "version": "3.2.6",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "axios",
+        "version": "0.21.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "balanced-match",
+        "version": "1.0.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "body-parser",
+        "version": "1.20.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "brace-expansion",
+        "version": "1.1.21",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "bytes",
+        "version": "3.1.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "call-bind-apply-helpers",
+        "version": "1.0.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "call-bound",
+        "version": "1.0.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "callsites",
+        "version": "3.1.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "chalk",
+        "version": "4.1.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "color-convert",
+        "version": "2.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "color-name",
+        "version": "1.1.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "concat-map",
+        "version": "0.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "content-disposition",
+        "version": "0.5.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "content-type",
+        "version": "1.0.5",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "cookie",
+        "version": "0.5.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "cookie-signature",
+        "version": "1.0.6",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "cross-spawn",
+        "version": "7.0.6",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "debug",
+        "version": "2.6.9",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "debug",
+        "version": "4.4.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "deep-is",
+        "version": "0.1.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "depd",
+        "version": "2.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "destroy",
+        "version": "1.2.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "doctrine",
+        "version": "3.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "dunder-proto",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "ee-first",
+        "version": "1.1.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "ejs",
+        "version": "3.1.10",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "encodeurl",
+        "version": "1.0.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "es-define-property",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "es-errors",
+        "version": "1.3.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "es-object-atoms",
+        "version": "1.1.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "escape-html",
+        "version": "1.0.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "escape-string-regexp",
+        "version": "4.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "eslint",
+        "version": "8.57.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "eslint-scope",
+        "version": "7.2.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "eslint-visitor-keys",
+        "version": "3.4.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "espree",
+        "version": "9.6.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "esquery",
+        "version": "1.7.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "esrecurse",
+        "version": "4.3.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "estraverse",
+        "version": "5.3.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "esutils",
+        "version": "2.0.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "etag",
+        "version": "1.8.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "express",
+        "version": "4.18.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "fast-deep-equal",
+        "version": "3.1.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "fast-json-stable-stringify",
+        "version": "2.1.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "fast-levenshtein",
+        "version": "2.0.6",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "fastq",
+        "version": "1.20.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "file-entry-cache",
+        "version": "6.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "filelist",
+        "version": "1.0.6",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "finalhandler",
+        "version": "1.2.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "find-up",
+        "version": "5.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "flat-cache",
+        "version": "3.2.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "flatted",
+        "version": "3.4.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "follow-redirects",
+        "version": "1.16.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "forwarded",
+        "version": "0.2.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "fresh",
+        "version": "0.5.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "fs.realpath",
+        "version": "1.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "function-bind",
+        "version": "1.1.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "get-intrinsic",
+        "version": "1.3.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "get-proto",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "glob",
+        "version": "7.2.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "glob-parent",
+        "version": "6.0.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "globals",
+        "version": "13.24.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "gopd",
+        "version": "1.2.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "graphemer",
+        "version": "1.4.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "has-flag",
+        "version": "4.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "has-symbols",
+        "version": "1.1.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "hasown",
+        "version": "2.0.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "http-errors",
+        "version": "2.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "iconv-lite",
+        "version": "0.4.24",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "ignore",
+        "version": "5.3.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "import-fresh",
+        "version": "3.3.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "imurmurhash",
+        "version": "0.1.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "inflight",
+        "version": "1.0.6",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "inherits",
+        "version": "2.0.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "ipaddr.js",
+        "version": "1.9.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "is-extglob",
+        "version": "2.1.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "is-glob",
+        "version": "4.0.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "is-path-inside",
+        "version": "3.0.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "isexe",
+        "version": "2.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "jake",
+        "version": "10.9.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "js-yaml",
+        "version": "4.3.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "json-buffer",
+        "version": "3.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "json-schema-traverse",
+        "version": "0.4.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "json-stable-stringify-without-jsonify",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "keyv",
+        "version": "4.5.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "levn",
+        "version": "0.4.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "locate-path",
+        "version": "6.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "lodash",
+        "version": "4.17.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "lodash.merge",
+        "version": "4.6.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "math-intrinsics",
+        "version": "1.1.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "media-typer",
+        "version": "0.3.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "merge-descriptors",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "methods",
+        "version": "1.1.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "mime",
+        "version": "1.6.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "mime-db",
+        "version": "1.52.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "mime-types",
+        "version": "2.1.35",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "minimatch",
+        "version": "3.1.5",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "minimatch",
+        "version": "5.1.9",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "minimist",
+        "version": "1.2.8",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "ms",
+        "version": "2.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "ms",
+        "version": "2.1.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "natural-compare",
+        "version": "1.4.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "negotiator",
+        "version": "0.6.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "object-inspect",
+        "version": "1.13.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "on-finished",
+        "version": "2.4.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "once",
+        "version": "1.4.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "optionator",
+        "version": "0.9.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "p-limit",
+        "version": "3.1.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "p-locate",
+        "version": "5.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "parent-module",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "parseurl",
+        "version": "1.3.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "path-exists",
+        "version": "4.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "path-is-absolute",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "path-key",
+        "version": "3.1.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "path-to-regexp",
+        "version": "0.1.7",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "picocolors",
+        "version": "1.1.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "prelude-ls",
+        "version": "1.2.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "proxy-addr",
+        "version": "2.0.7",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "punycode",
+        "version": "2.3.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "qs",
+        "version": "6.11.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "queue-microtask",
+        "version": "1.2.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "range-parser",
+        "version": "1.2.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "raw-body",
+        "version": "2.5.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "resolve-from",
+        "version": "4.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "reusify",
+        "version": "1.1.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "rimraf",
+        "version": "3.0.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "run-parallel",
+        "version": "1.2.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "safe-buffer",
+        "version": "5.2.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "safer-buffer",
+        "version": "2.1.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "send",
+        "version": "0.18.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "serve-static",
+        "version": "1.15.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "setprototypeof",
+        "version": "1.2.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "shebang-command",
+        "version": "2.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "shebang-regex",
+        "version": "3.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "side-channel",
+        "version": "1.1.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "side-channel-list",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "side-channel-map",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "side-channel-weakmap",
+        "version": "1.0.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "statuses",
+        "version": "2.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "strip-ansi",
+        "version": "6.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "strip-json-comments",
+        "version": "3.1.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "supports-color",
+        "version": "7.2.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "text-table",
+        "version": "0.2.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "toidentifier",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "type-check",
+        "version": "0.4.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "type-fest",
+        "version": "0.20.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "type-is",
+        "version": "1.6.18",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "unpipe",
+        "version": "1.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "uri-js",
+        "version": "4.4.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "utils-merge",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "vary",
+        "version": "1.1.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "which",
+        "version": "2.0.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "word-wrap",
+        "version": "1.2.5",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "wrappy",
+        "version": "1.0.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "yocto-queue",
+        "version": "0.1.0",
+        "ecosystem": "npm"
+      }
+    ],
+    "final-head": [
+      {
+        "name": "@eslint-community/eslint-utils",
+        "version": "4.9.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@eslint-community/regexpp",
+        "version": "4.12.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@eslint/eslintrc",
+        "version": "2.1.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@eslint/js",
+        "version": "8.57.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@humanwhocodes/config-array",
+        "version": "0.11.14",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@humanwhocodes/module-importer",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@humanwhocodes/object-schema",
+        "version": "2.0.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@nodelib/fs.scandir",
+        "version": "2.1.5",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@nodelib/fs.stat",
+        "version": "2.0.5",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@nodelib/fs.walk",
+        "version": "1.2.8",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "@ungap/structured-clone",
+        "version": "1.3.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "accepts",
+        "version": "1.3.8",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "acorn",
+        "version": "8.16.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "acorn-jsx",
+        "version": "5.3.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "ajv",
+        "version": "6.15.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "ansi-regex",
+        "version": "5.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "ansi-styles",
+        "version": "4.3.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "argparse",
+        "version": "2.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "array-flatten",
+        "version": "1.1.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "async",
+        "version": "3.2.6",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "axios",
+        "version": "0.21.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "balanced-match",
+        "version": "1.0.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "body-parser",
+        "version": "1.20.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "brace-expansion",
+        "version": "1.1.21",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "bytes",
+        "version": "3.1.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "call-bind-apply-helpers",
+        "version": "1.0.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "call-bound",
+        "version": "1.0.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "callsites",
+        "version": "3.1.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "chalk",
+        "version": "4.1.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "color-convert",
+        "version": "2.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "color-name",
+        "version": "1.1.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "concat-map",
+        "version": "0.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "content-disposition",
+        "version": "0.5.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "content-type",
+        "version": "1.0.5",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "cookie",
+        "version": "0.5.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "cookie-signature",
+        "version": "1.0.6",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "cross-spawn",
+        "version": "7.0.6",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "debug",
+        "version": "2.6.9",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "debug",
+        "version": "4.4.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "deep-is",
+        "version": "0.1.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "depd",
+        "version": "2.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "destroy",
+        "version": "1.2.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "doctrine",
+        "version": "3.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "dunder-proto",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "ee-first",
+        "version": "1.1.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "ejs",
+        "version": "3.1.10",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "encodeurl",
+        "version": "1.0.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "es-define-property",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "es-errors",
+        "version": "1.3.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "es-object-atoms",
+        "version": "1.1.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "escape-html",
+        "version": "1.0.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "escape-string-regexp",
+        "version": "4.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "eslint",
+        "version": "8.57.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "eslint-scope",
+        "version": "7.2.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "eslint-visitor-keys",
+        "version": "3.4.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "espree",
+        "version": "9.6.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "esquery",
+        "version": "1.7.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "esrecurse",
+        "version": "4.3.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "estraverse",
+        "version": "5.3.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "esutils",
+        "version": "2.0.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "etag",
+        "version": "1.8.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "express",
+        "version": "4.18.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "fast-deep-equal",
+        "version": "3.1.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "fast-json-stable-stringify",
+        "version": "2.1.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "fast-levenshtein",
+        "version": "2.0.6",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "fastq",
+        "version": "1.20.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "file-entry-cache",
+        "version": "6.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "filelist",
+        "version": "1.0.6",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "finalhandler",
+        "version": "1.2.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "find-up",
+        "version": "5.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "flat-cache",
+        "version": "3.2.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "flatted",
+        "version": "3.4.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "follow-redirects",
+        "version": "1.16.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "forwarded",
+        "version": "0.2.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "fresh",
+        "version": "0.5.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "fs.realpath",
+        "version": "1.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "function-bind",
+        "version": "1.1.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "get-intrinsic",
+        "version": "1.3.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "get-proto",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "glob",
+        "version": "7.2.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "glob-parent",
+        "version": "6.0.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "globals",
+        "version": "13.24.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "gopd",
+        "version": "1.2.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "graphemer",
+        "version": "1.4.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "has-flag",
+        "version": "4.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "has-symbols",
+        "version": "1.1.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "hasown",
+        "version": "2.0.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "http-errors",
+        "version": "2.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "iconv-lite",
+        "version": "0.4.24",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "ignore",
+        "version": "5.3.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "import-fresh",
+        "version": "3.3.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "imurmurhash",
+        "version": "0.1.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "inflight",
+        "version": "1.0.6",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "inherits",
+        "version": "2.0.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "ipaddr.js",
+        "version": "1.9.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "is-extglob",
+        "version": "2.1.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "is-glob",
+        "version": "4.0.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "is-path-inside",
+        "version": "3.0.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "isexe",
+        "version": "2.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "jake",
+        "version": "10.9.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "js-yaml",
+        "version": "4.3.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "json-buffer",
+        "version": "3.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "json-schema-traverse",
+        "version": "0.4.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "json-stable-stringify-without-jsonify",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "keyv",
+        "version": "4.5.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "levn",
+        "version": "0.4.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "locate-path",
+        "version": "6.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "lodash",
+        "version": "4.17.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "lodash.merge",
+        "version": "4.6.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "math-intrinsics",
+        "version": "1.1.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "media-typer",
+        "version": "0.3.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "merge-descriptors",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "methods",
+        "version": "1.1.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "mime",
+        "version": "1.6.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "mime-db",
+        "version": "1.52.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "mime-types",
+        "version": "2.1.35",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "minimatch",
+        "version": "3.1.5",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "minimatch",
+        "version": "5.1.9",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "minimist",
+        "version": "1.2.8",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "ms",
+        "version": "2.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "ms",
+        "version": "2.1.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "natural-compare",
+        "version": "1.4.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "negotiator",
+        "version": "0.6.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "object-inspect",
+        "version": "1.13.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "on-finished",
+        "version": "2.4.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "once",
+        "version": "1.4.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "optionator",
+        "version": "0.9.4",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "p-limit",
+        "version": "3.1.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "p-locate",
+        "version": "5.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "parent-module",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "parseurl",
+        "version": "1.3.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "path-exists",
+        "version": "4.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "path-is-absolute",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "path-key",
+        "version": "3.1.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "path-to-regexp",
+        "version": "0.1.7",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "picocolors",
+        "version": "1.1.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "prelude-ls",
+        "version": "1.2.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "proxy-addr",
+        "version": "2.0.8",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "punycode",
+        "version": "2.3.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "qs",
+        "version": "6.11.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "queue-microtask",
+        "version": "1.2.3",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "range-parser",
+        "version": "1.2.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "raw-body",
+        "version": "2.5.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "resolve-from",
+        "version": "4.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "reusify",
+        "version": "1.1.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "rimraf",
+        "version": "3.0.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "run-parallel",
+        "version": "1.2.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "safe-buffer",
+        "version": "5.2.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "safer-buffer",
+        "version": "2.1.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "send",
+        "version": "0.18.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "serve-static",
+        "version": "1.15.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "setprototypeof",
+        "version": "1.2.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "shebang-command",
+        "version": "2.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "shebang-regex",
+        "version": "3.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "side-channel",
+        "version": "1.1.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "side-channel-list",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "side-channel-map",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "side-channel-weakmap",
+        "version": "1.0.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "statuses",
+        "version": "2.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "strip-ansi",
+        "version": "6.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "strip-json-comments",
+        "version": "3.1.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "supports-color",
+        "version": "7.2.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "text-table",
+        "version": "0.2.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "toidentifier",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "type-check",
+        "version": "0.4.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "type-fest",
+        "version": "0.20.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "type-is",
+        "version": "1.6.18",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "unpipe",
+        "version": "1.0.0",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "uri-js",
+        "version": "4.4.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "utils-merge",
+        "version": "1.0.1",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "vary",
+        "version": "1.1.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "which",
+        "version": "2.0.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "word-wrap",
+        "version": "1.2.5",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "wrappy",
+        "version": "1.0.2",
+        "ecosystem": "npm"
+      },
+      {
+        "name": "yocto-queue",
+        "version": "0.1.0",
+        "ecosystem": "npm"
+      }
+    ]
+  },
+  "report_sha256": {
+    "baseline": "af9ef275a58507103177232f730785df6ed7251704c1d86d2b1ea2c773d774ae",
+    "final-head": "31498e919bf3cc0323747e21d1db5b1d3560d97e26280b88f5141b526076c344"
+  },
+  "counts": {
+    "baseline_packages": 175,
+    "final_packages": 175,
+    "baseline_findings": 50,
+    "final_findings": 49,
+    "added": 0,
+    "removed": 1,
+    "retained": 49
+  },
+  "added": [],
+  "removed": [
+    {
+      "ecosystem": "npm",
+      "package": "proxy-addr",
+      "aliases": [
+        "CVE-2026-90711",
+        "GHSA-jqcg-44mw-7w3h"
+      ],
+      "occurrences": [
+        {
+          "version": "2.0.7",
+          "source": {
+            "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+            "type": "lockfile"
+          },
+          "dependency_groups": [],
+          "severity": "9.1",
+          "ids": [
+            "GHSA-jqcg-44mw-7w3h"
+          ]
+        }
+      ]
+    }
+  ],
+  "retained": [
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2021-3749",
+          "GHSA-cph5-m8f7-6c5x"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.5",
+            "ids": [
+              "GHSA-cph5-m8f7-6c5x"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2021-3749",
+          "GHSA-cph5-m8f7-6c5x"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.5",
+            "ids": [
+              "GHSA-cph5-m8f7-6c5x"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2023-45857",
+          "GHSA-wf5p-g6vw-rhxx"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.5",
+            "ids": [
+              "GHSA-wf5p-g6vw-rhxx"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2023-45857",
+          "GHSA-wf5p-g6vw-rhxx"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.5",
+            "ids": [
+              "GHSA-wf5p-g6vw-rhxx"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2025-27152",
+          "GHSA-jr5f-v2jv-69x6"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.7",
+            "ids": [
+              "GHSA-jr5f-v2jv-69x6"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2025-27152",
+          "GHSA-jr5f-v2jv-69x6"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.7",
+            "ids": [
+              "GHSA-jr5f-v2jv-69x6"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2025-62718",
+          "GHSA-3p68-rc4w-qgx5"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.3",
+            "ids": [
+              "GHSA-3p68-rc4w-qgx5"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2025-62718",
+          "GHSA-3p68-rc4w-qgx5"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.3",
+            "ids": [
+              "GHSA-3p68-rc4w-qgx5"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-25639",
+          "GHSA-43fc-jf86-j433"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.5",
+            "ids": [
+              "GHSA-43fc-jf86-j433"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-25639",
+          "GHSA-43fc-jf86-j433"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.5",
+            "ids": [
+              "GHSA-43fc-jf86-j433"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-40175",
+          "GHSA-fvcv-3m26-pcqx"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "4.8",
+            "ids": [
+              "GHSA-fvcv-3m26-pcqx"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-40175",
+          "GHSA-fvcv-3m26-pcqx"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "4.8",
+            "ids": [
+              "GHSA-fvcv-3m26-pcqx"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42033",
+          "GHSA-pf86-5x62-jrwf"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.4",
+            "ids": [
+              "GHSA-pf86-5x62-jrwf"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42033",
+          "GHSA-pf86-5x62-jrwf"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.4",
+            "ids": [
+              "GHSA-pf86-5x62-jrwf"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42034",
+          "GHSA-5c9x-8gcm-mpgx"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "5.3",
+            "ids": [
+              "GHSA-5c9x-8gcm-mpgx"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42034",
+          "GHSA-5c9x-8gcm-mpgx"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "5.3",
+            "ids": [
+              "GHSA-5c9x-8gcm-mpgx"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42035",
+          "GHSA-6chq-wfr3-2hj9"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.4",
+            "ids": [
+              "GHSA-6chq-wfr3-2hj9"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42035",
+          "GHSA-6chq-wfr3-2hj9"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.4",
+            "ids": [
+              "GHSA-6chq-wfr3-2hj9"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42036",
+          "GHSA-vf2m-468p-8v99"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "5.3",
+            "ids": [
+              "GHSA-vf2m-468p-8v99"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42036",
+          "GHSA-vf2m-468p-8v99"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "5.3",
+            "ids": [
+              "GHSA-vf2m-468p-8v99"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42038",
+          "GHSA-m7pr-hjqh-92cm"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.8",
+            "ids": [
+              "GHSA-m7pr-hjqh-92cm"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42038",
+          "GHSA-m7pr-hjqh-92cm"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.8",
+            "ids": [
+              "GHSA-m7pr-hjqh-92cm"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42039",
+          "GHSA-62hf-57xw-28j9"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.5",
+            "ids": [
+              "GHSA-62hf-57xw-28j9"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42039",
+          "GHSA-62hf-57xw-28j9"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.5",
+            "ids": [
+              "GHSA-62hf-57xw-28j9"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42040",
+          "GHSA-xhjh-pmcv-23jw"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "3.7",
+            "ids": [
+              "GHSA-xhjh-pmcv-23jw"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42040",
+          "GHSA-xhjh-pmcv-23jw"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "3.7",
+            "ids": [
+              "GHSA-xhjh-pmcv-23jw"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42041",
+          "GHSA-w9j2-pvgh-6h63"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "4.8",
+            "ids": [
+              "GHSA-w9j2-pvgh-6h63"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42041",
+          "GHSA-w9j2-pvgh-6h63"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "4.8",
+            "ids": [
+              "GHSA-w9j2-pvgh-6h63"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42042",
+          "GHSA-xx6v-rp6x-q39c"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "5.4",
+            "ids": [
+              "GHSA-xx6v-rp6x-q39c"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42042",
+          "GHSA-xx6v-rp6x-q39c"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "5.4",
+            "ids": [
+              "GHSA-xx6v-rp6x-q39c"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42043",
+          "GHSA-pmwg-cvhr-8vh7"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.2",
+            "ids": [
+              "GHSA-pmwg-cvhr-8vh7"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-42043",
+          "GHSA-pmwg-cvhr-8vh7"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.2",
+            "ids": [
+              "GHSA-pmwg-cvhr-8vh7"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-44486",
+          "GHSA-j5f8-grm9-p9fc"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.5",
+            "ids": [
+              "GHSA-j5f8-grm9-p9fc"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-44486",
+          "GHSA-j5f8-grm9-p9fc"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.5",
+            "ids": [
+              "GHSA-j5f8-grm9-p9fc"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-44487",
+          "GHSA-p92q-9vqr-4j8v"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "8.2",
+            "ids": [
+              "GHSA-p92q-9vqr-4j8v"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-44487",
+          "GHSA-p92q-9vqr-4j8v"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "8.2",
+            "ids": [
+              "GHSA-p92q-9vqr-4j8v"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-44490",
+          "GHSA-898c-q2cr-xwhg"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "4.8",
+            "ids": [
+              "GHSA-898c-q2cr-xwhg"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-44490",
+          "GHSA-898c-q2cr-xwhg"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "4.8",
+            "ids": [
+              "GHSA-898c-q2cr-xwhg"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-44492",
+          "GHSA-pjwm-pj3p-43mv"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "8.6",
+            "ids": [
+              "GHSA-pjwm-pj3p-43mv"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-44492",
+          "GHSA-pjwm-pj3p-43mv"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "8.6",
+            "ids": [
+              "GHSA-pjwm-pj3p-43mv"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-44495",
+          "GHSA-3g43-6gmg-66jw"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.0",
+            "ids": [
+              "GHSA-3g43-6gmg-66jw"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-44495",
+          "GHSA-3g43-6gmg-66jw"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.0",
+            "ids": [
+              "GHSA-3g43-6gmg-66jw"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-44496",
+          "GHSA-hfxv-24rg-xrqf"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.5",
+            "ids": [
+              "GHSA-hfxv-24rg-xrqf"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-44496",
+          "GHSA-hfxv-24rg-xrqf"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.5",
+            "ids": [
+              "GHSA-hfxv-24rg-xrqf"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-67316",
+          "GHSA-mmx7-hfxf-jppx"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.3",
+            "ids": [
+              "GHSA-mmx7-hfxf-jppx"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-67316",
+          "GHSA-mmx7-hfxf-jppx"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.3",
+            "ids": [
+              "GHSA-mmx7-hfxf-jppx"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-67319",
+          "GHSA-7q8q-rj6j-mhjq"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.3",
+            "ids": [
+              "GHSA-7q8q-rj6j-mhjq"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "axios",
+        "aliases": [
+          "CVE-2026-67319",
+          "GHSA-7q8q-rj6j-mhjq"
+        ],
+        "occurrences": [
+          {
+            "version": "0.21.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.3",
+            "ids": [
+              "GHSA-7q8q-rj6j-mhjq"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "body-parser",
+        "aliases": [
+          "CVE-2024-45590",
+          "GHSA-qwcr-r2fm-qrc7"
+        ],
+        "occurrences": [
+          {
+            "version": "1.20.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "8.7",
+            "ids": [
+              "GHSA-qwcr-r2fm-qrc7"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "body-parser",
+        "aliases": [
+          "CVE-2024-45590",
+          "GHSA-qwcr-r2fm-qrc7"
+        ],
+        "occurrences": [
+          {
+            "version": "1.20.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "8.7",
+            "ids": [
+              "GHSA-qwcr-r2fm-qrc7"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "body-parser",
+        "aliases": [
+          "CVE-2026-111181",
+          "GHSA-27r3-jxmh-p828"
+        ],
+        "occurrences": [
+          {
+            "version": "1.20.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.5",
+            "ids": [
+              "GHSA-27r3-jxmh-p828"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "body-parser",
+        "aliases": [
+          "CVE-2026-111181",
+          "GHSA-27r3-jxmh-p828"
+        ],
+        "occurrences": [
+          {
+            "version": "1.20.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.5",
+            "ids": [
+              "GHSA-27r3-jxmh-p828"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "body-parser",
+        "aliases": [
+          "CVE-2026-12590",
+          "GHSA-v422-hmwv-36x6"
+        ],
+        "occurrences": [
+          {
+            "version": "1.20.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "3.7",
+            "ids": [
+              "GHSA-v422-hmwv-36x6"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "body-parser",
+        "aliases": [
+          "CVE-2026-12590",
+          "GHSA-v422-hmwv-36x6"
+        ],
+        "occurrences": [
+          {
+            "version": "1.20.1",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "3.7",
+            "ids": [
+              "GHSA-v422-hmwv-36x6"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "cookie",
+        "aliases": [
+          "CVE-2024-47764",
+          "GHSA-pxg6-pf52-xh8x"
+        ],
+        "occurrences": [
+          {
+            "version": "0.5.0",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "",
+            "ids": [
+              "GHSA-pxg6-pf52-xh8x"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "cookie",
+        "aliases": [
+          "CVE-2024-47764",
+          "GHSA-pxg6-pf52-xh8x"
+        ],
+        "occurrences": [
+          {
+            "version": "0.5.0",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "",
+            "ids": [
+              "GHSA-pxg6-pf52-xh8x"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "express",
+        "aliases": [
+          "CVE-2024-29041",
+          "GHSA-rv95-896h-c2vc"
+        ],
+        "occurrences": [
+          {
+            "version": "4.18.2",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.1",
+            "ids": [
+              "GHSA-rv95-896h-c2vc"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "express",
+        "aliases": [
+          "CVE-2024-29041",
+          "GHSA-rv95-896h-c2vc"
+        ],
+        "occurrences": [
+          {
+            "version": "4.18.2",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.1",
+            "ids": [
+              "GHSA-rv95-896h-c2vc"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "express",
+        "aliases": [
+          "CVE-2024-43796",
+          "GHSA-qw6h-vgh9-j6wx"
+        ],
+        "occurrences": [
+          {
+            "version": "4.18.2",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "5.0",
+            "ids": [
+              "GHSA-qw6h-vgh9-j6wx"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "express",
+        "aliases": [
+          "CVE-2024-43796",
+          "GHSA-qw6h-vgh9-j6wx"
+        ],
+        "occurrences": [
+          {
+            "version": "4.18.2",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "5.0",
+            "ids": [
+              "GHSA-qw6h-vgh9-j6wx"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "follow-redirects",
+        "aliases": [
+          "CVE-2026-111755",
+          "GHSA-8r9p-f939-6h3c"
+        ],
+        "occurrences": [
+          {
+            "version": "1.16.0",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "8.2",
+            "ids": [
+              "GHSA-8r9p-f939-6h3c"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "follow-redirects",
+        "aliases": [
+          "CVE-2026-111755",
+          "GHSA-8r9p-f939-6h3c"
+        ],
+        "occurrences": [
+          {
+            "version": "1.16.0",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "8.2",
+            "ids": [
+              "GHSA-8r9p-f939-6h3c"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "follow-redirects",
+        "aliases": [
+          "CVE-2026-111756",
+          "GHSA-q3jh-wrc6-jgq8"
+        ],
+        "occurrences": [
+          {
+            "version": "1.16.0",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "8.2",
+            "ids": [
+              "GHSA-q3jh-wrc6-jgq8"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "follow-redirects",
+        "aliases": [
+          "CVE-2026-111756",
+          "GHSA-q3jh-wrc6-jgq8"
+        ],
+        "occurrences": [
+          {
+            "version": "1.16.0",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "8.2",
+            "ids": [
+              "GHSA-q3jh-wrc6-jgq8"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2018-16487",
+          "GHSA-4xc9-xhrj-v574"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "",
+            "ids": [
+              "GHSA-4xc9-xhrj-v574"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2018-16487",
+          "GHSA-4xc9-xhrj-v574"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "",
+            "ids": [
+              "GHSA-4xc9-xhrj-v574"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2018-3721",
+          "GHSA-fvqr-27wr-82fm"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.5",
+            "ids": [
+              "GHSA-fvqr-27wr-82fm"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2018-3721",
+          "GHSA-fvqr-27wr-82fm"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.5",
+            "ids": [
+              "GHSA-fvqr-27wr-82fm"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2019-1010266",
+          "GHSA-x5rq-j2xg-h7qm",
+          "SNYK-JS-LODASH-73639"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.5",
+            "ids": [
+              "GHSA-x5rq-j2xg-h7qm"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2019-1010266",
+          "GHSA-x5rq-j2xg-h7qm",
+          "SNYK-JS-LODASH-73639"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.5",
+            "ids": [
+              "GHSA-x5rq-j2xg-h7qm"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2019-10744",
+          "GHSA-jf85-cpcp-j695",
+          "SNYK-JS-LODASH-450202"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "9.1",
+            "ids": [
+              "GHSA-jf85-cpcp-j695"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2019-10744",
+          "GHSA-jf85-cpcp-j695",
+          "SNYK-JS-LODASH-450202"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "9.1",
+            "ids": [
+              "GHSA-jf85-cpcp-j695"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2020-28500",
+          "GHSA-29mw-wpgm-hmr9"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "5.3",
+            "ids": [
+              "GHSA-29mw-wpgm-hmr9"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2020-28500",
+          "GHSA-29mw-wpgm-hmr9"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "5.3",
+            "ids": [
+              "GHSA-29mw-wpgm-hmr9"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2020-8203",
+          "GHSA-p6mc-m468-83gw"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.4",
+            "ids": [
+              "GHSA-p6mc-m468-83gw"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2020-8203",
+          "GHSA-p6mc-m468-83gw"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.4",
+            "ids": [
+              "GHSA-p6mc-m468-83gw"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2021-23337",
+          "GHSA-35jh-r3h4-6jhm"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.2",
+            "ids": [
+              "GHSA-35jh-r3h4-6jhm"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2021-23337",
+          "GHSA-35jh-r3h4-6jhm"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.2",
+            "ids": [
+              "GHSA-35jh-r3h4-6jhm"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2025-13465",
+          "GHSA-xxjr-mmjv-4gpg"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.9",
+            "ids": [
+              "GHSA-xxjr-mmjv-4gpg"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2025-13465",
+          "GHSA-xxjr-mmjv-4gpg"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.9",
+            "ids": [
+              "GHSA-xxjr-mmjv-4gpg"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2026-2950",
+          "GHSA-f23m-r3pf-42rh"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.5",
+            "ids": [
+              "GHSA-f23m-r3pf-42rh"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2026-2950",
+          "GHSA-f23m-r3pf-42rh"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.5",
+            "ids": [
+              "GHSA-f23m-r3pf-42rh"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2026-4800",
+          "GHSA-r5fr-rjxr-66jc"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "8.1",
+            "ids": [
+              "GHSA-r5fr-rjxr-66jc"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "lodash",
+        "aliases": [
+          "CVE-2026-4800",
+          "GHSA-r5fr-rjxr-66jc"
+        ],
+        "occurrences": [
+          {
+            "version": "4.17.4",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "8.1",
+            "ids": [
+              "GHSA-r5fr-rjxr-66jc"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "path-to-regexp",
+        "aliases": [
+          "CVE-2024-45296",
+          "CVE-2026-4867",
+          "GHSA-37ch-88jc-xwx2",
+          "GHSA-9wv6-86v2-598j"
+        ],
+        "occurrences": [
+          {
+            "version": "0.1.7",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.7",
+            "ids": [
+              "GHSA-37ch-88jc-xwx2",
+              "GHSA-9wv6-86v2-598j"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "path-to-regexp",
+        "aliases": [
+          "CVE-2024-45296",
+          "CVE-2026-4867",
+          "GHSA-37ch-88jc-xwx2",
+          "GHSA-9wv6-86v2-598j"
+        ],
+        "occurrences": [
+          {
+            "version": "0.1.7",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.7",
+            "ids": [
+              "GHSA-37ch-88jc-xwx2",
+              "GHSA-9wv6-86v2-598j"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "path-to-regexp",
+        "aliases": [
+          "CVE-2024-52798",
+          "GHSA-rhx6-c78j-4q9w"
+        ],
+        "occurrences": [
+          {
+            "version": "0.1.7",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.7",
+            "ids": [
+              "GHSA-rhx6-c78j-4q9w"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "path-to-regexp",
+        "aliases": [
+          "CVE-2024-52798",
+          "GHSA-rhx6-c78j-4q9w"
+        ],
+        "occurrences": [
+          {
+            "version": "0.1.7",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "7.7",
+            "ids": [
+              "GHSA-rhx6-c78j-4q9w"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "qs",
+        "aliases": [
+          "CVE-2025-15284",
+          "GHSA-6rw7-vpxm-498p"
+        ],
+        "occurrences": [
+          {
+            "version": "6.11.0",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.3",
+            "ids": [
+              "GHSA-6rw7-vpxm-498p"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "qs",
+        "aliases": [
+          "CVE-2025-15284",
+          "GHSA-6rw7-vpxm-498p"
+        ],
+        "occurrences": [
+          {
+            "version": "6.11.0",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.3",
+            "ids": [
+              "GHSA-6rw7-vpxm-498p"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "qs",
+        "aliases": [
+          "CVE-2026-2391",
+          "GHSA-w7fw-mjwx-w883"
+        ],
+        "occurrences": [
+          {
+            "version": "6.11.0",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "3.7",
+            "ids": [
+              "GHSA-w7fw-mjwx-w883"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "qs",
+        "aliases": [
+          "CVE-2026-2391",
+          "GHSA-w7fw-mjwx-w883"
+        ],
+        "occurrences": [
+          {
+            "version": "6.11.0",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "3.7",
+            "ids": [
+              "GHSA-w7fw-mjwx-w883"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "qs",
+        "aliases": [
+          "CVE-2026-82417",
+          "GHSA-4mjr-xmp4-gh2g"
+        ],
+        "occurrences": [
+          {
+            "version": "6.11.0",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.3",
+            "ids": [
+              "GHSA-4mjr-xmp4-gh2g"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "qs",
+        "aliases": [
+          "CVE-2026-82417",
+          "GHSA-4mjr-xmp4-gh2g"
+        ],
+        "occurrences": [
+          {
+            "version": "6.11.0",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "6.3",
+            "ids": [
+              "GHSA-4mjr-xmp4-gh2g"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "send",
+        "aliases": [
+          "CVE-2024-43799",
+          "GHSA-m6fv-jmcg-4jfg"
+        ],
+        "occurrences": [
+          {
+            "version": "0.18.0",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "5.0",
+            "ids": [
+              "GHSA-m6fv-jmcg-4jfg"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "send",
+        "aliases": [
+          "CVE-2024-43799",
+          "GHSA-m6fv-jmcg-4jfg"
+        ],
+        "occurrences": [
+          {
+            "version": "0.18.0",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "5.0",
+            "ids": [
+              "GHSA-m6fv-jmcg-4jfg"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    },
+    {
+      "before": {
+        "ecosystem": "npm",
+        "package": "serve-static",
+        "aliases": [
+          "CVE-2024-43800",
+          "GHSA-cm22-4g7w-348p"
+        ],
+        "occurrences": [
+          {
+            "version": "1.15.0",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "5.0",
+            "ids": [
+              "GHSA-cm22-4g7w-348p"
+            ]
+          }
+        ]
+      },
+      "after": {
+        "ecosystem": "npm",
+        "package": "serve-static",
+        "aliases": [
+          "CVE-2024-43800",
+          "GHSA-cm22-4g7w-348p"
+        ],
+        "occurrences": [
+          {
+            "version": "1.15.0",
+            "source": {
+              "path": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/package-lock.json",
+              "type": "lockfile"
+            },
+            "dependency_groups": [],
+            "severity": "5.0",
+            "ids": [
+              "GHSA-cm22-4g7w-348p"
+            ]
+          }
+        ]
+      },
+      "status": "open"
+    }
+  ],
+  "target_absent": true
+}

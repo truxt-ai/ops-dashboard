@@ -1,0 +1,39 @@
+Start: 2026-10-26T08:52:26.811039+00:00
+Revision: 712d9c36395d58996689763523d7fe8ba9b7fbae
+CWD: /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0
+Command: node --test test/proxy-addr-security.test.js
+Node bin: /data/work-root/qa-evidence/AXM-708-db9dc0/tools/node-v20.20.2-linux-arm64/bin
+
+TAP version 13
+# Subtest: S1: CVE-2026-90711: ::ffff:10.0.0.0/8 does not trust an arbitrary IPv4 client
+ok 1 - S1: CVE-2026-90711: ::ffff:10.0.0.0/8 does not trust an arbitrary IPv4 client
+  ---
+  duration_ms: 2.838279
+  ...
+# Subtest: S2: CVE-2026-90711: ::/1 does not trust an arbitrary IPv4 client
+ok 2 - S2: CVE-2026-90711: ::/1 does not trust an arbitrary IPv4 client
+  ---
+  duration_ms: 0.332106
+  ...
+# Subtest: C1: ordinary private proxy subnets preserve the forwarded client address
+ok 3 - C1: ordinary private proxy subnets preserve the forwarded client address
+  ---
+  duration_ms: 0.322082
+  ...
+# Subtest: C2: untrusted clients cannot select their address and dashboard proxy trust stays disabled
+ok 4 - C2: untrusted clients cannot select their address and dashboard proxy trust stays disabled
+  ---
+  duration_ms: 0.231047
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 156.815219
+
+End: 2026-10-26T08:52:26.996990+00:00
+Exit status: 0

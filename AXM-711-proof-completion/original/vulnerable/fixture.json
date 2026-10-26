@@ -1,0 +1,7 @@
+{
+  "baseline": "dff02375d83394d6f03ce2127e35e62fadc269ab",
+  "overlay": "test/proxy-addr-security.test.js",
+  "sha256": "e76f67d4761dd00dcb7be10e4bf6e500666a33418176fb194766fe5965215452",
+  "bytes": 1927,
+  "result": "S1 and S2 ERR_ASSERTION true !== false; C1 and C2 pass"
+}

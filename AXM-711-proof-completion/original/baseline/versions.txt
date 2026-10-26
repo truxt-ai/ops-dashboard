@@ -1,0 +1,17 @@
+Start: 2026-10-26T08:42:06.329653+00:00
+Revision: dff02375d83394d6f03ce2127e35e62fadc269ab
+CWD: /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0
+Command: node -e 'const {createRequire}=require("node:module"); const r=createRequire(require.resolve("express")); console.log(JSON.stringify({node:process.version,express:require("express/package.json").version,proxyAddrPath:r.resolve("proxy-addr"),proxyAddrVersion:r("proxy-addr/package.json").version,locked:require("./package-lock.json").packages["node_modules/proxy-addr"].version,trustProxy:require("./src/server").app.get("trust proxy")},null,2))'
+Node bin: /data/work-root/qa-evidence/AXM-708-db9dc0/tools/node-v20.20.2-linux-arm64/bin
+
+{
+  "node": "v20.20.2",
+  "express": "4.18.2",
+  "proxyAddrPath": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0/node_modules/proxy-addr/index.js",
+  "proxyAddrVersion": "2.0.7",
+  "locked": "2.0.7",
+  "trustProxy": false
+}
+
+End: 2026-10-26T08:42:06.583974+00:00
+Exit status: 0

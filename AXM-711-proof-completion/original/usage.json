@@ -1,0 +1,36 @@
+{
+  "captured_at": "2026-10-26T08:59:00.858251+00:00",
+  "session_id": "01a1775a-c4e9-7bd3-a862-59685c5c992f",
+  "agent": "Security Remediation",
+  "agent_id": "1be3dfa3-1e60-490c-921c-4bf25551fa2f",
+  "model": "gpt-6-astra",
+  "responsible_developer": "Raunak Poonia",
+  "source": "/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/teams/930822ca-8e20-48d7-83c8-e376241f05a4/tmp/ba4b8e978907a908/codex-home/sessions/2026/10/26/rollout-2026-10-26T08-36-39-01a1775a-c4e9-7bd3-a862-59685c5c992f.jsonl",
+  "native_event": {
+    "timestamp": "2026-10-26T08:58:09.449Z",
+    "total_token_usage": {
+      "input_tokens": 8525933,
+      "cached_input_tokens": 8344448,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 26214,
+      "reasoning_output_tokens": 4186,
+      "total_tokens": 8552147
+    }
+  },
+  "fresh_input_tokens_so_far": 181485,
+  "output_tokens_so_far": 26214,
+  "cached_input_tokens_so_far": 8344448,
+  "execution_cost_usd": null,
+  "planning_actual_usage": null,
+  "estimates_not_actuals": {
+    "fresh_input_output_estimate": "50\u2013200k",
+    "planning_allowance_usd": 10
+  },
+  "limitations": [
+    "In-progress native snapshot, not final run totals.",
+    "Later tool calls and final response are outside this snapshot.",
+    "Native token event contains no billed cost.",
+    "Separate planning usage and independent QA usage are unavailable to this worker.",
+    "Reference AXM-707 usage is not included as AXM-708 usage."
+  ]
+}

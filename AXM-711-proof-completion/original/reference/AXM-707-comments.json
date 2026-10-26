@@ -1,0 +1,24 @@
+[
+  {
+    "id": "38003c02-6b18-4e2d-831d-51e92bf45924",
+    "companyId": "c0c0d9ad-8fa7-4eef-a2c0-49b0b2849668",
+    "issueId": "4a5bde09-a6a8-4d44-8e78-83288dc70be5",
+    "body": "Truxt Axiom started this ticket with codex on branch `raunakTruxt/axm-707-b7509e`.",
+    "authorUserId": "4719b0b0-2b2b-48e8-b7e4-d5fef638d4c4",
+    "authorAgentId": "1be3dfa3-1e60-490c-921c-4bf25551fa2f",
+    "authorType": "agent",
+    "createdAt": "2026-10-26T06:36:21.490Z",
+    "updatedAt": "2026-10-26T06:36:21.490Z"
+  },
+  {
+    "id": "5343e92d-c155-4a93-8a17-525e61495e78",
+    "companyId": "c0c0d9ad-8fa7-4eef-a2c0-49b0b2849668",
+    "issueId": "4a5bde09-a6a8-4d44-8e78-83288dc70be5",
+    "body": "**Truxt Axiom run finished: partial success**\n\nUpgraded the only proxy-addr copy from 2.0.7 to 2.0.8 with a retained ^2.0.8 minimum and four regression/control tests, committed as 2b6a64fb5edc323081162457b989878a36c686ff, and opened unmerged PR https://github.com/truxt-ai/ops-dashboard/pull/106. Native proof reproduced 49 baseline passes, exactly two red assertions with two passing controls, four green regressions, 53 final passes and lint success; exact-head OSV removed only the selected advisory, with 49 canonical findings remaining and zero new advisories. Human review remains, the newest hosted CI check was in progress at readback, and actual native tokens/cost are unavailable; full logs, receipts, raw reports and remaining findings are linked in [the execution report](/data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-707-b7509e/.axiom/proof/execution-report.md).\n\n- Pull request: https://github.com/truxt-ai/ops-dashboard/pull/106\n- Branch: `raunakTruxt/axm-707-b7509e`\n- Tests: 53 passed, 0 failed (`npm exec --yes --package=node@20.20.2 --package=npm@10.9.9 -- npm test`)\n- Follow-up: Review PR 106; leave unmerged and in_review for the requester. No deployment, autopilot or CI changes authorized.\n- Follow-up: Check the newest hosted PR CI result; it was in progress at 2026-10-26T06:41:11Z, while two other hosted build checks had succeeded.\n- Follow-up: Retain the other 49 canonical findings as open; full list is .axiom/proof/remaining-canonical-findings.json.\n- Follow-up: Native run tokens and cost unavailable to worker; obtain measured totals from Axiom if available after completion, never infer them from the 50–200k planning estimate.\n- Harness: codex",
+    "authorUserId": "4719b0b0-2b2b-48e8-b7e4-d5fef638d4c4",
+    "authorAgentId": "1be3dfa3-1e60-490c-921c-4bf25551fa2f",
+    "authorType": "agent",
+    "createdAt": "2026-10-26T06:43:19.439Z",
+    "updatedAt": "2026-10-26T06:43:19.439Z"
+  }
+]

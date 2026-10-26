@@ -1,0 +1,297 @@
+Start: 2026-10-26T08:52:27.755974+00:00
+Revision: 712d9c36395d58996689763523d7fe8ba9b7fbae
+CWD: /data/home/root-disk-offload/azureuser/root-relocated/truxt-axiom-runtime/extensions/axiom-daemon/worktrees/930822ca-8e20-48d7-83c8-e376241f05a4/ops-dashboard/axm-708-db9dc0
+Command: npm test
+Node bin: /data/work-root/qa-evidence/AXM-708-db9dc0/tools/node-v20.20.2-linux-arm64/bin
+
+
+> axiom-demo-dashboard@1.0.0 test
+> node --test
+
+TAP version 13
+# (node:3532432) ExperimentalWarning: The MockTimers API is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: TC-01: successful metrics build records its completion and renders fresh UTC time
+ok 1 - TC-01: successful metrics build records its completion and renders fresh UTC time
+  ---
+  duration_ms: 10.284294
+  ...
+# Subtest: refresh clock is read after calculation, and never after failed calculation
+ok 2 - refresh clock is read after calculation, and never after failed calculation
+  ---
+  duration_ms: 0.842034
+  ...
+# Subtest: TC-02: stale rendering preserves the snapshot timestamp with text and styling
+ok 3 - TC-02: stale rendering preserves the snapshot timestamp with text and styling
+  ---
+  duration_ms: 1.08633
+  ...
+# Subtest: TC-03: snapshot aged 299999 ms is fresh
+ok 4 - TC-03: snapshot aged 299999 ms is fresh
+  ---
+  duration_ms: 0.749287
+  ...
+# Subtest: TC-03: snapshot aged 300000 ms is fresh
+ok 5 - TC-03: snapshot aged 300000 ms is fresh
+  ---
+  duration_ms: 0.712526
+  ...
+# Subtest: TC-03: snapshot aged 300001 ms is stale
+ok 6 - TC-03: snapshot aged 300001 ms is stale
+  ---
+  duration_ms: 0.65242
+  ...
+# Subtest: TC-04: UTC date boundary uses zero-padded UTC hours and minutes
+ok 7 - TC-04: UTC date boundary uses zero-padded UTC hours and minutes
+  ---
+  duration_ms: 0.581242
+  ...
+# Subtest: TC-05: GET / wires the build timestamp into the actual dashboard
+ok 8 - TC-05: GET / wires the build timestamp into the actual dashboard
+  ---
+  duration_ms: 49.95673
+  ...
+# Subtest: health endpoints (AXM-666 / TD-84, UoW-1)
+    # Subtest: TC-01: liveness ignores healthy upstream
+    ok 1 - TC-01: liveness ignores healthy upstream
+      ---
+      duration_ms: 23.539361
+      ...
+    # Subtest: TC-02: liveness ignores failing upstream
+    ok 2 - TC-02: liveness ignores failing upstream
+      ---
+      duration_ms: 5.684776
+      ...
+    # Subtest: TC-03: readiness probes upstream with the existing timeout
+    ok 3 - TC-03: readiness probes upstream with the existing timeout
+      ---
+      duration_ms: 4.15488
+      ...
+    # Subtest: TC-04: readiness identifies upstream on HTTP failure
+    ok 4 - TC-04: readiness identifies upstream on HTTP failure
+      ---
+      duration_ms: 5.29686
+      ...
+    # Subtest: TC-04: readiness identifies upstream on connection error
+    ok 5 - TC-04: readiness identifies upstream on connection error
+      ---
+      duration_ms: 4.995795
+      ...
+    # Subtest: TC-04: readiness identifies upstream on timeout
+    ok 6 - TC-04: readiness identifies upstream on timeout
+      ---
+      duration_ms: 10.781982
+      ...
+    # Subtest: TC-05: pending and repeated failures leave liveness available, then readiness recovers
+    ok 7 - TC-05: pending and repeated failures leave liveness available, then readiness recovers
+      ---
+      duration_ms: 15.405349
+      ...
+    # Subtest: TC-06: legacy upstream success preserves the upstream status
+    ok 8 - TC-06: legacy upstream success preserves the upstream status
+      ---
+      duration_ms: 5.523331
+      ...
+    # Subtest: TC-06: legacy upstream failure preserves 502 and the error field
+    ok 9 - TC-06: legacy upstream failure preserves 502 and the error field
+      ---
+      duration_ms: 3.44665
+      ...
+    1..9
+ok 9 - health endpoints (AXM-666 / TD-84, UoW-1)
+  ---
+  duration_ms: 80.588405
+  type: 'suite'
+  ...
+# Subtest: applyPromoCode: WELCOME10 on 100 returns 90
+ok 10 - applyPromoCode: WELCOME10 on 100 returns 90
+  ---
+  duration_ms: 1.247335
+  ...
+# Subtest: applyPromoCode: PRO25 on 100 returns 75
+ok 11 - applyPromoCode: PRO25 on 100 returns 75
+  ---
+  duration_ms: 0.193046
+  ...
+# Subtest: applyPromoCode: LEGACY50 (inactive) on 100 returns 100
+ok 12 - applyPromoCode: LEGACY50 (inactive) on 100 returns 100
+  ---
+  duration_ms: 0.270664
+  ...
+# Subtest: applyPromoCode: unknown code NOPE returns original price
+ok 13 - applyPromoCode: unknown code NOPE returns original price
+  ---
+  duration_ms: 0.143245
+  ...
+# Subtest: applyPromoCode: misspelled code WELCOM10 returns original price
+ok 14 - applyPromoCode: misspelled code WELCOM10 returns original price
+  ---
+  duration_ms: 0.12802
+  ...
+# Subtest: applyPromoCode: lowercase welcome10 treated same as WELCOME10
+ok 15 - applyPromoCode: lowercase welcome10 treated same as WELCOME10
+  ---
+  duration_ms: 0.122699
+  ...
+# Subtest: applyPromoCode: PRO25 on 99.99 rounds to 74.99
+ok 16 - applyPromoCode: PRO25 on 99.99 rounds to 74.99
+  ---
+  duration_ms: 0.300714
+  ...
+# Subtest: applyPromoCode: empty string code leaves price unchanged
+ok 17 - applyPromoCode: empty string code leaves price unchanged
+  ---
+  duration_ms: 0.147597
+  ...
+# Subtest: applyPromoCode: whitespace-only code leaves price unchanged
+ok 18 - applyPromoCode: whitespace-only code leaves price unchanged
+  ---
+  duration_ms: 0.319978
+  ...
+# Subtest: applyPromoCode: null code leaves price unchanged
+ok 19 - applyPromoCode: null code leaves price unchanged
+  ---
+  duration_ms: 0.347826
+  ...
+# Subtest: applyPromoCode: undefined code leaves price unchanged
+ok 20 - applyPromoCode: undefined code leaves price unchanged
+  ---
+  duration_ms: 0.155565
+  ...
+# Subtest: getActivePromoCodes: returns exactly WELCOME10 and PRO25
+ok 21 - getActivePromoCodes: returns exactly WELCOME10 and PRO25
+  ---
+  duration_ms: 0.252672
+  ...
+# Subtest: getActivePromoCodes: LEGACY50 not in active list
+ok 22 - getActivePromoCodes: LEGACY50 not in active list
+  ---
+  duration_ms: 1.127531
+  ...
+# Subtest: getActivePromoCodes: each entry has code, description, discountPercent
+ok 23 - getActivePromoCodes: each entry has code, description, discountPercent
+  ---
+  duration_ms: 1.358834
+  ...
+# Subtest: getActivePromoCodes: WELCOME10 discountPercent is 10, PRO25 is 25
+ok 24 - getActivePromoCodes: WELCOME10 discountPercent is 10, PRO25 is 25
+  ---
+  duration_ms: 0.207054
+  ...
+# Subtest: S1: CVE-2026-90711: ::ffff:10.0.0.0/8 does not trust an arbitrary IPv4 client
+ok 25 - S1: CVE-2026-90711: ::ffff:10.0.0.0/8 does not trust an arbitrary IPv4 client
+  ---
+  duration_ms: 3.018613
+  ...
+# Subtest: S2: CVE-2026-90711: ::/1 does not trust an arbitrary IPv4 client
+ok 26 - S2: CVE-2026-90711: ::/1 does not trust an arbitrary IPv4 client
+  ---
+  duration_ms: 0.331826
+  ...
+# Subtest: C1: ordinary private proxy subnets preserve the forwarded client address
+ok 27 - C1: ordinary private proxy subnets preserve the forwarded client address
+  ---
+  duration_ms: 0.373724
+  ...
+# Subtest: C2: untrusted clients cannot select their address and dashboard proxy trust stays disabled
+ok 28 - C2: untrusted clients cannot select their address and dashboard proxy trust stays disabled
+  ---
+  duration_ms: 0.236175
+  ...
+# Subtest: TC-01: 0/10000 is healthy without rounding
+ok 29 - TC-01: 0/10000 is healthy without rounding
+  ---
+  duration_ms: 1.273184
+  ...
+# Subtest: TC-01: 99/10000 is healthy without rounding
+ok 30 - TC-01: 99/10000 is healthy without rounding
+  ---
+  duration_ms: 0.228311
+  ...
+# Subtest: TC-01: 100/10000 is degraded without rounding
+ok 31 - TC-01: 100/10000 is degraded without rounding
+  ---
+  duration_ms: 0.144549
+  ...
+# Subtest: TC-01: 499/10000 is degraded without rounding
+ok 32 - TC-01: 499/10000 is degraded without rounding
+  ---
+  duration_ms: 0.146005
+  ...
+# Subtest: TC-01: 500/10000 is failing without rounding
+ok 33 - TC-01: 500/10000 is failing without rounding
+  ---
+  duration_ms: 0.200967
+  ...
+# Subtest: TC-01: 501/10000 is failing without rounding
+ok 34 - TC-01: 501/10000 is failing without rounding
+  ---
+  duration_ms: 0.134748
+  ...
+# Subtest: TC-01: 0/0 is healthy without rounding
+ok 35 - TC-01: 0/0 is healthy without rounding
+  ---
+  duration_ms: 0.322818
+  ...
+# Subtest: TC-01: 5/0 is healthy without rounding
+ok 36 - TC-01: 5/0 is healthy without rounding
+  ---
+  duration_ms: 0.152772
+  ...
+# Subtest: TC-01: 9999/1000000 is healthy without rounding
+ok 37 - TC-01: 9999/1000000 is healthy without rounding
+  ---
+  duration_ms: 0.426797
+  ...
+# Subtest: TC-01: 49999/1000000 is degraded without rounding
+ok 38 - TC-01: 49999/1000000 is degraded without rounding
+  ---
+  duration_ms: 0.368947
+  ...
+# Subtest: TC-02: severity and English name order are deterministic without mutating input
+ok 39 - TC-02: severity and English name order are deterministic without mutating input
+  ---
+  duration_ms: 1.340626
+  ...
+# Subtest: TC-03: EJS renders independent mixed fixtures in health/name order with adjacent status
+ok 40 - TC-03: EJS renders independent mixed fixtures in health/name order with adjacent status
+  ---
+  duration_ms: 9.830672
+  ...
+# Subtest: TC-03: repeated GET / requests preserve service row and cell order
+ok 41 - TC-03: repeated GET / requests preserve service row and cell order
+  ---
+  duration_ms: 67.118884
+  ...
+# Subtest: TC-04: shipped metrics show all states and retain consistent aggregates
+ok 42 - TC-04: shipped metrics show all states and retain consistent aggregates
+  ---
+  duration_ms: 0.514104
+  ...
+# Subtest: buildMetrics totals add up across services
+ok 43 - buildMetrics totals add up across services
+  ---
+  duration_ms: 1.938212
+  ...
+# Subtest: brace-expansion installed and locked versions meet security floor 1.1.21
+ok 44 - brace-expansion installed and locked versions meet security floor 1.1.21
+  ---
+  duration_ms: 2.384106
+  ...
+# Subtest: js-yaml installed and locked versions meet security floor 4.3.2
+ok 45 - js-yaml installed and locked versions meet security floor 4.3.2
+  ---
+  duration_ms: 1.169252
+  ...
+1..45
+# tests 53
+# suites 1
+# pass 53
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 404.036587
+
+End: 2026-10-26T08:52:28.314478+00:00
+Exit status: 0
