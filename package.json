@@ -21,6 +21,8 @@
   },
   "overrides": {
     "brace-expansion": "^1.1.21",
-    "js-yaml": "^4.3.2"
+    "js-yaml": "^4.3.2",
+    "cookie": "0.7.2",
+    "send": "0.19.0"
   }
 }
