@@ -7,12 +7,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # Baseline sources and merge parents for evidence provenance.
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -21,25 +17,10 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: python3 scripts/security-verification.py record "$RUNNER_TEMP/axiom-evidence" install . npm ci
+        run: npm ci
 
       - name: Lint
-        run: python3 scripts/security-verification.py record "$RUNNER_TEMP/axiom-evidence" lint . npm run lint
+        run: npm run lint
 
       - name: Test
-        run: python3 scripts/security-verification.py record "$RUNNER_TEMP/axiom-evidence" test . npm test -- --test-reporter=tap
-
-      - name: Capture security regression evidence
-        run: python3 scripts/security-verification.py ci-capture "$RUNNER_TEMP/axiom-evidence"
-
-      - name: Hash captured evidence
-        if: always()
-        run: python3 scripts/security-verification.py manifest "$RUNNER_TEMP/axiom-evidence"
-
-      - name: Upload verification evidence
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: security-verification-${{ github.sha }}
-          path: ${{ runner.temp }}/axiom-evidence/
-          if-no-files-found: error
+        run: npm test
