@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
 const http = require('node:http');
 const { once } = require('node:events');
 const axios = require('axios');
-const { app } = require('../src/server');
+const { app } = require('../src/app');
 
 describe('health endpoints (AXM-666 / TD-84, UoW-1)', { concurrency: false }, () => {
   let server;
