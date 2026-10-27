@@ -32,7 +32,7 @@ async function renderSnapshot(timestamp, now) {
   return { freshness, time, html };
 }
 
-test('TC-01: successful metrics build records its completion and renders fresh UTC time', async () => {
+test('TC-01: a fresh snapshot renders its UTC time without the stale marker', async () => {
   const timestamp = '2026-10-22T08:20:00.000Z';
   const { time } = await renderSnapshot(timestamp, '2026-10-22T08:20:30.000Z');
   assert.match(time, />Last updated 08:20 UTC<\/time>/);
