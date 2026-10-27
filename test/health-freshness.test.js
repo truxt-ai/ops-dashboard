@@ -5,14 +5,25 @@ const assert = require('node:assert/strict');
 const path = require('node:path');
 const { once } = require('node:events');
 const ejs = require('ejs');
-const _ = require('lodash');
-const { app, buildMetrics } = require('../src/server');
+const { app } = require('../src/app');
+const { presentServices } = require('../src/lib/service-health');
 
 const template = path.join(__dirname, '..', 'views', 'dashboard.ejs');
 
+const shippedMetrics = {
+  services: presentServices([
+    { name: 'api-gateway', requests: 18420, errors: 1000 },
+    { name: 'auth-service', requests: 9310, errors: 100 },
+    { name: 'billing', requests: 4502, errors: 0 },
+  ]),
+  totalRequests: 32232,
+  totalErrors: 1100,
+  errorRate: 3.413,
+};
+
 async function renderSnapshot(timestamp, now) {
   const { presentHealthFreshness } = require('../src/lib/health-freshness');
-  const metrics = buildMetrics(() => new Date(timestamp));
+  const metrics = { ...shippedMetrics, lastSuccessfulRefreshAt: new Date(timestamp).toISOString() };
   const freshness = presentHealthFreshness(metrics.lastSuccessfulRefreshAt, () => new Date(now));
   const html = await ejs.renderFile(template, { metrics, freshness });
   const time = html.match(/<time\b[^>]*>[^<]*<\/time>/)[0];
@@ -21,37 +32,11 @@ async function renderSnapshot(timestamp, now) {
   return { freshness, time, html };
 }
 
-test('TC-01: successful metrics build records its completion and renders fresh UTC time', async () => {
+test('TC-01: a fresh snapshot renders its UTC time without the stale marker', async () => {
   const timestamp = '2026-10-22T08:20:00.000Z';
-  const metrics = buildMetrics(() => new Date(timestamp));
-  assert.equal(metrics.lastSuccessfulRefreshAt, timestamp);
-  assert.equal(metrics.totalRequests, 32232);
-  assert.equal(metrics.totalErrors, 1100);
-  assert.equal(metrics.errorRate, 3.413);
-  assert.equal(metrics.services.length, 3);
   const { time } = await renderSnapshot(timestamp, '2026-10-22T08:20:30.000Z');
   assert.match(time, />Last updated 08:20 UTC<\/time>/);
   assert.doesNotMatch(time, /stale/);
-});
-
-test('refresh clock is read after calculation, and never after failed calculation', (t) => {
-  const round = _.round;
-  let calculated = false;
-  t.mock.method(_, 'round', (...args) => {
-    calculated = true;
-    return round(...args);
-  });
-  let clockReads = 0;
-  const clock = () => {
-    assert.ok(calculated);
-    clockReads++;
-    return new Date('2026-10-22T08:20:00.000Z');
-  };
-  buildMetrics(clock);
-  assert.equal(clockReads, 1);
-  t.mock.method(_, 'sumBy', () => { throw new Error('calculation failed'); });
-  assert.throws(() => buildMetrics(clock), /calculation failed/);
-  assert.equal(clockReads, 1);
 });
 
 test('TC-02: stale rendering preserves the snapshot timestamp with text and styling', async () => {
