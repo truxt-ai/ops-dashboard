@@ -12,15 +12,26 @@ app.get('/__axm746/proxy', (req, res) => res.json({ ip: req.ip, ips: req.ips }))
 
 let server;
 let origin;
+let previousToken;
 before(async () => {
+  previousToken = process.env.DASHBOARD_TOKEN;
+  process.env.DASHBOARD_TOKEN = 'synthetic-dashboard-fixture';
   server = app.listen(0, '127.0.0.1');
   await once(server, 'listening');
   origin = `http://127.0.0.1:${server.address().port}`;
 });
-after(() => new Promise((resolve, reject) => server.close(err => err ? reject(err) : resolve())));
+after(async () => {
+  await new Promise((resolve, reject) => server.close(err => err ? reject(err) : resolve()));
+  if (previousToken === undefined) delete process.env.DASHBOARD_TOKEN;
+  else process.env.DASHBOARD_TOKEN = previousToken;
+});
 
 async function request(path, options = {}) {
-  return fetch(origin + path, { ...options, signal: AbortSignal.timeout(2000) });
+  return fetch(origin + path, {
+    ...options,
+    headers: { authorization: `Bearer ${process.env.DASHBOARD_TOKEN}`, ...options.headers },
+    signal: AbortSignal.timeout(2000),
+  });
 }
 
 test('bounded query parser enforces arrayLimit for bracket notation (GHSA-6rw7-vpxm-498p)', async t => {

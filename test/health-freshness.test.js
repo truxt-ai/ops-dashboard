@@ -64,11 +64,19 @@ test('TC-04: UTC date boundary uses zero-padded UTC hours and minutes', async ()
 });
 
 test('TC-05: GET / wires the build timestamp into the actual dashboard', async (t) => {
+  const previous = process.env.DASHBOARD_TOKEN;
+  process.env.DASHBOARD_TOKEN = 'synthetic-dashboard-fixture';
+  t.after(() => {
+    if (previous === undefined) delete process.env.DASHBOARD_TOKEN;
+    else process.env.DASHBOARD_TOKEN = previous;
+  });
   t.mock.timers.enable({ apis: ['Date'], now: Date.parse('2026-10-22T08:20:00.000Z') });
   const server = app.listen(0, '127.0.0.1');
   t.after(() => new Promise((resolve, reject) => server.close(err => err ? reject(err) : resolve())));
   await once(server, 'listening');
-  const response = await fetch(`http://127.0.0.1:${server.address().port}/`);
+  const response = await fetch(`http://127.0.0.1:${server.address().port}/`, {
+    headers: { authorization: `Bearer ${process.env.DASHBOARD_TOKEN}` },
+  });
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /<time[^>]*datetime="2026-10-22T08:20:00.000Z"[^>]*>Last updated 08:20 UTC<\/time>/);
