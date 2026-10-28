@@ -77,12 +77,20 @@ test('TC-03: EJS renders independent mixed fixtures in health/name order with ad
 });
 
 test('TC-03: repeated GET / requests preserve service row and cell order', async t => {
+  const previous = process.env.DASHBOARD_TOKEN;
+  process.env.DASHBOARD_TOKEN = 'synthetic-dashboard-fixture';
+  t.after(() => {
+    if (previous === undefined) delete process.env.DASHBOARD_TOKEN;
+    else process.env.DASHBOARD_TOKEN = previous;
+  });
   const server = app.listen(0, '127.0.0.1');
   t.after(() => new Promise((resolve, reject) => server.close(err => err ? reject(err) : resolve())));
   await once(server, 'listening');
   let firstRows;
   for (let refresh = 0; refresh < 3; refresh++) {
-    const response = await fetch(`http://127.0.0.1:${server.address().port}/`);
+    const response = await fetch(`http://127.0.0.1:${server.address().port}/`, {
+      headers: { authorization: `Bearer ${process.env.DASHBOARD_TOKEN}` },
+    });
     assert.equal(response.status, 200);
     const html = await response.text();
     const rows = serviceRows(html);
