@@ -24,13 +24,21 @@ function clientFor(port, path) {
   return client;
 }
 
+// Literals, not the imported constants: every other assertion in this file
+// compares against TIMEOUT_MS, so without this a change to it would move the
+// expectations along with the behaviour and nothing would fail. The README
+// documents both values as the upstream-probe contract.
+test('status-probe pins its documented upstream target and timeout', () => {
+  assert.equal(UPSTREAM_URL, 'https://example.com');
+  assert.equal(TIMEOUT_MS, 2000);
+});
+
 test('probeUpstream resolves the real status with the configured timeout', async t => {
   const port = await listen(t, (req, res) => { res.writeHead(204); res.end(); });
   const response = await probeUpstream(clientFor(port, '/'));
   assert.equal(response.status, 204);
-  assert.equal(response.config.timeout, TIMEOUT_MS);
+  assert.equal(response.config.timeout, 2000);
   assert.equal(response.config.method, 'get');
-  assert.equal(UPSTREAM_URL, 'https://example.com');
 });
 
 test('probeUpstream rejects a 500 with the real Axios response error', async t => {
@@ -43,14 +51,15 @@ test('probeUpstream rejects a 500 with the real Axios response error', async t =
   });
 });
 
-test('probeUpstream enforces the timeout against a server that never responds', { timeout: TIMEOUT_MS + 5000 }, async t => {
+test('probeUpstream enforces the timeout against a server that never responds', { timeout: 7000 }, async t => {
   const port = await listen(t, () => {});
   const started = Date.now();
   await assert.rejects(probeUpstream(clientFor(port, '/')), {
-    message: `timeout of ${TIMEOUT_MS}ms exceeded`,
+    message: 'timeout of 2000ms exceeded',
     code: 'ECONNABORTED',
   });
-  assert.ok(Date.now() - started >= TIMEOUT_MS - 100, 'rejected before the timeout elapsed');
+  const elapsed = Date.now() - started;
+  assert.ok(elapsed >= 1900 && elapsed < 6000, `aborted after ${elapsed}ms, expected about 2000ms`);
 });
 
 test('probeUpstream rejects with ECONNREFUSED when nothing is listening', async () => {

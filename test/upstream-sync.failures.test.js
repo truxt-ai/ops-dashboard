@@ -9,6 +9,22 @@ const { syncMetrics } = require('../src/jobs/upstream-sync');
 
 const snapshot = { totalRequests: 42, totalErrors: 1 };
 
+// Tests that use the default Axios client cannot pass { proxy: false }, so a
+// runner with a proxy configured and no loopback exemption would send these
+// requests off the box. Clear them for the duration of the test instead.
+const PROXY_VARS = ['http_proxy', 'HTTP_PROXY', 'https_proxy', 'HTTPS_PROXY', 'npm_config_proxy', 'no_proxy', 'NO_PROXY'];
+
+function withEnv(t, names) {
+  const previous = new Map(names.map(name => [name, process.env[name]]));
+  for (const name of names) delete process.env[name];
+  t.after(() => {
+    for (const [name, value] of previous) {
+      if (value === undefined) delete process.env[name];
+      else process.env[name] = value;
+    }
+  });
+}
+
 async function listen(t, handler) {
   const requests = [];
   const server = http.createServer((req, res) => {
@@ -30,25 +46,17 @@ async function listen(t, handler) {
 }
 
 test('syncMetrics throws synchronously when no URL is configured', t => {
-  const previous = process.env.UPSTREAM_SYNC_URL;
-  delete process.env.UPSTREAM_SYNC_URL;
-  t.after(() => {
-    if (previous === undefined) delete process.env.UPSTREAM_SYNC_URL;
-    else process.env.UPSTREAM_SYNC_URL = previous;
-  });
+  withEnv(t, ['UPSTREAM_SYNC_URL']);
   assert.throws(() => syncMetrics(snapshot), { message: 'UPSTREAM_SYNC_URL is not set' });
 });
 
 test('syncMetrics defaults the URL to UPSTREAM_SYNC_URL and posts with the default Axios client', async t => {
-  const previous = process.env.UPSTREAM_SYNC_URL;
-  t.after(() => {
-    if (previous === undefined) delete process.env.UPSTREAM_SYNC_URL;
-    else process.env.UPSTREAM_SYNC_URL = previous;
-  });
+  withEnv(t, ['UPSTREAM_SYNC_URL', ...PROXY_VARS]);
   const { requests, base } = await listen(t, (req, res) => { res.writeHead(204); res.end(); });
   process.env.UPSTREAM_SYNC_URL = `${base}/sync`;
   const response = await syncMetrics(snapshot);
   assert.equal(response.status, 204);
+  assert.equal(response.config.timeout, 5000);
   assert.deepEqual(requests.map(({ method, url }) => [method, url]), [['POST', '/sync']]);
   assert.deepEqual(JSON.parse(requests[0].body), snapshot);
 });
@@ -86,5 +94,8 @@ test('syncMetrics rejects instead of looping when the server redirects to itself
     message: 'Maximum number of redirects exceeded',
     code: 'ERR_FR_TOO_MANY_REDIRECTS',
   });
-  assert.equal(requests.length, 22);
+  // The guarantee is that it stops, not the exact cap: 22 is one initial
+  // request plus follow-redirects' own default of 21, which a future bump of
+  // that package may retune without any security meaning.
+  assert.ok(requests.length > 1 && requests.length <= 22, `walked ${requests.length} requests`);
 });
