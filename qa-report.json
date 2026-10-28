@@ -1,0 +1,60 @@
+{
+  "schema": "truxt-axiom/qa-report@1",
+  "head": "ea48feb3da13fe788b32ae03ecfa008c3e4beb84",
+  "pullRequestUrl": "https://github.com/truxt-ai/ops-dashboard/pull/118",
+  "sanity": [
+    {
+      "caseId": "993a5fb4-6389-4260-9574-86983ef4d374",
+      "name": "Dashboard renders",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 231,
+      "output": "✔ dashboard renders an empty services table without rows (0.948807ms)\n✔ buildMetrics totals add up across services (1.436743ms)\n✔ brace-expansion installed and locked versions meet security floor 1.1.21 (1.16359ms)\n✔ js-yaml installed and locked versions meet security floor 4.3.2 (2.760083ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 196.429838"
+    },
+    {
+      "caseId": "4a05f1a2-d09d-4720-b296-50d614c360fd",
+      "name": "Health endpoints",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 271,
+      "output": "  ✔ TC-05: pending and repeated failures leave liveness available, then readiness recovers (10.562317ms)\n  ✔ TC-06: legacy upstream success preserves the upstream status (2.936265ms)\n  ✔ TC-06: legacy upstream failure preserves 502 and the error field (2.620326ms)\n✔ health endpoints (AXM-666 / TD-84, UoW-1) (63.81109ms)\nℹ tests 16\nℹ suites 1\nℹ pass 16\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 238.105964"
+    },
+    {
+      "caseId": "d0097423-a22b-499e-82f2-12a98f783f9e",
+      "name": "Lint",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 602,
+      "output": "> axiom-demo-dashboard@1.0.0 lint\n> eslint ."
+    }
+  ],
+  "testsReused": [
+    {
+      "path": "test/smoke.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/dashboard-view.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/health.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/health-freshness.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/service-health.test.js",
+      "status": "passed"
+    }
+  ],
+  "testsAdded": [
+    {
+      "path": "test/app.express.test.js",
+      "status": "passed"
+    }
+  ],
+  "summary": "QA sanity suite run on PR #118 head ea48feb3da13fe788b32ae03ecfa008c3e4beb84 (branch raunakTruxt/axm-746-f4a21b) in a clean worktree on Node 24.15.0 / npm 11.12.1 after npm ci. All three project sanity cases are in scope (gh pr diff --name-only returns evidence/AXM-746.md, package.json, package-lock.json, test/app.express.test.js, so package.json and package-lock.json match the src/views/manifest scopes and ** matches everything); none was skipped. Dashboard renders passed 5/5 (exit 0), Health endpoints passed 16/16 (exit 0), Lint passed with no findings (exit 0). The PR-added test/app.express.test.js passes 3/3, the five reused existing test files that reach src/app.js all pass, and the full npm test suite passes 65/65, matching the PR body claim. Installed versions confirm the upgrade: express 4.22.3, body-parser 1.20.9, path-to-regexp 0.1.13, proxy-addr 2.0.8 (via the scoped override), qs 6.16.2, one copy each. No test was weakened, deleted or modified and no file in the PR was changed. Residual npm audit at head reports 3 vulnerable packages (2 high, 1 critical), consistent with the PR documenting axios, follow-redirects and lodash residuals as out of scope for this ticket. One merge-readiness defect outside the sanity cases: GitHub reports the PR mergeable=CONFLICTING and git merge-tree against current origin/master e691b021381e421d2617ecc66b453570ed63b1e2 (AXM-748 axios upgrade, merged after this PR branched from e5a3d26) reports CONFLICT (content) in package.json, so the branch needs a rebase before merge and the sanity suite should be re-run on the rebased head. Coverage gap noted, not fixed under this read-only ticket: no sanity case covers test/promo-codes.test.js, test/metrics.test.js, test/cli-options.test.js, test/time-format.test.js, test/health-freshness-unit.test.js or the new test/app.express.test.js, so an Express-group regression reaching those paths would not be caught by the sanity suite alone. Verdict: PASS on the sanity suite at this head."
+}
