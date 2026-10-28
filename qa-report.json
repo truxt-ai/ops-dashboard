@@ -1,0 +1,88 @@
+{
+  "schema": "truxt-axiom/qa-report@1",
+  "head": "4d978d4601cbab78e6d5b79402c8f6fb01c6c85d",
+  "pullRequestUrl": "https://github.com/truxt-ai/ops-dashboard/pull/119",
+  "sanity": [
+    {
+      "caseId": "993a5fb4-6389-4260-9574-86983ef4d374",
+      "name": "Dashboard renders",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 210,
+      "output": "\u2714 dashboard renders an empty services table without rows (0.794345ms)\n\u2714 buildMetrics totals add up across services (1.326906ms)\n\u2714 brace-expansion installed and locked versions meet security floor 1.1.21 (0.777833ms)\n\u2714 js-yaml installed and locked versions meet security floor 4.3.2 (0.477511ms)\n\u2139 tests 5\n\u2139 suites 0\n\u2139 pass 5\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 178.863525"
+    },
+    {
+      "caseId": "4a05f1a2-d09d-4720-b296-50d614c360fd",
+      "name": "Health endpoints",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 263,
+      "output": "  \u2714 TC-05: pending and repeated failures leave liveness available, then readiness recovers (9.511431ms)\n  \u2714 TC-06: legacy upstream success preserves the upstream status (2.711342ms)\n  \u2714 TC-06: legacy upstream failure preserves 502 and the error field (2.262696ms)\n\u2714 health endpoints (AXM-666 / TD-84, UoW-1) (56.472299ms)\n\u2139 tests 16\n\u2139 suites 1\n\u2139 pass 16\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 232.759518"
+    },
+    {
+      "caseId": "d0097423-a22b-499e-82f2-12a98f783f9e",
+      "name": "Lint",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 570,
+      "output": "\n> axiom-demo-dashboard@1.0.0 lint\n> eslint ."
+    }
+  ],
+  "testsReused": [
+    {
+      "path": "test/smoke.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/dashboard-view.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/health.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/health-freshness.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/service-health.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/promo-codes.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/app.express.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/upstream-sync.axios.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/metrics.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/cli-options.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/health-freshness-unit.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/time-format.test.js",
+      "status": "passed"
+    }
+  ],
+  "testsAdded": [
+    {
+      "path": "test/lodash-security.test.js",
+      "status": "passed"
+    }
+  ],
+  "summary": "QA of PR #119 (AXM-747) at head 4d978d4601cbab78e6d5b79402c8f6fb01c6c85d, which upgrades lodash 4.17.4 to 4.18.1 in package.json and package-lock.json and adds test/lodash-security.test.js. All three project sanity cases ran from the repository root after npm ci and passed: Dashboard renders (node --test test/smoke.test.js test/dashboard-view.test.js, 5/5), Health endpoints (node --test test/health.test.js test/health-freshness.test.js, 16/16) and Lint (npm run lint, eslint clean); no case was skipped because the diff touches package.json and package-lock.json, which both narrow path scopes match. The full existing suite (npm test) passed at head with 71/71 tests and 0 failures, so no regressions were introduced; the same reused sanity tests also pass at base origin/master (5/5 and 16/16), confirming they were already green rather than newly fixed. The test the PR adds is a genuine regression guard: in a throwaway checkout of origin/master with lodash 4.17.4 installed, all 3 of its cases fail (GHSA-jf85-cpcp-j695 defaultsDeep prototype pollution, GHSA-r5fr-rjxr-66jc _.template imports code injection, GHSA-f23m-r3pf-42rh array-path bypass in _.unset/_.omit), and all 3 pass at head with lodash 4.18.1 resolved. Scanner before and after: npm audit at base reports 1 critical lodash advisory group (10 GHSAs including the three the new test covers); npm audit at head reports 0 vulnerabilities. Remaining coverage gap: application lodash usage is limited to _.sumBy and _.round in src/lib/metrics.js:14-16 and src/lib/promo-codes.js:30, which test/metrics.test.js and test/promo-codes.test.js cover (18/18 pass at head); the vulnerable APIs the advisories concern (defaultsDeep, template, unset, omit) are not called anywhere in src, so the new test exercises lodash directly and there is no application-level regression test for them, which is appropriate but leaves the upgrade proven at library level only. Per the ticket no files were changed, nothing was pushed and no pull request was opened."
+}
