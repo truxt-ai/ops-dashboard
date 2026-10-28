@@ -1,0 +1,80 @@
+{
+  "schema": "truxt-axiom/qa-report@1",
+  "head": "6607e67bd333c07e310d3347c926488875a92927",
+  "pullRequestUrl": "https://github.com/truxt-ai/ops-dashboard/pull/117",
+  "sanity": [
+    {
+      "caseId": "993a5fb4-6389-4260-9574-86983ef4d374",
+      "name": "Dashboard renders",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 245,
+      "output": "✔ dashboard renders an empty services table without rows (0.876933ms)\n✔ buildMetrics totals add up across services (3.033828ms)\n✔ brace-expansion installed and locked versions meet security floor 1.1.21 (2.369814ms)\n✔ js-yaml installed and locked versions meet security floor 4.3.2 (0.560451ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 209.735649"
+    },
+    {
+      "caseId": "4a05f1a2-d09d-4720-b296-50d614c360fd",
+      "name": "Health endpoints",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 415,
+      "output": "  ✔ TC-05: pending and repeated failures leave liveness available, then readiness recovers (26.997165ms)\n  ✔ TC-06: legacy upstream success preserves the upstream status (2.923425ms)\n  ✔ TC-06: legacy upstream failure preserves 502 and the error field (4.345417ms)\n✔ health endpoints (AXM-666 / TD-84, UoW-1) (92.675974ms)\nℹ tests 16\nℹ suites 1\nℹ pass 16\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 367.405091"
+    },
+    {
+      "caseId": "d0097423-a22b-499e-82f2-12a98f783f9e",
+      "name": "Lint",
+      "status": "passed",
+      "exitCode": 0,
+      "durationMs": 784,
+      "output": "> axiom-demo-dashboard@1.0.0 lint\n> eslint ."
+    }
+  ],
+  "testsReused": [
+    {
+      "path": "test/smoke.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/dashboard-view.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/health.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/health-freshness.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/health-freshness-unit.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/service-health.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/promo-codes.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/metrics.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/cli-options.test.js",
+      "status": "passed"
+    },
+    {
+      "path": "test/time-format.test.js",
+      "status": "passed"
+    }
+  ],
+  "testsAdded": [
+    {
+      "path": "test/upstream-sync.axios.test.js",
+      "status": "passed"
+    }
+  ],
+  "summary": "All three sanity cases ran from the repository root at head 6607e67 (PR #117, branch raunakTruxt/axm-748-f8b9bc) after npm ci, and all three passed: \"Dashboard renders\" (node --test test/smoke.test.js test/dashboard-view.test.js, 5/5), \"Health endpoints\" (node --test test/health.test.js test/health-freshness.test.js, 16/16) and \"Lint\" (npm run lint, eslint clean). No case was skipped: the PR touches package.json and package-lock.json, which matches every case path scope. The full suite (npm test) also passed at 65/65, including the one test file the PR adds, test/upstream-sync.axios.test.js, whose three cases exercise JSON handling, redirect and credential boundaries, proxy routing, HTTP-failure rejection under an inherited validateStatus (GHSA-w9j2-pvgh-6h63) and real request timeouts against a local server. The change itself is dependency-only: axios 0.21.1 to 0.34.0 (lockfile resolves axios 0.34.0) plus a new follow-redirects ^1.16.2 override (installed 1.16.2); no src/ or views/ code changed, so the dashboard and health behaviour is covered by the pre-existing tests rather than new ones. Comparable npm audit --package-lock-only runs show 11 findings at base e5a3d26 including axios and follow-redirects (5 high, 2 critical) against 9 at head (3 high, 2 critical) with the axios and follow-redirects entries gone and no new advisory introduced; the remaining 9 sit in express, body-parser, qs, path-to-regexp, send, serve-static, cookie, proxy-addr and lodash, which are outside this dependency group and pre-date the PR. No regressions, no flaky runs, and no test was weakened or removed. Coverage gap worth noting for follow-up: nothing covers src/worker.js, and the remaining express and lodash advisory groups are untouched by this ticket."
+}
