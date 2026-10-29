@@ -251,7 +251,8 @@ def check_publication(report):
     for name in ['baseline_test_url', 'candidate_test_url']:
         assert re.search(r'/[0-9a-f]{40}/test', report[name]), 'test link is not immutable'
     ci = report['ci']
-    assert ci['conclusion'] == 'success' and ci['artifact_url'], 'exact-head CI/artifact publication pending'
+    assert ci['conclusion'] == 'success' and re.fullmatch(
+        r'https://github\.com/truxt-ai/ops-dashboard/actions/runs/[0-9]+', ci['run_url']), 'exact-head CI run/log publication pending'
     check_identity(report['head_sha'], report['remote_head_sha'], ci['github_sha'], ci['parents'])
     assert report['qa']['head_sha'] == report['head_sha'] and report['qa']['evidence_url'], 'independent QA pending'
     for name in ['input_tokens', 'output_tokens', 'cached_input_tokens', 'cost_usd']:
@@ -356,11 +357,22 @@ def selftest(directory):
                    'baseline_test_url': f'https://github.com/truxt-ai/ops-dashboard/tree/{BASE}/test',
                    'candidate_test_url': f'https://github.com/truxt-ai/ops-dashboard/tree/{BASE}/test',
                    'head_sha': 'a' * 40, 'remote_head_sha': 'a' * 40,
-                   'ci': {'conclusion': 'success', 'artifact_url': 'synthetic', 'github_sha': 'a' * 40, 'parents': []},
+                   'ci': {'conclusion': 'success',
+                          'run_url': 'https://github.com/truxt-ai/ops-dashboard/actions/runs/1',
+                          'github_sha': 'a' * 40, 'parents': []},
                    'qa': {'head_sha': 'a' * 40, 'evidence_url': 'synthetic'},
                    'usage': {'input_tokens': None, 'output_tokens': None, 'cached_input_tokens': None, 'cost_usd': None,
                              'scope': 'synthetic negative control', 'unrecorded_reason': 'synthetic'}}
     check_publication(publication)
+    for name, mutate in [
+        ('missing CI run link', lambda d: d['ci'].pop('run_url')),
+        ('invalid CI run link', lambda d: d['ci'].update(run_url='synthetic')),
+        ('failed CI run', lambda d: d['ci'].update(conclusion='failure')),
+        ('stale independent QA', lambda d: d['qa'].update(head_sha='b' * 40)),
+    ]:
+        malformed = copy.deepcopy(publication)
+        mutate(malformed)
+        rejects(name, lambda: check_publication(malformed))
     publication.pop('candidate_test_url')
     rejects('incomplete publication report', lambda: check_publication(publication))
     return {'negative_controls_rejected': rejected, 'count': len(rejected), 'checked_utc': now()}
