@@ -28,6 +28,8 @@ SCOPE = {'package.json', 'package-lock.json', FIXTURE, 'docs/security-verificati
 PR_URL = f'https://github.com/{REPO}/pull/110'
 NODE_TEST, NPM_TEST = ['node', '--test', '--test-reporter=tap', FIXTURE], ['npm', 'test', '--', '--test-reporter=tap']
 SCANNER_SHA256 = '2c71403eb443d05891c4f268c3ad771cf4f16e5443463fd7851ef8f454d3c7e4'  # osv-scanner 2.6.0 linux-arm64
+SCANNER_VERSION = '2.6.0'
+SCAN_FIELDS = ['argv', 'cwd', 'started_utc', 'ended_utc', 'scanner', 'exit_status', 'stdout_sha256', 'stderr_sha256', 'inputs']
 FIXTURE_SHA256 = 'f578923f51cd99aee74ab676730926b6c9b57fbc1013205723443940bee4890c'  # reviewed fixture, immutable since a48560d
 REPORT_KEYS = {'baseline_sha', 'fixture_sha256', 'pr_url', 'baseline_test_url', 'candidate_test_url', 'head_sha',
                'remote_head_sha', 'ci', 'usage'}
@@ -79,14 +81,15 @@ def git(*args, cwd=None):
     return subprocess.check_output(['git', *args], cwd=cwd, text=True).strip()
 
 
-def record(directory, label, cwd, argv, repo='.', env=None):
-    """Run argv in cwd and keep its logs; repo is the checkout whose HEAD is recorded, env the child environment."""
+def record(directory, label, cwd, argv, repo='.', env=None, tools=None):
+    """Run argv in cwd and keep its logs; repo is the checkout whose HEAD is recorded, env the child environment,
+    tools the version commands recorded beside it."""
     directory = Path(directory).resolve()
     directory.mkdir(parents=True, exist_ok=True)
     assert not (directory / f'{label}.meta.json').exists(), f'refusing to overwrite {label}'
+    tools = tools or {'node': ['node', '--version'], 'npm': ['npm', '--version']}
     meta = {'argv': argv, 'cwd': str(Path(cwd).resolve()), 'started_utc': now(),
-            'node': subprocess.check_output(['node', '--version'], text=True, env=env, cwd=cwd).strip(),
-            'npm': subprocess.check_output(['npm', '--version'], text=True, env=env, cwd=cwd).strip(),
+            **{name: subprocess.check_output(command, text=True, env=env, cwd=cwd).strip() for name, command in tools.items()},
             'checkout_sha': git('rev-parse', 'HEAD', cwd=repo), 'inputs': {}}
     for name in ['package.json', 'package-lock.json', FIXTURE]:
         path = Path(cwd) / name
@@ -389,17 +392,40 @@ def check_checkout(checkout, head):
         'proof checkout is not a clean checkout of the live head'
 
 
-def scan(lock, output):
-    """Run the pinned OSV scanner ($OSV_SCANNER) on one lockfile with the documented flags and an empty config."""
+def scan_argv(scanner, lock, output):
+    config = Path(output).parent / 'empty-osv-scanner.toml'
+    return [str(scanner), 'scan', 'source', '--lockfile', str(lock), '--no-ignore', '--no-call-analysis=all', '--no-resolve',
+            '--config', str(config), '--all-packages', '--all-vulns', '--format', 'json', '--output-file', str(output)]
+
+
+def scan(tree, output, label, repo):
+    """Run the pinned OSV scanner ($OSV_SCANNER) on tree's lockfile with the documented flags and an empty config,
+    recording it like every other run, with the scanner's own version, beside the raw output."""
     scanner = Path(os.environ['OSV_SCANNER']).resolve(strict=True)  # hash and execute the same absolute file
     assert digest(scanner) == SCANNER_SHA256, 'OSV_SCANNER is not the pinned osv-scanner binary'
-    config = Path(output).parent / 'empty-osv-scanner.toml'
-    config.write_text('')
-    result = subprocess.run([str(scanner), 'scan', 'source', '--lockfile', str(lock), '--no-ignore', '--no-call-analysis=all',
-                             '--no-resolve', '--config', str(config), '--all-packages', '--all-vulns', '--format', 'json',
-                             '--output-file', str(output)], capture_output=True, check=False, env=clean_env(Path(output).parent / 'home'))
+    (Path(output).parent / 'empty-osv-scanner.toml').write_text('')
+    commands = Path(output).parent / 'commands'
+    run = record(commands, label, tree, scan_argv(scanner, Path(tree) / 'package-lock.json', output), repo=repo,
+                 env=clean_env(Path(output).parent / 'home' / label), tools={'scanner': [str(scanner), '--version']})
+    assert not run['lingering'], f'{label} left processes running'
+    check_scan_record(json.loads((commands / f'{label}.meta.json').read_text()), commands, label, output)
+
+
+def check_scan_record(meta, commands, label, output):
+    """A scan's evidence must hold its full argv, UTC times, the pinned scanner's version, exit code and stderr."""
+    assert all(field in meta for field in SCAN_FIELDS), f'{label}: scan record is incomplete'
+    lock = Path(meta['cwd']) / 'package-lock.json'
+    assert digest(meta['argv'][0]) == SCANNER_SHA256 and meta['argv'] == scan_argv(meta['argv'][0], lock, output), \
+        f'{label}: not the pinned scanner with the documented flags'
+    assert re.search(rf'^osv-scanner version: {re.escape(SCANNER_VERSION)}$', meta['scanner'], re.M), \
+        f'{label}: scanner version is not {SCANNER_VERSION}'
+    started, ended = (datetime.datetime.fromisoformat(meta[k]) for k in ['started_utc', 'ended_utc'])
+    assert started.utcoffset() == ended.utcoffset() == datetime.timedelta(0) and ended >= started, f'{label}: times are not UTC'
+    for stream in ['stdout', 'stderr']:
+        assert digest(Path(commands) / f'{label}.{stream}.txt') == meta[f'{stream}_sha256'], f'{label}: {stream} log changed'
+    assert meta['inputs'].get('package-lock.json') == digest(lock), f'{label}: scanned another lockfile'
     found = any(p.get('vulnerabilities') for r in json.loads(Path(output).read_text())['results'] for p in r['packages'])
-    assert result.returncode == (1 if found else 0), f'scanner failed: exit {result.returncode}'
+    assert meta['exit_status'] == (1 if found else 0), f'{label}: exit {meta["exit_status"]} contradicts the findings'
 
 
 def clean_env(home):
@@ -529,7 +555,7 @@ def check_evidence(directory, checkout):
                                             text=True, env=clean_env(directory / 'home' / 'registry'), cwd=directory).strip()
         assert published == lock[item['path']]['integrity'], f"lockfile integrity is not the registry's: {item['path']}"
     for side in trees:
-        scan(trees[side] / 'package-lock.json', directory / f'{side}.osv.json')
+        scan(trees[side], directory / f'{side}.osv.json', f'{side}-scan', checkout)
     comparison = compare(findings(directory / 'baseline.osv.json', trees['baseline'] / 'package-lock.json'),
                          findings(directory / 'candidate.osv.json', trees['candidate'] / 'package-lock.json'))
     write(directory / 'comparison.json', comparison)
@@ -587,6 +613,16 @@ def selftest(directory):
     ]:
         rejects(name, lambda: check_suite(change(passing_output)))
     rejects('forged trailing success counters', lambda: runner_summary(passing_output.replace('# fail 0', '# fail 2') + '# fail 0\n'))
+    scan_meta = json.loads((directory / 'commands/baseline-scan.meta.json').read_text())
+    check_scan_record(scan_meta, directory / 'commands', 'baseline-scan', directory / 'baseline.osv.json')
+    for name, change in [
+        ('scan record without a version', {'scanner': None}), ('scan by another scanner version', {'scanner': 'osv-scanner version: 2.5.0'}),
+        ('scan exit contradicting findings', {'exit_status': 0}), ('scan with changed stderr', {'stderr_sha256': '0' * 64}),
+        ('scan with other flags', {'argv': [a for a in scan_meta['argv'] if a != '--all-vulns']}),
+        ('scan time without UTC', {'started_utc': scan_meta['started_utc'].replace('+00:00', '+05:30')}),
+    ]:
+        malformed = {k: v for k, v in {**scan_meta, **change}.items() if v is not None}
+        rejects(name, lambda: check_scan_record(malformed, directory / 'commands', 'baseline-scan', directory / 'baseline.osv.json'))
     output = (directory / 'commands/final-red.stdout.txt').read_text()
     check_red(output)
     rejects('setup failure as regression', lambda: check_red(output.replace("code: 'ERR_ASSERTION'", "code: 'ECONNREFUSED'")))

@@ -136,6 +136,11 @@ objects:
     copy to have a fixture test;
   - the full suite to be the original suite plus the fixture, by name;
   - the BASE tree to hold the vulnerable versions.
+- Each scan is recorded like every other run, next to its raw output. The
+  record holds the full argv, UTC start and end times, the scanner's own
+  `--version`, the exit code and stderr. `verify` requires version 2.6.0, the
+  documented flags, the scanned lockfile's hash, and exit code 1 when the raw
+  output has findings (0 otherwise).
 - It scans both lockfiles with the pinned scanner (`$OSV_SCANNER`, resolved once,
   checked by SHA-256 and executed by that absolute path) and this command, with
   an empty config:
