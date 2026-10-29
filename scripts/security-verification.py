@@ -153,7 +153,8 @@ def inventory(root):
 
 
 def allowed(path):
-    return path in SCOPE
+    # Reviewer-authorized restoration is accepted only with the BASE-byte checks below.
+    return path in SCOPE or path in ORIGINALS
 
 
 def check_manifest(manifest, original):
@@ -346,6 +347,8 @@ def check_publication(report, comparison, fixture, api=github):
     blob = lambda ref, path: api(f'repos/{REPO}/contents/{path}?ref={ref}')
     content = lambda ref, path: base64.b64decode(blob(ref, path)['content'])
     sha256 = lambda ref, path: hashlib.sha256(content(ref, path)).hexdigest()
+    for name in ORIGINALS:
+        assert content(head, name) == content(BASE, name), f'original test differs from frozen BASE: {name}'
     assert blob(head, WORKFLOW)['sha'] == blob(BASE, WORKFLOW)['sha'], 'CI workflow differs from the trusted baseline'
     check_manifest(json.loads(content(head, 'package.json')), json.loads(content(UPSTREAM, 'package.json')))
     check_lock(json.loads(content(head, 'package-lock.json')), json.loads(content(UPSTREAM, 'package-lock.json')))
@@ -715,6 +718,8 @@ def selftest(directory):
                             '-c', 'core.hooksPath=/dev/null', 'commit', '-qm', 'upstream changed a frozen test'], check=True)
             UPSTREAM = git('rev-parse', 'HEAD', cwd=temp)
             rejects('upstream drift does not redefine frozen originals', lambda: check_tree(temp))
+            (temp / ORIGINALS[0]).write_text('assert(true);\n')
+            check_tree(temp)  # Exact restoration is in scope even when upstream changed the original.
         finally:
             BASE, UPSTREAM = original_base, original_upstream
     package = lambda name, version: {'version': version, 'resolved': f'https://registry.npmjs.org/{name}/-/{name}-{version}.tgz',
@@ -789,6 +794,11 @@ def selftest(directory):
                    'usage': {'input_tokens': None, 'output_tokens': None, 'cached_input_tokens': None, 'cost_usd': None,
                              'scope': 'synthetic negative control', 'unrecorded_reason': 'synthetic'}}
 
+    for name in ORIGINALS:
+        for ref in [BASE, head]:
+            remote[contents(ref, name)] = encoded(b'assert(true);\n')
+    remote[f'repos/{REPO}/pulls/110/files?per_page=100'].append({'filename': ORIGINALS[0]})
+
     runs_path = f'repos/{REPO}/actions/runs?head_sha={head}&per_page=100'
 
     def add_run(g, **fields):
@@ -818,6 +828,8 @@ def selftest(directory):
         ('missing CI run link', lambda d, g: d['ci'].pop('run_url')),
         ('invalid CI run link', lambda d, g: d['ci'].update(run_url='synthetic')),
         ('failed CI claim', lambda d, g: d['ci'].update(conclusion='failure')),
+        ('altered frozen original at the live head', lambda d, g: g.update(
+            {contents(head, ORIGINALS[0]): encoded(b'assert(false);\n')})),
         ('stale report head', lambda d, g: g[pr_path]['head'].update(sha='b' * 40)),
         ('stale remote head claim', lambda d, g: d.update(remote_head_sha='b' * 40)),
         ('head moved during verification', moved),
