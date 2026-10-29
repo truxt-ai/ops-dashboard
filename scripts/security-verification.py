@@ -178,7 +178,8 @@ def check_tree(root, installed=None):
     paths.update(git('ls-files', '--others', '--exclude-standard', cwd=root).splitlines())
     hashes, altered = {}, []
     for name in ORIGINALS:
-        original = subprocess.check_output(['git', 'show', f'{BASE}:{name}'], cwd=root)
+        # Master legitimately changed some originals after BASE; this PR must only leave them as upstream has them.
+        original = subprocess.check_output(['git', 'show', f'{UPSTREAM}:{name}'], cwd=root)
         if (Path(root) / name).read_bytes() != original:
             altered.append(name)
         hashes[name] = hashlib.sha256(original).hexdigest()
@@ -191,7 +192,7 @@ def check_tree(root, installed=None):
     for item in inv['copies']:
         assert meets_floor(item['locked'], TARGETS[item['name']]), f'below fixed floor: {item}'
         assert item['parents'], f'missing parent edges: {item}'
-    assert not altered, f'original tests changed from frozen BASE: {altered}'
+    assert not altered, f'original tests changed from pinned upstream: {altered}'
     return {'checked_utc': now(), 'checkout_sha': git('rev-parse', 'HEAD', cwd=root), 'upstream_sha': UPSTREAM,
             'changed_paths': sorted(paths), 'original_test_hashes': hashes, 'inventory': inv}
 
