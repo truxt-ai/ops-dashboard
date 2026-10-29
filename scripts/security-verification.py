@@ -12,6 +12,7 @@ import sys
 import copy
 import tarfile
 import tempfile
+from urllib.parse import urlparse
 
 BASE = 'dff02375d83394d6f03ce2127e35e62fadc269ab'
 ORIGINALS = [f'test/{name}.test.js' for name in
@@ -245,16 +246,29 @@ def check_identity(candidate, remote, observed, parents):
     assert observed == candidate or candidate in parents, 'CI GITHUB_SHA does not identify candidate or merge parent'
 
 
+def check_evidence_url(url):
+    assert isinstance(url, str) and url.startswith('https://'), 'QA evidence url must be https'
+    parsed = urlparse(url)
+    assert not re.search(r'example|todo|tbd|placeholder|synthetic|localhost|127\.0\.0\.1', url, re.I), 'QA evidence url is a placeholder'
+    assert parsed.hostname in ('github.com', 'axiom-stage.truxt.ai') and len(parsed.path.strip('/')) > 0, 'QA evidence url host not expected'
+    if parsed.hostname == 'github.com':
+        assert parsed.path.startswith('/truxt-ai/ops-dashboard/'), 'QA evidence url is outside the repository'
+
+
 def check_publication(report):
     assert report['baseline_sha'] == BASE and report['fixture_sha256']
     assert report['pr_url'].startswith('https://github.com/truxt-ai/ops-dashboard/pull/')
-    for name in ['baseline_test_url', 'candidate_test_url']:
-        assert re.search(r'/[0-9a-f]{40}/test', report[name]), 'test link is not immutable'
+    repo = 'https://github.com/truxt-ai/ops-dashboard/tree/'
+    assert report['baseline_test_url'] == f'{repo}{BASE}/test', 'baseline test link must identify BASE'
+    assert re.fullmatch(re.escape(repo) + r'[0-9a-f]{40}/test', report['candidate_test_url']), 'candidate test link is not immutable'
+    assert report['candidate_test_url'] == f"{repo}{report['head_sha']}/test", 'candidate test link must identify the candidate head'
+    assert report['candidate_test_url'] != report['baseline_test_url'], 'baseline and candidate test links must differ'
     ci = report['ci']
     assert ci['conclusion'] == 'success' and re.fullmatch(
         r'https://github\.com/truxt-ai/ops-dashboard/actions/runs/[0-9]+', ci['run_url']), 'exact-head CI run/log publication pending'
     check_identity(report['head_sha'], report['remote_head_sha'], ci['github_sha'], ci['parents'])
-    assert report['qa']['head_sha'] == report['head_sha'] and report['qa']['evidence_url'], 'independent QA pending'
+    assert report['qa']['head_sha'] == report['head_sha'], 'independent QA pending'
+    check_evidence_url(report['qa'].get('evidence_url'))
     for name in ['input_tokens', 'output_tokens', 'cached_input_tokens', 'cost_usd']:
         value = report['usage'][name]
         assert value is None or (isinstance(value, (int, float)) and value >= 0)
@@ -355,12 +369,12 @@ def selftest(directory):
     publication = {'baseline_sha': BASE, 'fixture_sha256': original_hash,
                    'pr_url': 'https://github.com/truxt-ai/ops-dashboard/pull/1',
                    'baseline_test_url': f'https://github.com/truxt-ai/ops-dashboard/tree/{BASE}/test',
-                   'candidate_test_url': f'https://github.com/truxt-ai/ops-dashboard/tree/{BASE}/test',
+                   'candidate_test_url': f"https://github.com/truxt-ai/ops-dashboard/tree/{'a' * 40}/test",
                    'head_sha': 'a' * 40, 'remote_head_sha': 'a' * 40,
                    'ci': {'conclusion': 'success',
                           'run_url': 'https://github.com/truxt-ai/ops-dashboard/actions/runs/1',
                           'github_sha': 'a' * 40, 'parents': []},
-                   'qa': {'head_sha': 'a' * 40, 'evidence_url': 'synthetic'},
+                   'qa': {'head_sha': 'a' * 40, 'evidence_url': 'https://github.com/truxt-ai/ops-dashboard/pull/1#issuecomment-1'},
                    'usage': {'input_tokens': None, 'output_tokens': None, 'cached_input_tokens': None, 'cost_usd': None,
                              'scope': 'synthetic negative control', 'unrecorded_reason': 'synthetic'}}
     check_publication(publication)
@@ -369,6 +383,13 @@ def selftest(directory):
         ('invalid CI run link', lambda d: d['ci'].update(run_url='synthetic')),
         ('failed CI run', lambda d: d['ci'].update(conclusion='failure')),
         ('stale independent QA', lambda d: d['qa'].update(head_sha='b' * 40)),
+        ('duplicate baseline and candidate links', lambda d: d.update(candidate_test_url=d['baseline_test_url'])),
+        ('candidate link for wrong revision', lambda d: d.update(candidate_test_url=d['candidate_test_url'].replace('a' * 40, 'b' * 40))),
+        ('baseline link for wrong revision', lambda d: d.update(baseline_test_url=d['candidate_test_url'])),
+        ('placeholder QA evidence', lambda d: d['qa'].update(evidence_url='https://example.com/todo')),
+        ('synthetic QA evidence', lambda d: d['qa'].update(evidence_url='synthetic')),
+        ('localhost QA evidence', lambda d: d['qa'].update(evidence_url='https://localhost/evidence')),
+        ('http QA evidence', lambda d: d['qa'].update(evidence_url='http://github.com/truxt-ai/ops-dashboard/pull/1')),
     ]:
         malformed = copy.deepcopy(publication)
         mutate(malformed)
