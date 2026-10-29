@@ -4,11 +4,14 @@ import argparse
 import base64
 import datetime
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
 import re
 import subprocess
+import shutil
+import signal
 import sys
 import copy
 import tarfile
@@ -22,6 +25,24 @@ SHA = re.compile('[0-9a-f]{40}')
 # Exactly the files this PR changes. The trusted CI workflow is deliberately absent.
 SCOPE = {'package.json', 'package-lock.json', FIXTURE, 'docs/security-verification.md',
          'scripts/security-verification.py'}
+PR_URL = f'https://github.com/{REPO}/pull/110'
+NODE_TEST, NPM_TEST = ['node', '--test', '--test-reporter=tap', FIXTURE], ['npm', 'test', '--', '--test-reporter=tap']
+SCANNER_SHA256 = '2c71403eb443d05891c4f268c3ad771cf4f16e5443463fd7851ef8f454d3c7e4'  # osv-scanner 2.6.0 linux-arm64
+FIXTURE_SHA256 = 'f578923f51cd99aee74ab676730926b6c9b57fbc1013205723443940bee4890c'  # reviewed fixture, immutable since a48560d
+REPORT_KEYS = {'baseline_sha', 'fixture_sha256', 'pr_url', 'baseline_test_url', 'candidate_test_url', 'head_sha',
+               'remote_head_sha', 'ci', 'usage'}
+# Fixed by BASE's original suite and the reviewed fixture: 49 original tests; 24 fixture tests, 14 failing before the fix.
+EXPECTED = {'original': 49, 'fixture': 24, 'fixture_failures': 14}
+LIFECYCLE = ['preinstall', 'install', 'postinstall', 'prepublish', 'preprepare', 'prepare', 'postprepare']
+USAGE_KEYS = {'input_tokens', 'output_tokens', 'cached_input_tokens', 'cost_usd', 'scope', 'unrecorded_reason'}
+# Lockfile fields that change what npm installs or runs; a target entry must keep BASE's values for them.
+INSTALL_FIELDS = ['dependencies', 'optionalDependencies', 'peerDependencies', 'peerDependenciesMeta', 'bin', 'engines',
+                  'os', 'cpu', 'hasInstallScript', 'dev', 'optional', 'devOptional', 'link', 'bundleDependencies']
+# Every run verify executes, in order: its exact argv and whether it runs in the BASE or the head tree.
+RUNS = {'baseline-ci': (['npm', 'ci'], 'baseline'), 'baseline-lint': (['npm', 'run', 'lint'], 'baseline'),
+        'baseline-test': (NPM_TEST, 'baseline'), 'final-red': (NODE_TEST, 'baseline'),
+        'final-ci': (['npm', 'ci'], 'candidate'), 'final-lint': (['npm', 'run', 'lint'], 'candidate'),
+        'final-green': (NODE_TEST, 'candidate'), 'final-test': (NPM_TEST, 'candidate')}
 ORIGINALS = [f'test/{name}.test.js' for name in
              ['health', 'health-freshness', 'service-health', 'promo-codes', 'smoke']]
 TARGETS = {'proxy-addr': '2.0.8', 'follow-redirects': '1.16.1',
@@ -33,6 +54,12 @@ SELECTED = {
     'GHSA-pxg6-pf52-xh8x': 'CVE-2024-47764',
     'GHSA-m6fv-jmcg-4jfg': 'CVE-2024-43799',
 }
+
+
+def runner_summary(output):
+    pairs = re.findall(r'^# (tests|suites|pass|fail|cancelled|skipped|todo) (\d+)$', output, re.M)
+    assert len(pairs) == len(dict(pairs)), 'duplicate runner summary lines'
+    return {k: int(v) for k, v in pairs}
 
 
 def now():
@@ -52,35 +79,37 @@ def git(*args, cwd=None):
     return subprocess.check_output(['git', *args], cwd=cwd, text=True).strip()
 
 
-def record(directory, label, cwd, argv):
+def record(directory, label, cwd, argv, repo='.', env=None):
+    """Run argv in cwd and keep its logs; repo is the checkout whose HEAD is recorded, env the child environment."""
     directory = Path(directory).resolve()
     directory.mkdir(parents=True, exist_ok=True)
     assert not (directory / f'{label}.meta.json').exists(), f'refusing to overwrite {label}'
     meta = {'argv': argv, 'cwd': str(Path(cwd).resolve()), 'started_utc': now(),
-            'node': subprocess.check_output(['node', '--version'], text=True).strip(),
-            'npm': subprocess.check_output(['npm', '--version'], text=True).strip(),
-            'checkout_sha': git('rev-parse', 'HEAD'),
-            'github_sha': os.environ.get('GITHUB_SHA'),
-            'candidate_sha': os.environ.get('CANDIDATE_SHA'), 'inputs': {}}
-    for name in ['package.json', 'package-lock.json', 'test/security-dependencies.test.js']:
+            'node': subprocess.check_output(['node', '--version'], text=True, env=env, cwd=cwd).strip(),
+            'npm': subprocess.check_output(['npm', '--version'], text=True, env=env, cwd=cwd).strip(),
+            'checkout_sha': git('rev-parse', 'HEAD', cwd=repo), 'inputs': {}}
+    for name in ['package.json', 'package-lock.json', FIXTURE]:
         path = Path(cwd) / name
         if path.exists():
             meta['inputs'][name] = digest(path)
-    baseline_lock = subprocess.check_output(['git', 'show', f'{BASE}:package-lock.json'])
-    meta['source_sha'] = BASE if meta['inputs'].get('package-lock.json') == hashlib.sha256(baseline_lock).hexdigest() else meta['checkout_sha']
-    meta['source_note'] = 'source revision plus explicitly hashed working files; checkout_sha is the recorder repository'
+    # Output goes through verifier-owned pipes; the child gets its own process group so leftovers are found.
+    with subprocess.Popen(argv, cwd=cwd, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True) as child:
+        stdout, stderr = child.communicate()
+    try:
+        os.killpg(child.pid, signal.SIGKILL)
+        lingering = True
+    except ProcessLookupError:
+        lingering = False
     out, err = directory / f'{label}.stdout.txt', directory / f'{label}.stderr.txt'
-    with out.open('wb') as stdout, err.open('wb') as stderr:
-        result = subprocess.run(argv, cwd=cwd, stdout=stdout, stderr=stderr, check=False)
-    meta.update(ended_utc=now(), exit_status=result.returncode,
-                stdout_sha256=digest(out), stderr_sha256=digest(err))
-    output = out.read_text(errors='replace')
-    meta['runner_summary'] = {k: int(v) for k, v in
-                              re.findall(r'^# (tests|pass|fail|cancelled|skipped|todo) (\d+)$', output, re.M)}
+    out.write_bytes(stdout)
+    err.write_bytes(stderr)
+    output = stdout.decode(errors='replace')
+    meta.update(ended_utc=now(), exit_status=child.returncode, lingering_processes=lingering,
+                stdout_sha256=hashlib.sha256(stdout).hexdigest(), stderr_sha256=hashlib.sha256(stderr).hexdigest(),
+                runner_summary=runner_summary(output))
     write(directory / f'{label}.meta.json', meta)
-    print(json.dumps({'label': label, 'exit_status': result.returncode,
-                      'runner_summary': meta['runner_summary']}))
-    return result.returncode
+    print(json.dumps({'label': label, 'exit_status': child.returncode, 'runner_summary': meta['runner_summary']}))
+    return {'exit_status': child.returncode, 'output': output, 'lingering': lingering}
 
 
 def inventory(root):
@@ -132,7 +161,22 @@ def check_manifest(manifest, original):
         'package.json changed beyond the cookie/send overrides'
 
 
-def check_tree(root):
+def check_lock(lock, original):
+    """The lockfile may change only target-package entries, each to its fixed version from the npm registry."""
+    assert {k: v for k, v in lock.items() if k != 'packages'} == {k: v for k, v in original.items() if k != 'packages'}, \
+        'lockfile header changed'
+    shape = lambda entry: {field: entry.get(field) for field in INSTALL_FIELDS}
+    name_of = lambda path: path.rsplit('node_modules/', 1)[-1]
+    for path in set(lock['packages']) | set(original['packages']):
+        new, name = lock['packages'].get(path), name_of(path)
+        assert new == original['packages'].get(path) or name in TARGETS and (new is None or (
+            new['version'] == TARGETS[name] and new.get('integrity', '').startswith('sha512-')
+            and new['resolved'] == f'https://registry.npmjs.org/{name}/-/{name}-{TARGETS[name]}.tgz'
+            and shape(new) in [shape(old) for old_path, old in original['packages'].items() if name_of(old_path) == name])), \
+            f'lockfile changed beyond the target packages: {path}'
+
+
+def check_tree(root, installed=None):
     # --no-renames reports both sides of a rename, so moving a file into scope cannot hide its source.
     paths = set(git('diff', '--no-renames', '--name-only', BASE, cwd=root).splitlines())
     paths.update(git('ls-files', '--others', '--exclude-standard', cwd=root).splitlines())
@@ -144,7 +188,9 @@ def check_tree(root):
     assert all(allowed(p) for p in paths), f'outside allowed scope: {paths}'
     check_manifest(json.loads((Path(root) / 'package.json').read_text()),
                    json.loads(git('show', f'{BASE}:package.json', cwd=root)))
-    inv = inventory(root)
+    check_lock(json.loads((Path(root) / 'package-lock.json').read_text()),
+               json.loads(git('show', f'{BASE}:package-lock.json', cwd=root)))
+    inv = inventory(installed or root)
     for item in inv['copies']:
         assert item['locked'] == TARGETS[item['name']], f'wrong version: {item}'
         assert item['parents'], f'missing parent edges: {item}'
@@ -162,7 +208,7 @@ def findings(scan, lock):
     report = json.loads(Path(scan).read_text())
     packages = [p for result in report['results'] for p in result['packages']]
     observed = {(p['package']['name'], p['package']['version']) for p in packages}
-    assert observed == set(paths), 'scan does not cover every locked name/version'
+    assert observed == set(paths) and len(observed) == len(packages), 'scan does not cover every locked name/version once'
     raw = []
     for p in packages:
         for v in p.get('vulnerabilities', []):
@@ -206,6 +252,7 @@ def compare(before, after):
 
 def validate_comparison(result):
     assert result['selected'] == SELECTED, 'selected alias map missing or changed'
+    assert not result['added'] and len(result['removed']) == len(SELECTED), 'findings added or removed beyond the selection'
     for ghsa, cve in SELECTED.items():
         old = [r for r in result['before']['raw'] if ghsa in r['aliases'] or cve in r['aliases']]
         assert old and any({ghsa, cve} <= set(r['aliases']) for r in old), f'missing baseline alias: {ghsa}'
@@ -221,12 +268,22 @@ def validate_comparison(result):
         assert all(r['paths'] for r in flattened), 'missing package-copy paths'
 
 
-def check_record(meta, directory, label):
-    assert isinstance(meta['exit_status'], int), 'missing exit status'
-    assert meta['argv'] and meta['cwd'] and meta['checkout_sha'] and meta['node'] and meta['npm']
-    assert datetime.datetime.fromisoformat(meta['ended_utc']) >= datetime.datetime.fromisoformat(meta['started_utc'])
-    for stream in ['stdout', 'stderr']:
-        assert digest(Path(directory) / f'{label}.{stream}.txt') == meta[f'{stream}_sha256'], 'log hash mismatch'
+def check_tap(output):
+    """Reconcile TAP counters with the result lines themselves; no directive may skip or defer a test."""
+    summary = runner_summary(output)
+    results = re.findall(r'^\s*(not ok|ok) \d+ - ', output, re.M)
+    assert len(results) == summary['tests'] + summary['suites'] and results.count('not ok') == summary['fail'], \
+        'TAP counters disagree with the result lines'
+    assert summary['tests'] == summary['pass'] + summary['fail'] and not re.search(
+        r'^\s*(?:not )?ok \d+ - .*#\s*(?:SKIP|TODO)', output, re.M | re.I), 'TAP output skips, defers or miscounts tests'
+    return summary
+
+
+def check_suite(output):
+    summary = check_tap(output)
+    assert summary['tests'] > 0 and summary['tests'] == summary['pass'], 'suite did not pass every test'
+    assert summary['fail'] == summary['skipped'] == summary['cancelled'] == summary['todo'] == 0, 'suite did not pass every test'
+    return summary
 
 
 def check_red(output):
@@ -246,58 +303,52 @@ def check_red(output):
         seen.add(ghsa)
     assert seen == set(SELECTED), 'missing advisory regression'
     assert not re.search(r'^not ok \d+ - control ', output, re.M), 'benign control failed'
-    summary = {k: int(v) for k, v in re.findall(r'^# (tests|pass|fail|cancelled|skipped|todo) (\d+)$', output, re.M)}
+    summary = check_tap(output)
     assert summary['fail'] == len(blocks) and summary['pass'] > 0
     assert summary['cancelled'] == summary['skipped'] == summary['todo'] == 0
     return summary
 
 
-def check_identity(candidate, observed, parents):
-    assert SHA.fullmatch(candidate), 'missing candidate revision'
-    assert observed == candidate or candidate in parents, 'CI GITHUB_SHA does not identify candidate or merge parent'
-
-
 def github(path):
     """Fresh GitHub REST read through the authenticated gh CLI (GH_TOKEN or `gh auth login`); gh api does not cache."""
-    return json.loads(subprocess.check_output(['gh', 'api', path], text=True))
-
-
-def check_evidence_url(url, number):
-    match = isinstance(url, str) and re.fullmatch(rf'https://github\.com/{REPO}/pull/{number}#issuecomment-([0-9]+)', url)
-    assert match, 'QA evidence must be a comment on this pull request'
-    return match[1]
+    return json.loads(subprocess.check_output(['gh', 'api', '--hostname', 'github.com', path], text=True))
 
 
 def check_publication(report, comparison, fixture, api=github):
-    """Report heads, CI and QA fields are claims; each is checked against fresh GitHub reads.
+    """Check a publication report's head and CI claims against fresh GitHub reads.
 
-    comparison and fixture are the proof's comparison.json and fixture-final.json; the lockfiles they
-    scanned and the fixture their red/green runs executed must be BASE's and the live head's."""
+    comparison is the reproduced comparison and fixture the SHA-256 of the reproduced checkout's fixture.
+    QA is certified by the host QA gate, which this helper cannot authenticate, so a report carries no QA fields."""
+    assert set(report) == REPORT_KEYS and set(report['ci']) == {'conclusion', 'run_url'} and set(report['usage']) == USAGE_KEYS, \
+        'report fields differ from the publication schema'
     assert report['baseline_sha'] == BASE, 'report baseline is not BASE'
     validate_comparison(comparison)
-    number = re.fullmatch(rf'https://github\.com/{REPO}/pull/([0-9]+)', report['pr_url'])
-    assert number, 'pr_url must name a pull request in this repository'
-    number = number[1]
+    assert report['pr_url'] == PR_URL, 'pr_url is not the AXM-721 pull request'
+    number = PR_URL.rsplit('/', 1)[1]
+    state = lambda pr: (pr['state'], pr['base']['ref'], pr['base']['repo']['full_name'], pr['head']['sha'],
+                        pr['head']['ref'], pr['head']['repo']['full_name'], pr['base']['sha'])
     pr = api(f'repos/{REPO}/pulls/{number}')
     head = pr['head']['sha']
-    assert pr['state'] == 'open' and pr['base']['repo']['full_name'] == pr['head']['repo']['full_name'] == REPO, \
-        'not an open same-repository pull request'
+    assert state(pr)[:3] == ('open', 'master', REPO) and pr['head']['repo']['full_name'] == REPO, \
+        'not an open same-repository PR into master'
     assert SHA.fullmatch(head) and report['head_sha'] == report['remote_head_sha'] == head, 'stale report: live PR head differs'
     tree = f'https://github.com/{REPO}/tree/'
     assert report['baseline_test_url'] == f'{tree}{BASE}/test', 'baseline test link must identify BASE'
     assert report['candidate_test_url'] == f'{tree}{head}/test', 'candidate test link must identify the live head'
     diff = api(f'repos/{REPO}/compare/{BASE}...{head}')
     assert diff['status'] == 'ahead' and diff['merge_base_commit']['sha'] == BASE, 'live head does not descend from BASE'
-    files = diff['files']
-    assert 0 < len(files) < 300 and all(allowed(f['filename']) and allowed(f.get('previous_filename', f['filename']))
-                                        for f in files), 'live PR diff is outside allowed scope'
+    # Scope must hold against BASE and against the PR's own diff with its current base branch.
+    pr_files = api(f'repos/{REPO}/pulls/{number}/files?per_page=100')
+    for files in [diff['files'], pr_files]:
+        assert 0 < len(files) < 100 and all(allowed(f['filename']) and allowed(f.get('previous_filename', f['filename']))
+                                            for f in files), 'live PR diff is outside allowed scope'
     blob = lambda ref, path: api(f'repos/{REPO}/contents/{path}?ref={ref}')
     content = lambda ref, path: base64.b64decode(blob(ref, path)['content'])
     sha256 = lambda ref, path: hashlib.sha256(content(ref, path)).hexdigest()
     assert blob(head, WORKFLOW)['sha'] == blob(BASE, WORKFLOW)['sha'], 'CI workflow differs from the trusted baseline'
     check_manifest(json.loads(content(head, 'package.json')), json.loads(content(BASE, 'package.json')))
-    check_fixture(fixture, sha256(head, FIXTURE))
-    assert report['fixture_sha256'] == fixture['sha256'], 'report fixture hash is not the proof fixture'
+    assert report['fixture_sha256'] == fixture == sha256(head, FIXTURE) == FIXTURE_SHA256, \
+        'fixture is not the reviewed fixture at the checkout and live head'
     assert (comparison['before']['lock_sha256'], comparison['after']['lock_sha256']) == \
         (sha256(BASE, 'package-lock.json'), sha256(head, 'package-lock.json')), 'scanned lockfiles are not BASE and the live head'
     ci = report['ci']
@@ -308,32 +359,29 @@ def check_publication(report, comparison, fixture, api=github):
     assert (run['event'], run['path'], run['head_sha'], run['head_branch'], run['head_repository']['full_name']) == \
         ('push', WORKFLOW, head, pr['head']['ref'], REPO), 'CI run is not a trusted-workflow push run of the live head'
     assert run['status'] == 'completed' and run['conclusion'] == ci['conclusion'] == 'success', 'exact-head CI did not succeed'
-    # The API reports only a run's latest attempt, so a rerun could hide an earlier failure.
-    runs = api(f'repos/{REPO}/actions/runs?head_sha={head}&per_page=100')['workflow_runs']
-    assert all(r['conclusion'] == 'success' and r['run_attempt'] == 1 for r in runs + [run]
-               if r['path'] == WORKFLOW and r['status'] == 'completed'), 'a trusted-workflow run on the live head failed or was rerun'
-    comment_id = check_evidence_url(report['qa'].get('evidence_url'), number)
-    comment = api(f'repos/{REPO}/issues/comments/{comment_id}')
-    assert report['qa']['head_sha'] == head and comment['issue_url'].endswith(f'/repos/{REPO}/issues/{number}') \
-        and re.findall(r'^AXM-721 QA: (.*?)\r?$', comment['body'], re.M) == [f'PASS {head}'], \
-        'QA comment does not carry one passing verdict for the live head'
-    assert comment['created_at'] == comment['updated_at'] and comment['created_at'] >= run['updated_at'], \
-        'QA comment was edited or predates the CI result'
+    jobs = api(f'repos/{REPO}/actions/runs/{run["id"]}/jobs?per_page=100')
+    passed = {step['name'] for job in jobs['jobs'] for step in job['steps'] if step['conclusion'] == 'success'}
+    assert jobs['total_count'] == len(jobs['jobs']) > 0 and all(job['conclusion'] == 'success' for job in jobs['jobs']) \
+        and {'Install dependencies', 'Lint', 'Test'} <= passed, 'CI jobs did not install, lint and test successfully'
+    # The API reports only a run's latest attempt, so any rerun, finished or not, could hide an earlier failure.
+    runs_path = f'repos/{REPO}/actions/runs?head_sha={head}&per_page=100'
+    runs_state = lambda listing: sorted((r['id'], r['path'], r['status'], r['conclusion'], r['run_attempt'])
+                                        for r in listing['workflow_runs'])
+    listing = api(runs_path)
+    runs = listing['workflow_runs']
+    assert listing['total_count'] == len(runs) and run['id'] in {r['id'] for r in runs}, \
+        'run list for the live head is incomplete or lacks the cited run'
+    assert all(r['status'] == 'completed' and r['conclusion'] == 'success' and r['run_attempt'] == 1
+               for r in runs + [run] if r['path'] == WORKFLOW), 'a trusted-workflow run on the live head failed, is running or was rerun'
     for name in ['input_tokens', 'output_tokens', 'cached_input_tokens', 'cost_usd']:
         value = report['usage'][name]
         assert value is None or (type(value) in (int, float) and 0 <= value < float('inf')), f'invalid usage value: {name}'
-    assert report['usage']['scope'] and report['usage']['unrecorded_reason']
-    assert api(f'repos/{REPO}/pulls/{number}')['head']['sha'] == head, 'PR head moved during verification'
+    assert all(isinstance(report['usage'][k], str) and report['usage'][k].strip() for k in ['scope', 'unrecorded_reason']), \
+        'usage scope or unrecorded reason missing'
+    assert state(api(f'repos/{REPO}/pulls/{number}')) == state(pr) and runs_state(api(runs_path)) == runs_state(listing), \
+        'PR or CI state changed during verification'
     return {'checked_utc': now(), 'pr': int(number), 'head_sha': head, 'ci_run_id': run['id'],
-            'qa_comment_id': int(comment_id), 'changed_paths': sorted(f['filename'] for f in files)}
-
-
-def check_fixture(fixture, candidate_sha256):
-    assert fixture['sha256'] == fixture['baseline_sha256'] == candidate_sha256, 'fixture hash mismatch'
-
-
-def check_inventory(observed, recorded):
-    assert observed == recorded, 'incomplete copy inventory'
+            'changed_paths': sorted(f['filename'] for f in diff['files'])}
 
 
 def check_checkout(checkout, head):
@@ -341,48 +389,167 @@ def check_checkout(checkout, head):
         'proof checkout is not a clean checkout of the live head'
 
 
-def publication(report, proof, checkout):
-    """Bind the retained proof to a clean checkout of the live head, then check the report against GitHub."""
-    proof = Path(proof)
-    evidence = check_evidence(proof, checkout)
-    result = check_publication(json.loads(Path(report).read_text()), json.loads((proof / 'comparison.json').read_text()),
-                               json.loads((proof / 'fixture-final.json').read_text()))
+def scan(lock, output):
+    """Run the pinned OSV scanner ($OSV_SCANNER) on one lockfile with the documented flags and an empty config."""
+    scanner = Path(os.environ['OSV_SCANNER']).resolve(strict=True)  # hash and execute the same absolute file
+    assert digest(scanner) == SCANNER_SHA256, 'OSV_SCANNER is not the pinned osv-scanner binary'
+    config = Path(output).parent / 'empty-osv-scanner.toml'
+    config.write_text('')
+    result = subprocess.run([str(scanner), 'scan', 'source', '--lockfile', str(lock), '--no-ignore', '--no-call-analysis=all',
+                             '--no-resolve', '--config', str(config), '--all-packages', '--all-vulns', '--format', 'json',
+                             '--output-file', str(output)], capture_output=True, check=False, env=clean_env(Path(output).parent / 'home'))
+    found = any(p.get('vulnerabilities') for r in json.loads(Path(output).read_text())['results'] for p in r['packages'])
+    assert result.returncode == (1 if found else 0), f'scanner failed: exit {result.returncode}'
+
+
+def clean_env(home):
+    """A minimal child environment: no inherited NODE_OPTIONS, npm configuration or other caller settings."""
+    configs = {scope: Path(home) / f'empty-{scope}.npmrc' for scope in ['user', 'global']}  # npm rejects one file for both
+    for config in configs.values():
+        config.parent.mkdir(parents=True, exist_ok=True)
+        config.write_text('')
+    path = os.pathsep.join(entry for entry in os.environ['PATH'].split(os.pathsep) if os.path.isabs(entry))
+    return {'PATH': path, 'HOME': str(home), 'LANG': 'C.UTF-8', 'NO_UPDATE_NOTIFIER': '1',
+            'NPM_CONFIG_USERCONFIG': str(configs['user']), 'NPM_CONFIG_GLOBALCONFIG': str(configs['global'])}
+
+
+def materialize(ref, root, repo):
+    """Write ref's tree from raw git objects, rehashing every blob, so attributes and replace refs cannot alter it.
+
+    Returns {path: sha256} of every source file written, for check_sources."""
+    written = {}
+    for entry in filter(None, git('ls-tree', '-r', '-z', ref, cwd=repo).split('\0')):
+        info, path = entry.split('\t', 1)
+        mode, kind, sha = info.split()
+        assert kind == 'blob' and mode in ('100644', '100755'), f'unsupported tree entry: {path}'
+        data = subprocess.check_output(['git', 'cat-file', 'blob', sha], cwd=repo)
+        assert hashlib.sha1(b'blob %d\0' % len(data) + data).hexdigest() == sha, f'object does not match its id: {path}'
+        target = Path(root) / path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(data)
+        target.chmod(0o755 if mode == '100755' else 0o644)
+        written[path] = hashlib.sha256(data).hexdigest()
+    return written
+
+
+def check_sources(root, expected):
+    """Every file outside node_modules must be exactly the expected source bytes, with nothing added."""
+    present = {}
+    for directory, dirs, files in os.walk(root):
+        if Path(directory) == Path(root):
+            dirs[:] = [d for d in dirs if d != 'node_modules']
+        for name in files:
+            path = Path(directory) / name
+            present[str(path.relative_to(root))] = 'symlink' if path.is_symlink() else digest(path)
+    assert present == expected, f'sources differ from git objects under {root}'
+
+
+def tree_digest(root):
+    """Digest every file and symlink under root, node_modules included, without following directory links."""
+    rows = []
+    for directory, dirs, files in os.walk(root):
+        for name in dirs + files:
+            path = Path(directory) / name
+            if path.is_symlink():
+                rows.append(f'{path.relative_to(root)} -> {os.readlink(path)}')
+            elif path.is_file():
+                rows.append(f'{path.relative_to(root)} {digest(path)}')
+    return hashlib.sha256('\n'.join(sorted(rows)).encode()).hexdigest()
+
+
+def test_names(output):
+    return sorted(re.findall(r'^\s*(?:not )?ok \d+ - (.*?)(?: # .*)?$', output, re.M))
+
+
+def check_runs(outputs, copies):
+    """Judge the runs' TAP output against the expected inventory of the pinned suite and fixture.
+
+    copies maps each target's baseline copy path to its candidate copy path; fixture test names carry the path."""
+    summaries = {label: check_suite(outputs[label]) for label in ['baseline-test', 'final-green', 'final-test']}
+    red = check_red(outputs['final-red'])
+    assert (summaries['baseline-test']['tests'], red['tests'], red['fail'], summaries['final-green']['tests'],
+            summaries['final-test']['tests']) == (EXPECTED['original'], EXPECTED['fixture'], EXPECTED['fixture_failures'],
+                                                  EXPECTED['fixture'], EXPECTED['original'] + EXPECTED['fixture']), \
+        'runs did not execute the expected tests'
+    names = {label: test_names(outputs[label]) for label in ['baseline-test', 'final-red', 'final-green', 'final-test']}
+    relocate = lambda name: re.sub(r'(?<= )(\S+)(?=: )', lambda m: copies.get(m[1], m[1]), name, count=1)
+    assert sorted(map(relocate, names['final-red'])) == names['final-green'], 'red and green runs executed different tests'
+    assert all(any(f' {path}: ' in name for name in names['final-green']) for path in copies.values()), \
+        'a fixed package copy has no fixture test'
+    assert names['final-test'] == sorted(names['baseline-test'] + names['final-green']), \
+        'full suite is not the original suite plus the fixture'
+    return red, summaries
+
+
+def check_evidence(directory, checkout):
+    """Reproduce every result into a new directory from raw git objects of BASE and the checkout's HEAD.
+
+    Nothing recorded earlier is read. Exit codes and output come from verifier-owned pipes. After every run, each
+    tree's sources must equal their git objects and its node_modules must equal its state right after npm ci, which
+    runs no package code because nothing in either tree has an install script. Returns (result, comparison)."""
+    directory, checkout = Path(directory).resolve(), Path(checkout).resolve()
+    head = git('rev-parse', 'HEAD', cwd=checkout)
+    check_checkout(checkout, head)
+    directory.mkdir(parents=True)
+    trees = {'baseline': directory / 'baseline', 'candidate': directory / 'candidate'}
+    sources = {'baseline': materialize(BASE, trees['baseline'], checkout), 'candidate': materialize(head, trees['candidate'], checkout)}
+    assert sources['candidate'][FIXTURE] == FIXTURE_SHA256, 'head fixture is not the reviewed fixture'
+    for root in trees.values():
+        scripts = json.loads((root / 'package.json').read_text()).get('scripts', {})
+        packages = json.loads((root / 'package-lock.json').read_text())['packages'].values()
+        assert not set(scripts) & set(LIFECYCLE) and not any(entry.get('hasInstallScript') for entry in packages), \
+            'npm ci would run package code'
+    outputs, installed = {}, {}
+    for label, (argv, side) in RUNS.items():
+        if label == 'final-red':  # the original suite has run; now add the reviewed fixture to the BASE tree
+            shutil.copyfile(trees['candidate'] / FIXTURE, trees['baseline'] / FIXTURE)
+            sources['baseline'][FIXTURE] = FIXTURE_SHA256
+        run = record(directory / 'commands', label, trees[side], argv, repo=checkout, env=clean_env(directory / 'home' / label))
+        assert run['exit_status'] == (1 if label == 'final-red' else 0) and not run['lingering'], \
+            f"{label} exited {run['exit_status']} or left processes running"
+        outputs[label] = run['output']
+        if argv == ['npm', 'ci']:
+            installed[side] = tree_digest(trees[side] / 'node_modules')
+        for name, root in trees.items():
+            check_sources(root, sources[name])
+            assert name not in installed or tree_digest(root / 'node_modules') == installed[name], f'{label} changed installed packages'
+    inventories = {side: inventory(root) for side, root in trees.items()}
+    assert all(c['locked'] != TARGETS[c['name']] for c in inventories['baseline']['copies']), 'baseline runs had fixed packages'
+    copies = {}
+    for c in inventories['candidate']['copies']:
+        before = [b['path'] for b in inventories['baseline']['copies'] if b['name'] == c['name']]
+        after = [a['path'] for a in inventories['candidate']['copies'] if a['name'] == c['name']]
+        assert len(before) == len(after) == 1, f"{c['name']} has several copies to match"
+        copies[before[0]] = after[0]
+    red, summaries = check_runs(outputs, copies)
+    scope = check_tree(checkout, installed=trees['candidate'])
+    lock = json.loads((trees['candidate'] / 'package-lock.json').read_text())['packages']
+    for item in scope['inventory']['copies']:
+        published = subprocess.check_output(['npm', 'view', f"{item['name']}@{item['locked']}", 'dist.integrity'],
+                                            text=True, env=clean_env(directory / 'home' / 'registry'), cwd=directory).strip()
+        assert published == lock[item['path']]['integrity'], f"lockfile integrity is not the registry's: {item['path']}"
+    for side in trees:
+        scan(trees[side] / 'package-lock.json', directory / f'{side}.osv.json')
+    comparison = compare(findings(directory / 'baseline.osv.json', trees['baseline'] / 'package-lock.json'),
+                         findings(directory / 'candidate.osv.json', trees['candidate'] / 'package-lock.json'))
+    write(directory / 'comparison.json', comparison)
+    check_checkout(checkout, head)
+    result = {'checked_utc': now(), 'head_sha': head, 'red_summary': red, 'scope': scope,
+              'suites': {label: summaries[label] for label in ['baseline-test', 'final-green', 'final-test']},
+              'scan_counts': {k: {'packages': comparison[k]['packages'], 'raw': len(comparison[k]['raw']),
+                                 'canonical': comparison[k]['canonical_count']} for k in ['before', 'after']}}
+    write(directory / 'verification.json', result)
+    manifest(directory, checkout)
+    return result, copy.deepcopy(comparison)
+
+
+def publication(report, checkout, directory):
+    """Reproduce the proof from a clean checkout, then check the report and the checkout's head against GitHub."""
+    evidence, comparison = check_evidence(directory, checkout)
+    result = check_publication(json.loads(Path(report).read_text()), comparison, digest(Path(checkout) / FIXTURE))
+    assert evidence['head_sha'] == result['head_sha'], 'reproduced checkout is not the live head'
     check_checkout(checkout, result['head_sha'])
-    return {**result, 'red_summary': evidence['red_summary'], 'scan_counts': evidence['scan_counts']}
-
-
-def check_evidence(directory, candidate):
-    directory = Path(directory)
-    for p in (directory / 'commands').glob('*.meta.json'):
-        check_record(json.loads(p.read_text()), p.parent, p.name.removesuffix('.meta.json'))
-    fixture = json.loads((directory / 'fixture-final.json').read_text())
-    check_fixture(fixture, digest(Path(candidate) / FIXTURE))
-    for label in ['final-red', 'final-green']:
-        meta = json.loads((directory / f'commands/{label}.meta.json').read_text())
-        assert meta['inputs']['test/security-dependencies.test.js'] == fixture['sha256'], 'executed different fixture'
-    red = check_red((directory / 'commands/final-red.stdout.txt').read_text())
-    assert json.loads((directory / 'commands/final-red.meta.json').read_text())['exit_status'] == 1
-    for label in ['baseline-ci', 'baseline-lint', 'baseline-test', 'final-ci', 'final-lint', 'final-green', 'final-test']:
-        meta = json.loads((directory / f'commands/{label}.meta.json').read_text())
-        assert meta['exit_status'] == 0, f'command failed: {label}'
-        if label in ['baseline-test', 'final-green', 'final-test']:
-            summary = meta['runner_summary']
-            assert summary['tests'] == summary['pass'] and summary['fail'] == summary['skipped'] == summary['cancelled'] == 0
-    comparison = json.loads((directory / 'comparison.json').read_text())
-    validate_comparison(comparison)
-    expected = compare(findings(directory / 'baseline.osv.json', directory / 'baseline/package-lock.json'),
-                       findings(directory / 'candidate.osv.json', Path(candidate) / 'package-lock.json'))
-    assert comparison == expected, 'scan/input hashes or reconciliation changed'
-    for side, labels in [('before', ['baseline-ci', 'baseline-lint', 'baseline-test', 'final-red']),
-                         ('after', ['final-ci', 'final-lint', 'final-green', 'final-test'])]:
-        for label in labels:
-            meta = json.loads((directory / f'commands/{label}.meta.json').read_text())
-            assert meta['inputs']['package-lock.json'] == comparison[side]['lock_sha256'], f'{label} ran on an unscanned lockfile'
-    tree = check_tree(candidate)
-    check_inventory(tree['inventory'], json.loads((directory / 'candidate-inventory.json').read_text()))
-    return {'checked_utc': now(), 'red_summary': red, 'scope': tree,
-            'scan_counts': {k: {'packages': comparison[k]['packages'], 'raw': len(comparison[k]['raw']),
-                               'canonical': comparison[k]['canonical_count']} for k in ['before', 'after']}}
+    return {**result, 'red_summary': evidence['red_summary'], 'suites': evidence['suites'], 'scan_counts': evidence['scan_counts']}
 
 
 def selftest(directory):
@@ -403,18 +570,40 @@ def selftest(directory):
         ('missing selected aliases', lambda d: d['selected'].pop(next(iter(SELECTED)))),
         ('incomplete reconciliation', lambda d: d['remaining'].pop()),
         ('missing copy path', lambda d: d['after']['raw'][0].update(paths=[])),
+        ('added finding', lambda d: d['added'].append(d['remaining'][0]['after'])),
+        ('removal beyond the selection', lambda d: d['removed'].append(d['remaining'][0]['before'])),
     ]:
         malformed = copy.deepcopy(comparison)
         mutate(malformed)
         rejects(name, lambda: validate_comparison(malformed))
-    meta = json.loads((directory / 'commands/final-test.meta.json').read_text())
-    meta.pop('exit_status')
-    rejects('missing command exit', lambda: check_record(meta, directory / 'commands', 'final-test'))
-    rejects('unrelated CI revision', lambda: check_identity('a' * 40, 'b' * 40, []))
-    check_identity('a' * 40, 'c' * 40, ['a' * 40, 'b' * 40])
+    passing_output = (directory / 'commands/final-test.stdout.txt').read_text()
+    check_suite(passing_output)
+    for name, change in [
+        ('failing suite', lambda o: re.sub(r'^(\s*)ok (\d+ - )', r'\1not ok \2', o, count=1, flags=re.M)),
+        ('inflated test counter', lambda o: re.sub(r'^# tests \d+$', '# tests 999', o, flags=re.M)),
+        ('inflated pass counter', lambda o: re.sub(r'^# pass \d+$', '# pass 999', o, flags=re.M)),
+        ('skipped test', lambda o: re.sub(r'^(\s*ok \d+ - .*)$', r'\1 # SKIP', o, count=1, flags=re.M)),
+        ('empty suite', lambda o: re.sub(r'^\s*(?:not )?ok \d+ - .*\n', '', o, flags=re.M)),
+    ]:
+        rejects(name, lambda: check_suite(change(passing_output)))
+    rejects('forged trailing success counters', lambda: runner_summary(passing_output.replace('# fail 0', '# fail 2') + '# fail 0\n'))
     output = (directory / 'commands/final-red.stdout.txt').read_text()
     check_red(output)
     rejects('setup failure as regression', lambda: check_red(output.replace("code: 'ERR_ASSERTION'", "code: 'ECONNREFUSED'")))
+    rejects('red counts that do not add up', lambda: check_red(re.sub(r'^# tests \d+$', '# tests 0', output, flags=re.M)))
+    outputs = {label: (directory / f'commands/{label}.stdout.txt').read_text()
+               for label in ['baseline-test', 'final-red', 'final-green', 'final-test']}
+    copies = {'node_modules/follow-redirects': 'node_modules/axios/node_modules/follow-redirects', 'node_modules/cookie':
+              'node_modules/cookie', 'node_modules/proxy-addr': 'node_modules/proxy-addr', 'node_modules/send': 'node_modules/send'}
+    check_runs(outputs, copies)
+    for name, label, change in [
+        ('green run of other tests', 'final-green', lambda o: re.sub(r'^(\s*ok \d+ - ).*$', r'\1a different test', o, count=1, flags=re.M)),
+        ('full suite missing an original test', 'final-test', lambda o: re.sub(r'^\s*ok \d+ - .*\n', '', o, count=1, flags=re.M)),
+        ('failing full suite', 'final-test', lambda o: o.replace('# fail 0', '# fail 1')),
+    ]:
+        rejects(name, lambda: check_runs({**outputs, label: change(outputs[label])}, copies))
+    rejects('copy path not tested', lambda: check_runs(outputs, {**copies, 'node_modules/extra': 'node_modules/extra'}))
+    rejects('red run against another copy', lambda: check_runs(outputs, {**copies, 'node_modules/follow-redirects': 'node_modules/follow-redirects'}))
     with tempfile.TemporaryDirectory(prefix='axm-721-negative-') as temp:
         temp = Path(temp)
         # A tiny synthetic Git repo allows real source-integrity and scope checks.
@@ -435,6 +624,12 @@ def selftest(directory):
         try:
             check_checkout(temp, BASE)
             rejects('checkout at another head', lambda: check_checkout(temp, 'b' * 40))
+            with tempfile.TemporaryDirectory(prefix='axm-721-tree-') as tree:
+                materialize(BASE, tree, temp)
+                assert (Path(tree) / 'src/server.js').read_text() == 'server();\n' and tree_digest(tree) == tree_digest(tree)
+                before = tree_digest(tree)
+                (Path(tree) / 'src/server.js').write_text('changed();\n')
+                rejects('changed tree', lambda: require(tree_digest(tree) == before))
             write(temp / 'package.json', {**manifest, 'scripts': {'test': 'true'}})
             rejects('dirty checkout', lambda: check_checkout(temp, BASE))
             rejects('changed test script in tree', lambda: check_tree(temp))
@@ -452,14 +647,26 @@ def selftest(directory):
             rejects('rename out of scope', lambda: check_tree(temp))
         finally:
             BASE = original_base
-    fixture = json.loads((directory / 'fixture-final.json').read_text())
-    check_fixture(fixture, fixture['sha256'])
-    rejects('mismatched fixtures', lambda: check_fixture({**fixture, 'sha256': '0' * 64}, fixture['baseline_sha256']))
-    inv = json.loads((directory / 'candidate-inventory.json').read_text())
-    malformed_inventory = copy.deepcopy(inv)
-    malformed_inventory['copies'].pop()
-    check_inventory(inv, copy.deepcopy(inv))
-    rejects('incomplete installed inventory', lambda: check_inventory(malformed_inventory, inv))
+    package = lambda name, version: {'version': version, 'resolved': f'https://registry.npmjs.org/{name}/-/{name}-{version}.tgz',
+                                     'integrity': 'sha512-fixture'}
+    base_lock = {'name': 'fixture', 'lockfileVersion': 3, 'packages': {
+        '': {'name': 'fixture'}, 'node_modules/cookie': package('cookie', '0.5.0'),
+        'node_modules/follow-redirects': package('follow-redirects', '1.16.0'), 'node_modules/qs': package('qs', '6.11.0')}}
+    head_lock = copy.deepcopy(base_lock)
+    head_lock['packages']['node_modules/cookie'] = package('cookie', TARGETS['cookie'])
+    head_lock['packages']['node_modules/axios/node_modules/follow-redirects'] = head_lock['packages'].pop('node_modules/follow-redirects')
+    head_lock['packages']['node_modules/axios/node_modules/follow-redirects'].update(package('follow-redirects', TARGETS['follow-redirects']))
+    check_lock(head_lock, base_lock)
+    for name, mutate in [
+        ('unrelated lockfile upgrade', lambda l: l['packages']['node_modules/qs'].update(version='6.14.0')),
+        ('target at an unfixed version', lambda l: l['packages']['node_modules/cookie'].update(version='0.6.0')),
+        ('target from another registry', lambda l: l['packages']['node_modules/cookie'].update(resolved='https://example.invalid/c.tgz')),
+        ('target without integrity', lambda l: l['packages']['node_modules/cookie'].pop('integrity')),
+        ('changed lockfile header', lambda l: l.update(lockfileVersion=2)),
+    ]:
+        malformed = copy.deepcopy(head_lock)
+        mutate(malformed)
+        rejects(name, lambda: check_lock(malformed, base_lock))
     base_manifest = {'scripts': {'test': 'node --test', 'lint': 'eslint .'},
                      'overrides': {'brace-expansion': '^1.1.21', 'js-yaml': '^4.3.2'}}
     head_manifest = copy.deepcopy(base_manifest)
@@ -473,7 +680,7 @@ def selftest(directory):
         malformed = copy.deepcopy(head_manifest)
         mutate(malformed)
         rejects(name, lambda: check_manifest(malformed, base_manifest))
-    head, pr_path, run_path = 'a' * 40, f'repos/{REPO}/pulls/1', f'repos/{REPO}/actions/runs/1'
+    head, pr_path, run_path = 'a' * 40, f'repos/{REPO}/pulls/110', f'repos/{REPO}/actions/runs/1'
     contents = lambda ref, path: f'repos/{REPO}/contents/{path}?ref={ref}'
     encoded = lambda data: {'content': base64.b64encode(data).decode()}
     fixture_bytes, locks = b'fixture bytes\n', {BASE: b'baseline lock\n', head: b'candidate lock\n'}
@@ -482,34 +689,38 @@ def selftest(directory):
     run = {'id': 1, 'event': 'push', 'path': WORKFLOW, 'head_sha': head, 'head_branch': 'candidate', 'run_attempt': 1,
            'head_repository': {'full_name': REPO}, 'status': 'completed', 'conclusion': 'success',
            'updated_at': '2026-10-29T19:00:00Z'}
-    comment_path = f'repos/{REPO}/issues/comments/2'
     remote = {
         contents(BASE, 'package.json'): encoded(json.dumps(base_manifest).encode()),
         contents(head, 'package.json'): encoded(json.dumps(head_manifest).encode()),
         contents(BASE, 'package-lock.json'): encoded(locks[BASE]),
         contents(head, 'package-lock.json'): encoded(locks[head]),
-        pr_path: {'state': 'open', 'head': {'sha': head, 'ref': 'candidate', 'repo': {'full_name': REPO}},
-                  'base': {'repo': {'full_name': REPO}}},
+        pr_path: {'state': 'open', 'user': {'login': 'implementer'}, 'head': {'sha': head, 'ref': 'candidate', 'repo': {'full_name': REPO}},
+                  'base': {'ref': 'master', 'sha': BASE, 'repo': {'full_name': REPO}}},
+        f'repos/{REPO}/pulls/110/files?per_page=100': [{'filename': 'package.json'}],
+        f'repos/{REPO}/actions/runs/1/jobs?per_page=100': {'total_count': 1, 'jobs': [{'conclusion': 'success', 'steps': [
+            {'name': step, 'conclusion': 'success'} for step in ['Set up job', 'Install dependencies', 'Lint', 'Test']]}]},
         f'repos/{REPO}/compare/{BASE}...{head}': {'status': 'ahead', 'merge_base_commit': {'sha': BASE},
                                                   'files': [{'filename': 'package.json'}]},
         f'repos/{REPO}/contents/{WORKFLOW}?ref={head}': {'sha': 'trusted'},
         f'repos/{REPO}/contents/{WORKFLOW}?ref={BASE}': {'sha': 'trusted'},
         contents(head, FIXTURE): encoded(fixture_bytes),
         run_path: run,
-        f'repos/{REPO}/actions/runs?head_sha={head}&per_page=100': {'workflow_runs': [run]},
-        comment_path: {'issue_url': f'https://api.github.com/repos/{REPO}/issues/1',
-                       'body': f'Independent review notes\r\nAXM-721 QA: PASS {head}\r\n',
-                       'created_at': '2026-10-29T20:00:00Z', 'updated_at': '2026-10-29T20:00:00Z'},
+        f'repos/{REPO}/actions/runs?head_sha={head}&per_page=100': {'total_count': 1, 'workflow_runs': [run]},
     }
     publication = {'baseline_sha': BASE, 'fixture_sha256': hashlib.sha256(fixture_bytes).hexdigest(),
-                   'pr_url': f'https://github.com/{REPO}/pull/1',
+                   'pr_url': PR_URL,
                    'baseline_test_url': f'https://github.com/{REPO}/tree/{BASE}/test',
                    'candidate_test_url': f'https://github.com/{REPO}/tree/{head}/test',
                    'head_sha': head, 'remote_head_sha': head,
                    'ci': {'conclusion': 'success', 'run_url': f'https://github.com/{REPO}/actions/runs/1'},
-                   'qa': {'head_sha': head, 'evidence_url': f'https://github.com/{REPO}/pull/1#issuecomment-2'},
                    'usage': {'input_tokens': None, 'output_tokens': None, 'cached_input_tokens': None, 'cost_usd': None,
                              'scope': 'synthetic negative control', 'unrecorded_reason': 'synthetic'}}
+
+    runs_path = f'repos/{REPO}/actions/runs?head_sha={head}&per_page=100'
+
+    def add_run(g, **fields):
+        g[runs_path]['workflow_runs'].append({**run, 'id': 3, **fields})
+        g[runs_path]['total_count'] += 1
 
     def fake(responses):
         reads = []
@@ -520,13 +731,15 @@ def selftest(directory):
             return copy.deepcopy(value(reads.count(path)) if callable(value) else value)
         return api
 
-    proof_fixture = {'sha256': hashlib.sha256(fixture_bytes).hexdigest(), 'baseline_sha256': hashlib.sha256(fixture_bytes).hexdigest()}
+    proof_fixture = hashlib.sha256(fixture_bytes).hexdigest()
+    global FIXTURE_SHA256
+    reviewed_fixture, FIXTURE_SHA256 = FIXTURE_SHA256, proof_fixture  # the stand-in serves synthetic fixture bytes
     check_publication(publication, scanned, proof_fixture, fake(remote))
     unreconciled = copy.deepcopy(scanned)
     unreconciled['remaining'].pop()
     rejects('unreconciled scanned comparison', lambda: check_publication(publication, unreconciled, proof_fixture, fake(remote)))
     rejects('proof fixture differs from the live head', lambda: check_publication(
-        {**publication, 'fixture_sha256': '0' * 64}, scanned, {'sha256': '0' * 64, 'baseline_sha256': '0' * 64}, fake(remote)))
+        {**publication, 'fixture_sha256': '0' * 64}, scanned, '0' * 64, fake(remote)))
     moved = lambda d, g: g.update({pr_path: lambda n, pr=g[pr_path]: pr if n == 1 else {**pr, 'head': {**pr['head'], 'sha': 'b' * 40}}})
     for name, mutate in [
         ('missing CI run link', lambda d, g: d['ci'].pop('run_url')),
@@ -542,38 +755,39 @@ def selftest(directory):
         ('unfinished remote CI run', lambda d, g: g[run_path].update(status='in_progress', conclusion=None)),
         ('pull_request merge-revision CI run', lambda d, g: g[run_path].update(event='pull_request')),
         ('CI run of another workflow', lambda d, g: g[run_path].update(path='.github/workflows/other.yml')),
-        ('another failed run on the head', lambda d, g: g[f'repos/{REPO}/actions/runs?head_sha={head}&per_page=100'][
-            'workflow_runs'].append({**run, 'id': 3, 'conclusion': 'failure'})),
+        ('another failed run on the head', lambda d, g: add_run(g, conclusion='failure')),
+        ('in-progress rerun on the head', lambda d, g: add_run(g, status='in_progress', conclusion=None, run_attempt=2)),
+        ('truncated run list', lambda d, g: g[runs_path].update(total_count=101)),
+        ('PR into another branch', lambda d, g: g[pr_path]['base'].update(ref='release')),
+        ('non-string usage scope', lambda d, g: d['usage'].update(scope=['x'])),
+        ('unverified extra report field', lambda d, g: d.update(tests_passed=73)),
+        ('QA claim in the report', lambda d, g: d.update(qa={'head_sha': head})),
+        ('PR diff outside scope against its base', lambda d, g: g[f'repos/{REPO}/pulls/110/files?per_page=100'].append(
+            {'filename': 'src/server.js'})),
+        ('CI job failure', lambda d, g: g[f'repos/{REPO}/actions/runs/1/jobs?per_page=100']['jobs'][0].update(conclusion='failure')),
+        ('CI without a passing Test step', lambda d, g: g[f'repos/{REPO}/actions/runs/1/jobs?per_page=100']['jobs'][0]['steps'][-1].update(
+            conclusion='skipped')),
+        ('CI rerun started during verification', lambda d, g: g.update({runs_path: lambda n, listing=g[runs_path]: listing if n == 1 else {
+            **listing, 'workflow_runs': [{**listing['workflow_runs'][0], 'status': 'in_progress', 'run_attempt': 2}]}})),
+        ('PR closed during verification', lambda d, g: g.update({pr_path: lambda n, pr=g[pr_path]: pr if n == 1 else {**pr, 'state': 'closed'}})),
+        ('PR base moved during verification', lambda d, g: g.update({pr_path: lambda n, pr=g[pr_path]: pr if n == 1 else {
+            **pr, 'base': {**pr['base'], 'sha': 'c' * 40}}})),
+        ('cited run missing from the run list', lambda d, g: g[runs_path].update(total_count=0, workflow_runs=[])),
         ('changed CI workflow', lambda d, g: g[f'repos/{REPO}/contents/{WORKFLOW}?ref={head}'].update(sha='edited')),
         ('live diff outside scope', lambda d, g: g[f'repos/{REPO}/compare/{BASE}...{head}']['files'].append({'filename': 'src/server.js'})),
         ('live rename out of scope', lambda d, g: g[f'repos/{REPO}/compare/{BASE}...{head}']['files'].append(
             {'filename': 'scripts/security-verification.py', 'previous_filename': 'src/server.js'})),
         ('head not descended from BASE', lambda d, g: g[f'repos/{REPO}/compare/{BASE}...{head}'].update(status='diverged')),
         ('fixture hash not at live head', lambda d, g: d.update(fixture_sha256='0' * 64)),
-        ('stale independent QA', lambda d, g: d['qa'].update(head_sha='b' * 40)),
-        ('QA comment on another pull request', lambda d, g: g[comment_path].update(
-            issue_url=f'https://api.github.com/repos/{REPO}/issues/2')),
-        ('QA comment without the live head', lambda d, g: g[comment_path].update(body='AXM-721 QA: PASS')),
-        ('QA comment with a failing verdict', lambda d, g: g[comment_path].update(body=f'AXM-721 QA: FAIL {head}')),
-        ('status comment naming the head', lambda d, g: g[comment_path].update(body=f'Pushed {head}; QA: PASS pending')),
-        ('edited QA comment', lambda d, g: g[comment_path].update(updated_at='2026-10-29T21:00:00Z')),
-        ('QA comment before the CI result', lambda d, g: g[comment_path].update(
-            created_at='2026-10-29T18:00:00Z', updated_at='2026-10-29T18:00:00Z')),
         ('rerun hiding a failed attempt', lambda d, g: g[run_path].update(run_attempt=2)),
         ('neutralized npm test script at the live head', lambda d, g: g.update(
             {contents(head, 'package.json'): encoded(json.dumps({**head_manifest, 'scripts': {'test': 'true'}}).encode())})),
         ('lockfile differs from the scanned lock', lambda d, g: g.update({contents(head, 'package-lock.json'): encoded(b'other\n')})),
         ('scanned baseline lock is not BASE', lambda d, g: g.update({contents(BASE, 'package-lock.json'): encoded(b'other\n')})),
-        ('QA comment with PASS and FAIL verdicts', lambda d, g: g[comment_path].update(
-            body=f'AXM-721 QA: PASS {head}\nAXM-721 QA: FAIL {head}')),
-        ('QA evidence outside this pull request', lambda d, g: d['qa'].update(evidence_url=f'https://github.com/{REPO}/blob/master/README.md')),
         ('duplicate baseline and candidate links', lambda d, g: d.update(candidate_test_url=d['baseline_test_url'])),
         ('candidate link for wrong revision', lambda d, g: d.update(candidate_test_url=d['candidate_test_url'].replace(head, 'b' * 40))),
         ('baseline link for wrong revision', lambda d, g: d.update(baseline_test_url=d['candidate_test_url'])),
-        ('placeholder QA evidence', lambda d, g: d['qa'].update(evidence_url='https://example.com/todo')),
-        ('synthetic QA evidence', lambda d, g: d['qa'].update(evidence_url='synthetic')),
-        ('localhost QA evidence', lambda d, g: d['qa'].update(evidence_url='https://localhost/evidence')),
-        ('http QA evidence', lambda d, g: d['qa'].update(evidence_url=f'http://github.com/{REPO}/pull/1#issuecomment-2')),
+        ('another pull request', lambda d, g: d.update(pr_url=f'https://github.com/{REPO}/pull/1')),
         ('boolean usage value', lambda d, g: d['usage'].update(cost_usd=True)),
     ]:
         malformed, responses = copy.deepcopy(publication), copy.deepcopy(remote)
@@ -581,48 +795,19 @@ def selftest(directory):
         rejects(name, lambda: check_publication(malformed, scanned, proof_fixture, fake(responses)))
     publication.pop('candidate_test_url')
     rejects('incomplete publication report', lambda: check_publication(publication, scanned, proof_fixture, fake(remote)))
+    FIXTURE_SHA256 = reviewed_fixture
     return {'negative_controls_rejected': rejected, 'count': len(rejected), 'checked_utc': now()}
 
 
-def manifest(directory):
+def require(condition):
+    assert condition
+
+
+def manifest(directory, repo='.'):
     directory = Path(directory)
-    write(directory / 'manifest.json', {'created_utc': now(), 'checkout_sha': git('rev-parse', 'HEAD'),
-          'github_sha': os.environ.get('GITHUB_SHA'), 'candidate_sha': os.environ.get('CANDIDATE_SHA'),
+    write(directory / 'manifest.json', {'created_utc': now(), 'checkout_sha': git('rev-parse', 'HEAD', cwd=repo),
           'files': {str(p.relative_to(directory)): digest(p) for p in sorted(directory.rglob('*'))
                     if p.is_file() and p.name != 'manifest.json' and 'node_modules' not in p.parts}})
-
-
-def ci_capture(directory):
-    directory = Path(directory).resolve()
-    write(directory / 'scope.json', check_tree('.'))
-    head = git('rev-parse', 'HEAD')
-    observed = os.environ['GITHUB_SHA']
-    candidate = os.environ['CANDIDATE_SHA']
-    parents = git('show', '-s', '--format=%P', head).split()
-    check_identity(candidate, observed, parents)
-    assert observed == head, 'checkout is not GITHUB_SHA'
-    write(directory / 'provenance.json', {'observed_github_sha': observed, 'checkout_sha': head,
-          'candidate_sha': candidate, 'checkout_parents': parents, 'event_name': os.environ.get('GITHUB_EVENT_NAME'),
-          'remote_head': 'not read here; the publication check re-reads it from GitHub',
-          'scanner': 'not run in CI; equivalent native OSV reports retained separately'})
-    with tempfile.TemporaryDirectory(prefix='axm-721-baseline-') as temp:
-        temp = Path(temp)
-        archive = directory / 'baseline.tar'
-        with archive.open('wb') as stream:
-            subprocess.run(['git', 'archive', BASE], stdout=stream, check=True)
-        with tarfile.open(archive) as stream:
-            stream.extractall(temp, filter='data')
-        archive.unlink()
-        for label, argv in [('baseline-ci', ['npm', 'ci']), ('baseline-lint', ['npm', 'run', 'lint']),
-                            ('baseline-test', ['npm', 'test', '--', '--test-reporter=tap'])]:
-            assert record(directory, label, temp, argv) == 0
-        fixture = 'test/security-dependencies.test.js'
-        (temp / fixture).write_bytes(Path(fixture).read_bytes())
-        write(directory / 'fixture.json', {'baseline': digest(temp / fixture), 'candidate': digest(fixture)})
-        assert record(directory, 'red-security', temp, ['node', '--test', '--test-reporter=tap', fixture]) == 1
-        write(directory / 'red-validation.json', check_red((directory / 'red-security.stdout.txt').read_text()))
-    assert record(directory, 'green-security', '.', ['node', '--test', '--test-reporter=tap', fixture]) == 0
-    manifest(directory)
 
 
 def main():
@@ -636,16 +821,16 @@ def main():
     p = sub.add_parser('compare')
     for name in ['before_scan', 'before_lock', 'after_scan', 'after_lock', 'output']:
         p.add_argument(name)
-    p = sub.add_parser('verify'); p.add_argument('directory'); p.add_argument('candidate'); p.add_argument('output')
+    p = sub.add_parser('verify'); p.add_argument('checkout'); p.add_argument('directory')
     p = sub.add_parser('selftest'); p.add_argument('directory'); p.add_argument('output')
     p = sub.add_parser('manifest'); p.add_argument('directory')
-    p = sub.add_parser('ci-capture'); p.add_argument('directory')
-    p = sub.add_parser('publication'); p.add_argument('report'); p.add_argument('proof'); p.add_argument('checkout')
+    p = sub.add_parser('publication'); p.add_argument('report'); p.add_argument('checkout'); p.add_argument('directory')
     args = parser.parse_args()
+    os.environ['GIT_NO_REPLACE_OBJECTS'] = '1'
     if not __debug__:
         sys.exit('refusing to run with -O or PYTHONOPTIMIZE: every check is an assert')
     if args.action == 'record':
-        sys.exit(record(args.directory, args.label, args.cwd, args.command))
+        sys.exit(record(args.directory, args.label, args.cwd, args.command)['exit_status'])
     if args.action == 'inventory':
         write(args.output, inventory(args.root))
     if args.action == 'scope':
@@ -653,15 +838,13 @@ def main():
     if args.action == 'compare':
         write(args.output, compare(findings(args.before_scan, args.before_lock), findings(args.after_scan, args.after_lock)))
     if args.action == 'verify':
-        write(args.output, check_evidence(args.directory, args.candidate))
+        print(json.dumps(check_evidence(args.directory, args.checkout)[0], indent=2))
     if args.action == 'selftest':
         write(args.output, selftest(args.directory))
     if args.action == 'manifest':
         manifest(args.directory)
-    if args.action == 'ci-capture':
-        ci_capture(args.directory)
     if args.action == 'publication':
-        print(json.dumps(publication(args.report, args.proof, args.checkout), indent=2))
+        print(json.dumps(publication(args.report, args.checkout, args.directory), indent=2))
 
 
 if __name__ == '__main__':

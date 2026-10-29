@@ -25,8 +25,8 @@ Retained implementation checks at dependency commit `a48560d` and proof commit
 identical fixture **14 intended assertion failures, 10 passing controls** before
 the fix, then **24/24** passing; candidate install/lint and **73/73** full tests.
 Node 20.20.2/npm 10.8.2 also passed baseline 49, candidate 73, and the same red/green
-fixtures through a local simulation of the CI capture helper. This simulation is
-not a GitHub CI result. No separate build or integration script is configured;
+fixtures through a local CI simulation (the former `ci-capture` command, now
+replaced by `verify`). This simulation is not a GitHub CI result. No separate build or integration script is configured;
 the existing HTTP/EJS tests stub axios, and new HTTP fixtures use loopback only.
 
 Retained equivalent OSV 2.6.0 scans from 2026-10-26: **175 package identities / 181
@@ -35,12 +35,13 @@ findings. Exactly the five selected GHSA/CVE pairs were removed, 45 canonical
 findings remain, and zero were added. A 2026-10-29 rescan of the same lockfiles
 also reports the newly published qs GHSA-6pq8-jhm2-2vcw / CVE-2026-110816 on both
 sides (**52/51 → 47/46**): the same five removed, zero added. The live OSV API
-exposes no pinned database snapshot; full
-records and advisory modification times are retained. Scanner finding exit 1 is
-recorded explicitly. No zero-vulnerability claim is made.
+exposes no pinned database snapshot, so `verify` scans again and reports the
+counts it observes. It requires exactly the five selected removals and no added
+finding. No zero-vulnerability claim is made.
 
 Only four package versions changed, with no dependency downgrades or additional
-closure changes. npm relocated the sole follow-redirects copy under axios;
+closure changes: `scope` rejects any lockfile entry that differs from BASE
+unless it is a target package at its fixed version from the npm registry. npm relocated the sole follow-redirects copy under axios;
 the all-copy inventory and fixtures cover that path. Exact cookie/send overrides
 cover Express and serve-static. Existing brace-expansion/js-yaml overrides remain.
 
@@ -69,33 +70,75 @@ separately. No whole-flow total or budget estimate is presented as incurred cost
 
 ## Retained proof and reproduction
 
-Retained implementation proof is outside runtime scratch:
-`/data/work-root/qa-evidence/atlas/overnight-20261026/AXM-721-20261026T173717Z-474300/`.
-`run.json` records the baseline and input/original-test hashes. `commands/` holds
-complete argv, cwd, UTC times, versions, exit codes, input/output hashes and
-measured runner summaries. `fixture-final.json`, both inventories, raw OSV
-reports, `scanner.json`, `comparison.json`, `verification.json`, `selftest.json`
-and `manifest.json` support the results above. `comparison.json` accounts for
-every raw record, alias and lockfile path under removed/remaining/added findings.
+Earlier proof directories are retained for reference only; `verify` reads none
+of them:
+- implementation proof:
+  `/data/work-root/qa-evidence/atlas/overnight-20261026/AXM-721-20261026T173717Z-474300/`;
+- the `12877f8` CI-policy check:
+  `/data/work-root/qa-evidence/atlas/pr110-ci-policy-20261027T035457Z/`;
+- the `cc14e89` repair logs:
+  `/data/work-root/qa-evidence/atlas/overnight-20261026/AXM-721-20261029T174800Z-f5627c/`;
+- the remote-head repair logs:
+  `/data/work-root/qa-evidence/atlas/overnight-20261026/AXM-721-20261029T194456Z-remote-head/`.
+
 An earlier array fixture lacked Host and received HTTP 400; those setup failures
-are retained in `baseline-security.*` and excluded from regression proof.
+are retained in `baseline-security.*` and excluded from regression proof. The
+[historical CI artifact](https://github.com/truxt-ai/ops-dashboard/actions/runs/40371968599/artifacts/12673081627)
+belongs to `6225ed89f0fe2d7788e7f4734d79d2a2e7d05e15`, before workflow
+restoration, and certifies no later head. The current workflow uploads no raw
+scans. The reproduction for the current head is retained at
+`/data/work-root/qa-evidence/atlas/overnight-20261026/AXM-721-20261029T200758Z-derived/`.
 
-The [historical CI artifact](https://github.com/truxt-ai/ops-dashboard/actions/runs/40371968599/artifacts/12673081627)
-belongs to `6225ed89f0fe2d7788e7f4734d79d2a2e7d05e15`, before workflow restoration.
-It does not certify a later head. The subsequent `12877f8` verification is retained
-separately at `/data/work-root/qa-evidence/atlas/pr110-ci-policy-20261027T035457Z/`:
-`summary.json`, `manifest.json`, command records, downloaded CI logs and paired
-raw scans/comparison record the same 73 passing tests and 51/50 → 46/45 findings.
-These local raw scans await host QA publication; the current workflow does not
-upload them. Local logs of the `cc14e89` repair are retained beneath
-`/data/work-root/qa-evidence/atlas/overnight-20261026/AXM-721-20261029T174800Z-f5627c/`
-and of the remote-head repair beneath
-`/data/work-root/qa-evidence/atlas/overnight-20261026/AXM-721-20261029T194456Z-remote-head/`.
+Recorded logs can be fabricated together with their hashes, so `verify` does not
+accept them. It reproduces every result into a new directory:
 
-Historical [AXM-720](https://axiom-stage.truxt.ai/b560f8c8/atlas/issues/AXM-720)
-inputs/manifest were verified before reuse as reference. New scans use its exact
-recorded executable and empty config, whose SHA-256 is
-`e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`:
+```sh
+export OSV_SCANNER=/path/to/osv-scanner   # osv-scanner 2.6.0 linux-arm64, SHA-256 2c71403e…
+python3 scripts/security-verification.py verify . "$OUT"
+python3 scripts/security-verification.py selftest "$OUT" "$OUT/selftest.json"
+python3 scripts/security-verification.py publication "$REPORT" . "$OUT-publication"
+```
+
+`verify <checkout> <new-dir>` requires a clean checkout and works only from git
+objects:
+- It writes BASE's and HEAD's trees from raw objects, `ls-tree` plus `cat-file`,
+  rehashing every blob. Git attributes, replace refs and ignored or untracked
+  files therefore cannot take part.
+- The head's fixture must be the reviewed one, whose SHA-256 is pinned from
+  `a48560d`.
+- Each child gets a minimal environment: its own fresh `HOME`, empty npm user
+  and global config files, only absolute `PATH` entries, and no inherited
+  `NODE_OPTIONS` or npm settings. Output is read through verifier-owned pipes.
+  Each child runs in its own process group, and any process left in that group
+  fails the run.
+- It runs, in order:
+  - in the BASE tree: `npm ci`, `npm run lint` and the original suite;
+  - then, after copying the head's fixture into the BASE tree, the red fixture run;
+  - in the head tree: `npm ci`, `npm run lint`, the green fixture run and the
+    full suite.
+- Neither tree may declare an install script, so `npm ci` runs no package code.
+  `npm ci` checks every installed tarball against the lockfile's sha512
+  integrity, and each target's integrity must equal the npm registry's.
+- After every run, both trees' sources must equal their git objects exactly,
+  with nothing added, and each `node_modules` must equal its state right after
+  `npm ci`. Executed code therefore cannot rewrite sources, tests or packages
+  for a later run. The checkout must still be the same clean head at the end,
+  and the comparison `publication` uses stays in memory.
+- TAP counters must agree with the result lines themselves: `not ok` lines equal
+  failures, and no SKIP or TODO directive is allowed. A duplicated summary line
+  fails. The counts must be the ones fixed by the pinned code: 49 original
+  tests, and 24 fixture tests of which 14 fail before the fix.
+- It requires:
+  - the red run to fail exactly the five advisories by assertion;
+  - every suite to pass with no skipped, todo or cancelled tests;
+  - the green run to execute the red run's tests by name, each baseline copy
+    path mapped to its candidate copy through both inventories, and every fixed
+    copy to have a fixture test;
+  - the full suite to be the original suite plus the fixture, by name;
+  - the BASE tree to hold the vulnerable versions.
+- It scans both lockfiles with the pinned scanner (`$OSV_SCANNER`, resolved once,
+  checked by SHA-256 and executed by that absolute path) and this command, with
+  an empty config:
 
 ```sh
 "$SCANNER" scan source --lockfile "$LOCKFILE" --no-ignore \
@@ -103,74 +146,65 @@ recorded executable and empty config, whose SHA-256 is
   --all-packages --all-vulns --format json --output-file "$OUTPUT"
 ```
 
-Use an untouched archive of the pinned baseline, run its original suite, then
-copy the candidate `test/security-dependencies.test.js` into that archive before
-running the new cases. The baseline never contained that file. The helper's
-`ci-capture` command can perform this preparation locally, validate assertion-level
-reds and check the same fixture bytes on the candidate. It binds the checkout to
-`GITHUB_SHA` and `CANDIDATE_SHA` but does not read the remote head; `publication`
-does. The current GitHub workflow does not invoke it. Other local helper commands are:
+`record` remains for ad-hoc retained logs. `scope` allows exactly the five files
+this PR changes and lists both sides of any rename. CI runs the `lint` and `test`
+scripts from `package.json`, so `package.json` may differ from BASE only by the
+exact cookie and send overrides. The helper refuses to run under `python3 -O`,
+which would strip its assert-based checks.
 
-```sh
-python3 scripts/security-verification.py record "$PROOF/commands" install . npm ci
-python3 scripts/security-verification.py inventory . "$PROOF/candidate-inventory.json"
-python3 scripts/security-verification.py compare \
-  "$PROOF/baseline.osv.json" "$PROOF/baseline/package-lock.json" \
-  "$PROOF/candidate.osv.json" package-lock.json "$PROOF/comparison.json"
-python3 scripts/security-verification.py selftest "$PROOF" "$PROOF/selftest.json"
-python3 scripts/security-verification.py verify "$PROOF" . "$PROOF/verification.json"
-python3 scripts/security-verification.py manifest "$PROOF"
-python3 scripts/security-verification.py publication "$PROOF/publication.json" "$PROOF" .
-```
+`publication <report.json> <checkout> <new-dir>` runs `verify` and then checks
+the report's head and CI claims against fresh GitHub REST reads through the
+authenticated `gh` CLI, pinned with `--hostname github.com`. A failed read fails
+the check. The report must have exactly the publication schema: unknown fields,
+including QA claims, are rejected. It requires:
 
-`record` refuses to overwrite an existing label and propagates command failures.
-`scope` allows exactly the five files this PR changes and lists both sides of any
-rename. CI runs the `lint` and `test` scripts from `package.json`, so `package.json`
-may differ from BASE only by the exact cookie and send overrides. The helper
-refuses to run under `python3 -O`, which would strip its assert-based checks.
-
-`publication <report.json> <proof-dir> <checkout>` first runs every `verify`
-check of the proof against `<checkout>`, which must be a clean checkout of the
-live head with dependencies installed. That binds the red/green runs, fixture,
-inventory and scans to the head. It then treats the report's head, CI and QA
-fields as claims and checks each against fresh GitHub REST reads through the
-authenticated `gh` CLI (`GH_TOKEN` or `gh auth login`); a failed read fails the
-check. It requires:
-
-- an open same-repository PR at `pr_url` whose live head equals `head_sha` and
-  `remote_head_sha`;
-- a head descending from BASE whose GitHub diff, both sides of any rename
-  included, stays inside the `scope` allowlist;
+- `pr_url` naming PR #110, open, same-repository and into `master`, whose live
+  head equals `head_sha`, `remote_head_sha` and the reproduced checkout's HEAD;
+- a head descending from BASE, where both the BASE diff and the PR's own file
+  list (both sides of any rename) stay inside the `scope` allowlist;
 - at that head, the CI workflow blob equal to BASE's, `package.json` passing the
-  manifest rule above, and the fixture equal to the proof's `fixture-final.json`
-  and to `fixture_sha256`;
-- the proof's `comparison.json` scanning exactly BASE's lockfile and the live
-  head's, compared by SHA-256;
+  manifest rule above, and the fixture equal to the reviewed fixture, the
+  checkout's and `fixture_sha256`;
+- the reproduced scans covering exactly BASE's lockfile and the live head's,
+  compared by SHA-256;
 - `ci.run_url` naming a completed, successful, first-attempt `push` run of
-  `.github/workflows/ci.yml` for that exact head and branch, and every completed
-  run of that workflow on the head successful on its first attempt;
-- `qa.evidence_url` naming an unedited comment on this PR, posted after that run
-  completed, whose only `AXM-721 QA:` line is `AXM-721 QA: PASS <live head>`;
-- `<checkout>` at that head with no local changes.
+  `.github/workflows/ci.yml` for that exact head and branch, whose jobs all
+  succeeded with successful `Install dependencies`, `Lint` and `Test` steps;
+- a complete run list that contains the cited run and in which every run of
+  that workflow on the head is completed, successful and on its first attempt.
 
-A `pull_request` run tests a synthetic merge revision, so it is not exact-head
-CI, and the API reports only a run's latest attempt, so a rerun could hide a
-failure. The PR head is read again last and any movement fails the check. The
-helper cannot authenticate who wrote the QA comment; the host QA gate records
-that. It does not require `ci.artifact_url`:
-the restored workflow publishes no proof artifact. Retained local files alone
-do not satisfy publication.
+The PR, including its base SHA, and the run list are read again last; any change
+in either fails the check. A `pull_request` run tests a synthetic merge revision, so it is not
+exact-head CI. The API reports only a run's latest attempt, so a rerun could
+hide a failure.
 
-The self-check rejects missing exits/aliases, incomplete finding/copy inventories,
-changed original tests, out-of-scope paths including renames, mismatched fixture
-hashes, manifest changes beyond the two overrides and setup errors, each through
-the function `verify` or `scope` uses. It runs `publication` against an offline
-GitHub stand-in and rejects stale or moving heads, closed or fork PRs; failed,
-unfinished, rerun, merge-revision or other-workflow CI runs; an edited workflow
-or test script; lockfiles other than the scanned ones; a proof fixture other
-than the head's; an unreconciled comparison; out-of-scope live diffs; wrong
-test links; QA comments that are elsewhere, failing, mixed, status-only, edited
-or earlier than CI; dirty or other-head checkouts; and incomplete records.
+The helper does not certify QA. No comment or account check can establish that
+an independent agent ran QA, so independent QA and formal acceptance belong to
+the host gate. It does not require `ci.artifact_url`, because the restored
+workflow publishes no proof artifact. Usage figures are reported values, not
+verified ones. The helper trusts the host's `git`, `node`, `npm`, `gh` and Python.
+
+The self-check rejects:
+- failing, empty, skipped or miscounted suites, inflated counters, and
+  duplicated summary lines;
+- red and green runs of different tests or copies, untested copies, and full
+  suites missing a test;
+- setup errors posing as regressions, and changed trees;
+- comparisons that miss aliases, records or paths, or that add or remove beyond
+  the selection;
+- lockfile changes beyond the targets, changed manifests or original tests, and
+  out-of-scope paths including renames;
+- dirty or other-head checkouts.
+
+It also runs `publication` against an offline GitHub stand-in and rejects:
+- stale or moving heads, other PRs or base branches, closed or fork PRs, and PR
+  state or base changes during verification;
+- failed, unfinished, rerun, merge-revision or other-workflow CI runs, failed jobs
+  or test steps, and run lists that are incomplete or lack the cited run;
+- an edited workflow or test script, lockfiles other than the scanned ones, a
+  fixture other than the reviewed one, out-of-scope diffs against BASE or the PR
+  base, and wrong test links;
+- extra report fields such as QA claims, and incomplete records.
 
 Current CI runs Node 20 `npm ci`, `npm run lint` and `npm test`, publishing ordinary
 GitHub Actions job logs. It does not invoke the helper, reproduce baseline
