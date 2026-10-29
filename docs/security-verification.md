@@ -1,7 +1,8 @@
 # AXM-721 dependency verification
 
-Owner: Raunak Poonia. Assigned implementation: GPT-6.1 Sol/high; independent
-GPT-6 Sol/high QA runs separately through the host. Formal acceptance is pending.
+Owner: Raunak Poonia. Assigned implementation: GPT-6.1 Sol/high; review repairs
+from `93529ea` onward were made by Claude Opus 5.5. Independent GPT-6 Sol/high QA
+runs separately through the host. Formal acceptance is pending.
 This report covers the approved plan revision
 `3b34bfd2-ae78-4ebc-811f-6126a78e52c1`, input digest
 `7ac830713602a306ac91c3af56690e68725f9eaf4de877362cc59d615c801f17`.
@@ -28,10 +29,13 @@ fixtures through a local simulation of the CI capture helper. This simulation is
 not a GitHub CI result. No separate build or integration script is configured;
 the existing HTTP/EJS tests stub axios, and new HTTP fixtures use loopback only.
 
-Retained equivalent OSV 2.6.0 scans: **175 package identities / 181 lock copies** on
-both inputs; **51 raw / 50 canonical → 46 raw / 45 canonical** findings. Exactly
-the five selected GHSA/CVE pairs were removed, 45 canonical findings remain, and
-zero were added. The live OSV API exposes no pinned database snapshot; full
+Retained equivalent OSV 2.6.0 scans from 2026-10-26: **175 package identities / 181
+lock copies** on both inputs; **51 raw / 50 canonical → 46 raw / 45 canonical**
+findings. Exactly the five selected GHSA/CVE pairs were removed, 45 canonical
+findings remain, and zero were added. A 2026-10-29 rescan of the same lockfiles
+also reports the newly published qs GHSA-6pq8-jhm2-2vcw / CVE-2026-110816 on both
+sides (**52/51 → 47/46**): the same five removed, zero added. The live OSV API
+exposes no pinned database snapshot; full
 records and advisory modification times are retained. Scanner finding exit 1 is
 recorded explicitly. No zero-vulnerability claim is made.
 
@@ -50,11 +54,10 @@ Its [push CI](https://github.com/truxt-ai/ops-dashboard/actions/runs/40447309652
 and [PR CI](https://github.com/truxt-ai/ops-dashboard/actions/runs/40447315550)
 passed 73 tests. These are historical runs for that head; this report/helper
 repair requires fresh CI and independent host verification on its produced head.
-Publish final remote head, actual CI run/log URLs and independent QA evidence on
-[AXM-721](https://axiom-stage.truxt.ai/b560f8c8/atlas/issues/AXM-721), avoiding a
-report-only commit after verification. Verify the checkout revision in CI logs;
-a pull-request merge revision must name the candidate as a parent. Independent
-host QA and formal acceptance remain separate gates.
+Publish the final remote head, the exact-head push CI run URL and independent QA
+evidence on [AXM-721](https://axiom-stage.truxt.ai/b560f8c8/atlas/issues/AXM-721),
+avoiding a report-only commit after verification. Independent host QA and formal
+acceptance remain separate gates.
 
 The settled implementation-only receipt for run
 `474300fa-4f29-4273-8cfa-9d39e8af23a8` records **$2.13**, **162,492 input**,
@@ -84,8 +87,10 @@ separately at `/data/work-root/qa-evidence/atlas/pr110-ci-policy-20261027T035457
 `summary.json`, `manifest.json`, command records, downloaded CI logs and paired
 raw scans/comparison record the same 73 passing tests and 51/50 → 46/45 findings.
 These local raw scans await host QA publication; the current workflow does not
-upload them. This repair's local logs are retained separately beneath
-`/data/work-root/qa-evidence/atlas/overnight-20261026/AXM-721-20261029T174800Z-f5627c/`.
+upload them. Local logs of the `cc14e89` repair are retained beneath
+`/data/work-root/qa-evidence/atlas/overnight-20261026/AXM-721-20261029T174800Z-f5627c/`
+and of the remote-head repair beneath
+`/data/work-root/qa-evidence/atlas/overnight-20261026/AXM-721-20261029T194456Z-remote-head/`.
 
 Historical [AXM-720](https://axiom-stage.truxt.ai/b560f8c8/atlas/issues/AXM-720)
 inputs/manifest were verified before reuse as reference. New scans use its exact
@@ -102,8 +107,9 @@ Use an untouched archive of the pinned baseline, run its original suite, then
 copy the candidate `test/security-dependencies.test.js` into that archive before
 running the new cases. The baseline never contained that file. The helper's
 `ci-capture` command can perform this preparation locally, validate assertion-level
-reds and check the same fixture bytes on the candidate. The current GitHub
-workflow does not invoke it. Other local helper commands are:
+reds and check the same fixture bytes on the candidate. It binds the checkout to
+`GITHUB_SHA` and `CANDIDATE_SHA` but does not read the remote head; `publication`
+does. The current GitHub workflow does not invoke it. Other local helper commands are:
 
 ```sh
 python3 scripts/security-verification.py record "$PROOF/commands" install . npm ci
@@ -114,24 +120,65 @@ python3 scripts/security-verification.py compare \
 python3 scripts/security-verification.py selftest "$PROOF" "$PROOF/selftest.json"
 python3 scripts/security-verification.py verify "$PROOF" . "$PROOF/verification.json"
 python3 scripts/security-verification.py manifest "$PROOF"
+python3 scripts/security-verification.py publication "$PROOF/publication.json" "$PROOF" .
 ```
 
 `record` refuses to overwrite an existing label and propagates command failures.
+`scope` allows exactly the five files this PR changes and lists both sides of any
+rename. CI runs the `lint` and `test` scripts from `package.json`, so `package.json`
+may differ from BASE only by the exact cookie and send overrides. The helper
+refuses to run under `python3 -O`, which would strip its assert-based checks.
+
+`publication <report.json> <proof-dir> <checkout>` first runs every `verify`
+check of the proof against `<checkout>`, which must be a clean checkout of the
+live head with dependencies installed. That binds the red/green runs, fixture,
+inventory and scans to the head. It then treats the report's head, CI and QA
+fields as claims and checks each against fresh GitHub REST reads through the
+authenticated `gh` CLI (`GH_TOKEN` or `gh auth login`); a failed read fails the
+check. It requires:
+
+- an open same-repository PR at `pr_url` whose live head equals `head_sha` and
+  `remote_head_sha`;
+- a head descending from BASE whose GitHub diff, both sides of any rename
+  included, stays inside the `scope` allowlist;
+- at that head, the CI workflow blob equal to BASE's, `package.json` passing the
+  manifest rule above, and the fixture equal to the proof's `fixture-final.json`
+  and to `fixture_sha256`;
+- the proof's `comparison.json` scanning exactly BASE's lockfile and the live
+  head's, compared by SHA-256;
+- `ci.run_url` naming a completed, successful, first-attempt `push` run of
+  `.github/workflows/ci.yml` for that exact head and branch, and every completed
+  run of that workflow on the head successful on its first attempt;
+- `qa.evidence_url` naming an unedited comment on this PR, posted after that run
+  completed, whose only `AXM-721 QA:` line is `AXM-721 QA: PASS <live head>`;
+- `<checkout>` at that head with no local changes.
+
+A `pull_request` run tests a synthetic merge revision, so it is not exact-head
+CI, and the API reports only a run's latest attempt, so a rerun could hide a
+failure. The PR head is read again last and any movement fails the check. The
+helper cannot authenticate who wrote the QA comment; the host QA gate records
+that. It does not require `ci.artifact_url`:
+the restored workflow publishes no proof artifact. Retained local files alone
+do not satisfy publication.
+
 The self-check rejects missing exits/aliases, incomplete finding/copy inventories,
-changed original tests, mismatched fixture hashes, stale heads, setup errors and
-incomplete publication records. `publication <report.json>` requires successful
-CI with `ci.run_url` pointing to its GitHub Actions run/logs, observed
-`ci.github_sha` and merge `ci.parents` for head reconciliation, plus independent
-QA evidence on that head. It does not require `ci.artifact_url`: the restored
-workflow publishes no proof artifact. Pending CI/QA fields are not accepted as
-successful evidence; retained local files alone do not satisfy publication.
+changed original tests, out-of-scope paths including renames, mismatched fixture
+hashes, manifest changes beyond the two overrides and setup errors, each through
+the function `verify` or `scope` uses. It runs `publication` against an offline
+GitHub stand-in and rejects stale or moving heads, closed or fork PRs; failed,
+unfinished, rerun, merge-revision or other-workflow CI runs; an edited workflow
+or test script; lockfiles other than the scanned ones; a proof fixture other
+than the head's; an unreconciled comparison; out-of-scope live diffs; wrong
+test links; QA comments that are elsewhere, failing, mixed, status-only, edited
+or earlier than CI; dirty or other-head checkouts; and incomplete records.
 
 Current CI runs Node 20 `npm ci`, `npm run lint` and `npm test`, publishing ordinary
 GitHub Actions job logs. It does not invoke the helper, reproduce baseline
 red/green cases, run OSV, generate proof manifests or upload artifacts. The
 historical artifact and separately retained native proof above supply earlier
 evidence only; fresh host checks must bind the final head and publish their own
-evidence. The trusted workflow remains byte-for-byte preserved by this repair.
+evidence. The trusted workflow remains byte-for-byte preserved by this repair:
+`scope` rejects any edit to it and `publication` compares its blob with BASE.
 
 Independent native QA must declare each check's `artifacts:[{filename:...}]` and
 write newly owned flat `.txt`, `.json` or `.jsonl` files to host-injected

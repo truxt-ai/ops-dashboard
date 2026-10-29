@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """AXM-721 proof helpers. Outputs are local files, never uploaded by this script."""
 import argparse
+import base64
 import datetime
 import hashlib
 import json
@@ -12,9 +13,15 @@ import sys
 import copy
 import tarfile
 import tempfile
-from urllib.parse import urlparse
 
 BASE = 'dff02375d83394d6f03ce2127e35e62fadc269ab'
+REPO = 'truxt-ai/ops-dashboard'
+WORKFLOW = '.github/workflows/ci.yml'
+FIXTURE = 'test/security-dependencies.test.js'
+SHA = re.compile('[0-9a-f]{40}')
+# Exactly the files this PR changes. The trusted CI workflow is deliberately absent.
+SCOPE = {'package.json', 'package-lock.json', FIXTURE, 'docs/security-verification.md',
+         'scripts/security-verification.py'}
 ORIGINALS = [f'test/{name}.test.js' for name in
              ['health', 'health-freshness', 'service-health', 'promo-codes', 'smoke']]
 TARGETS = {'proxy-addr': '2.0.8', 'follow-redirects': '1.16.1',
@@ -114,13 +121,20 @@ def inventory(root):
 
 
 def allowed(path):
-    return path in ['package.json', 'package-lock.json', 'test/security-dependencies.test.js',
-                    'docs/security-verification.md', '.github/workflows/ci.yml'] or bool(
-                        re.fullmatch(r'scripts/security-verification\.[^/]+', path))
+    return path in SCOPE
+
+
+def check_manifest(manifest, original):
+    """CI runs package.json scripts, so the manifest may differ from BASE only by the exact cookie/send overrides."""
+    manifest = copy.deepcopy(manifest)
+    added = {name: manifest.get('overrides', {}).pop(name, None) for name in ['cookie', 'send']}
+    assert added == {name: TARGETS[name] for name in added} and manifest == original, \
+        'package.json changed beyond the cookie/send overrides'
 
 
 def check_tree(root):
-    paths = set(git('diff', BASE, '--name-only', cwd=root).splitlines())
+    # --no-renames reports both sides of a rename, so moving a file into scope cannot hide its source.
+    paths = set(git('diff', '--no-renames', '--name-only', BASE, cwd=root).splitlines())
     paths.update(git('ls-files', '--others', '--exclude-standard', cwd=root).splitlines())
     hashes = {}
     for name in ORIGINALS:
@@ -128,10 +142,8 @@ def check_tree(root):
         assert (Path(root) / name).read_bytes() == original, f'original test changed: {name}'
         hashes[name] = hashlib.sha256(original).hexdigest()
     assert all(allowed(p) for p in paths), f'outside allowed scope: {paths}'
-    manifest = json.loads((Path(root) / 'package.json').read_text())
-    original = json.loads(git('show', f'{BASE}:package.json', cwd=root))
-    for name in ['brace-expansion', 'js-yaml']:
-        assert manifest['overrides'][name] == original['overrides'][name], f'override changed: {name}'
+    check_manifest(json.loads((Path(root) / 'package.json').read_text()),
+                   json.loads(git('show', f'{BASE}:package.json', cwd=root)))
     inv = inventory(root)
     for item in inv['copies']:
         assert item['locked'] == TARGETS[item['name']], f'wrong version: {item}'
@@ -240,39 +252,103 @@ def check_red(output):
     return summary
 
 
-def check_identity(candidate, remote, observed, parents):
-    assert re.fullmatch('[0-9a-f]{40}', candidate), 'missing candidate revision'
-    assert candidate == remote, 'stale remote head'
+def check_identity(candidate, observed, parents):
+    assert SHA.fullmatch(candidate), 'missing candidate revision'
     assert observed == candidate or candidate in parents, 'CI GITHUB_SHA does not identify candidate or merge parent'
 
 
-def check_evidence_url(url):
-    assert isinstance(url, str) and url.startswith('https://'), 'QA evidence url must be https'
-    parsed = urlparse(url)
-    assert not re.search(r'example|todo|tbd|placeholder|synthetic|localhost|127\.0\.0\.1', url, re.I), 'QA evidence url is a placeholder'
-    assert parsed.hostname in ('github.com', 'axiom-stage.truxt.ai') and len(parsed.path.strip('/')) > 0, 'QA evidence url host not expected'
-    if parsed.hostname == 'github.com':
-        assert parsed.path.startswith('/truxt-ai/ops-dashboard/'), 'QA evidence url is outside the repository'
+def github(path):
+    """Fresh GitHub REST read through the authenticated gh CLI (GH_TOKEN or `gh auth login`); gh api does not cache."""
+    return json.loads(subprocess.check_output(['gh', 'api', path], text=True))
 
 
-def check_publication(report):
-    assert report['baseline_sha'] == BASE and report['fixture_sha256']
-    assert report['pr_url'].startswith('https://github.com/truxt-ai/ops-dashboard/pull/')
-    repo = 'https://github.com/truxt-ai/ops-dashboard/tree/'
-    assert report['baseline_test_url'] == f'{repo}{BASE}/test', 'baseline test link must identify BASE'
-    assert re.fullmatch(re.escape(repo) + r'[0-9a-f]{40}/test', report['candidate_test_url']), 'candidate test link is not immutable'
-    assert report['candidate_test_url'] == f"{repo}{report['head_sha']}/test", 'candidate test link must identify the candidate head'
-    assert report['candidate_test_url'] != report['baseline_test_url'], 'baseline and candidate test links must differ'
+def check_evidence_url(url, number):
+    match = isinstance(url, str) and re.fullmatch(rf'https://github\.com/{REPO}/pull/{number}#issuecomment-([0-9]+)', url)
+    assert match, 'QA evidence must be a comment on this pull request'
+    return match[1]
+
+
+def check_publication(report, comparison, fixture, api=github):
+    """Report heads, CI and QA fields are claims; each is checked against fresh GitHub reads.
+
+    comparison and fixture are the proof's comparison.json and fixture-final.json; the lockfiles they
+    scanned and the fixture their red/green runs executed must be BASE's and the live head's."""
+    assert report['baseline_sha'] == BASE, 'report baseline is not BASE'
+    validate_comparison(comparison)
+    number = re.fullmatch(rf'https://github\.com/{REPO}/pull/([0-9]+)', report['pr_url'])
+    assert number, 'pr_url must name a pull request in this repository'
+    number = number[1]
+    pr = api(f'repos/{REPO}/pulls/{number}')
+    head = pr['head']['sha']
+    assert pr['state'] == 'open' and pr['base']['repo']['full_name'] == pr['head']['repo']['full_name'] == REPO, \
+        'not an open same-repository pull request'
+    assert SHA.fullmatch(head) and report['head_sha'] == report['remote_head_sha'] == head, 'stale report: live PR head differs'
+    tree = f'https://github.com/{REPO}/tree/'
+    assert report['baseline_test_url'] == f'{tree}{BASE}/test', 'baseline test link must identify BASE'
+    assert report['candidate_test_url'] == f'{tree}{head}/test', 'candidate test link must identify the live head'
+    diff = api(f'repos/{REPO}/compare/{BASE}...{head}')
+    assert diff['status'] == 'ahead' and diff['merge_base_commit']['sha'] == BASE, 'live head does not descend from BASE'
+    files = diff['files']
+    assert 0 < len(files) < 300 and all(allowed(f['filename']) and allowed(f.get('previous_filename', f['filename']))
+                                        for f in files), 'live PR diff is outside allowed scope'
+    blob = lambda ref, path: api(f'repos/{REPO}/contents/{path}?ref={ref}')
+    content = lambda ref, path: base64.b64decode(blob(ref, path)['content'])
+    sha256 = lambda ref, path: hashlib.sha256(content(ref, path)).hexdigest()
+    assert blob(head, WORKFLOW)['sha'] == blob(BASE, WORKFLOW)['sha'], 'CI workflow differs from the trusted baseline'
+    check_manifest(json.loads(content(head, 'package.json')), json.loads(content(BASE, 'package.json')))
+    check_fixture(fixture, sha256(head, FIXTURE))
+    assert report['fixture_sha256'] == fixture['sha256'], 'report fixture hash is not the proof fixture'
+    assert (comparison['before']['lock_sha256'], comparison['after']['lock_sha256']) == \
+        (sha256(BASE, 'package-lock.json'), sha256(head, 'package-lock.json')), 'scanned lockfiles are not BASE and the live head'
     ci = report['ci']
-    assert ci['conclusion'] == 'success' and re.fullmatch(
-        r'https://github\.com/truxt-ai/ops-dashboard/actions/runs/[0-9]+', ci['run_url']), 'exact-head CI run/log publication pending'
-    check_identity(report['head_sha'], report['remote_head_sha'], ci['github_sha'], ci['parents'])
-    assert report['qa']['head_sha'] == report['head_sha'], 'independent QA pending'
-    check_evidence_url(report['qa'].get('evidence_url'))
+    run_id = re.fullmatch(rf'https://github\.com/{REPO}/actions/runs/([0-9]+)', ci['run_url'])
+    assert run_id, 'CI run link must name a GitHub Actions run in this repository'
+    run = api(f'repos/{REPO}/actions/runs/{run_id[1]}')
+    # A push run checks out exactly head_sha; a pull_request run tests a synthetic merge revision instead.
+    assert (run['event'], run['path'], run['head_sha'], run['head_branch'], run['head_repository']['full_name']) == \
+        ('push', WORKFLOW, head, pr['head']['ref'], REPO), 'CI run is not a trusted-workflow push run of the live head'
+    assert run['status'] == 'completed' and run['conclusion'] == ci['conclusion'] == 'success', 'exact-head CI did not succeed'
+    # The API reports only a run's latest attempt, so a rerun could hide an earlier failure.
+    runs = api(f'repos/{REPO}/actions/runs?head_sha={head}&per_page=100')['workflow_runs']
+    assert all(r['conclusion'] == 'success' and r['run_attempt'] == 1 for r in runs + [run]
+               if r['path'] == WORKFLOW and r['status'] == 'completed'), 'a trusted-workflow run on the live head failed or was rerun'
+    comment_id = check_evidence_url(report['qa'].get('evidence_url'), number)
+    comment = api(f'repos/{REPO}/issues/comments/{comment_id}')
+    assert report['qa']['head_sha'] == head and comment['issue_url'].endswith(f'/repos/{REPO}/issues/{number}') \
+        and re.findall(r'^AXM-721 QA: (.*?)\r?$', comment['body'], re.M) == [f'PASS {head}'], \
+        'QA comment does not carry one passing verdict for the live head'
+    assert comment['created_at'] == comment['updated_at'] and comment['created_at'] >= run['updated_at'], \
+        'QA comment was edited or predates the CI result'
     for name in ['input_tokens', 'output_tokens', 'cached_input_tokens', 'cost_usd']:
         value = report['usage'][name]
-        assert value is None or (isinstance(value, (int, float)) and value >= 0)
+        assert value is None or (type(value) in (int, float) and 0 <= value < float('inf')), f'invalid usage value: {name}'
     assert report['usage']['scope'] and report['usage']['unrecorded_reason']
+    assert api(f'repos/{REPO}/pulls/{number}')['head']['sha'] == head, 'PR head moved during verification'
+    return {'checked_utc': now(), 'pr': int(number), 'head_sha': head, 'ci_run_id': run['id'],
+            'qa_comment_id': int(comment_id), 'changed_paths': sorted(f['filename'] for f in files)}
+
+
+def check_fixture(fixture, candidate_sha256):
+    assert fixture['sha256'] == fixture['baseline_sha256'] == candidate_sha256, 'fixture hash mismatch'
+
+
+def check_inventory(observed, recorded):
+    assert observed == recorded, 'incomplete copy inventory'
+
+
+def check_checkout(checkout, head):
+    assert git('rev-parse', 'HEAD', cwd=checkout) == head and not git('status', '--porcelain', cwd=checkout), \
+        'proof checkout is not a clean checkout of the live head'
+
+
+def publication(report, proof, checkout):
+    """Bind the retained proof to a clean checkout of the live head, then check the report against GitHub."""
+    proof = Path(proof)
+    evidence = check_evidence(proof, checkout)
+    result = check_publication(json.loads(Path(report).read_text()), json.loads((proof / 'comparison.json').read_text()),
+                               json.loads((proof / 'fixture-final.json').read_text()))
+    check_checkout(checkout, result['head_sha'])
+    return {**result, 'red_summary': evidence['red_summary'], 'scan_counts': evidence['scan_counts']}
 
 
 def check_evidence(directory, candidate):
@@ -280,7 +356,7 @@ def check_evidence(directory, candidate):
     for p in (directory / 'commands').glob('*.meta.json'):
         check_record(json.loads(p.read_text()), p.parent, p.name.removesuffix('.meta.json'))
     fixture = json.loads((directory / 'fixture-final.json').read_text())
-    assert fixture['sha256'] == fixture['baseline_sha256'] == digest(Path(candidate) / 'test/security-dependencies.test.js'), 'fixture hash mismatch'
+    check_fixture(fixture, digest(Path(candidate) / FIXTURE))
     for label in ['final-red', 'final-green']:
         meta = json.loads((directory / f'commands/{label}.meta.json').read_text())
         assert meta['inputs']['test/security-dependencies.test.js'] == fixture['sha256'], 'executed different fixture'
@@ -297,8 +373,13 @@ def check_evidence(directory, candidate):
     expected = compare(findings(directory / 'baseline.osv.json', directory / 'baseline/package-lock.json'),
                        findings(directory / 'candidate.osv.json', Path(candidate) / 'package-lock.json'))
     assert comparison == expected, 'scan/input hashes or reconciliation changed'
+    for side, labels in [('before', ['baseline-ci', 'baseline-lint', 'baseline-test', 'final-red']),
+                         ('after', ['final-ci', 'final-lint', 'final-green', 'final-test'])]:
+        for label in labels:
+            meta = json.loads((directory / f'commands/{label}.meta.json').read_text())
+            assert meta['inputs']['package-lock.json'] == comparison[side]['lock_sha256'], f'{label} ran on an unscanned lockfile'
     tree = check_tree(candidate)
-    assert tree['inventory'] == json.loads((directory / 'candidate-inventory.json').read_text()), 'incomplete copy inventory'
+    check_inventory(tree['inventory'], json.loads((directory / 'candidate-inventory.json').read_text()))
     return {'checked_utc': now(), 'red_summary': red, 'scope': tree,
             'scan_counts': {k: {'packages': comparison[k]['packages'], 'raw': len(comparison[k]['raw']),
                                'canonical': comparison[k]['canonical_count']} for k in ['before', 'after']}}
@@ -329,9 +410,8 @@ def selftest(directory):
     meta = json.loads((directory / 'commands/final-test.meta.json').read_text())
     meta.pop('exit_status')
     rejects('missing command exit', lambda: check_record(meta, directory / 'commands', 'final-test'))
-    rejects('stale candidate head', lambda: check_identity('a' * 40, 'b' * 40, 'a' * 40, []))
-    rejects('unrelated CI revision', lambda: check_identity('a' * 40, 'a' * 40, 'b' * 40, []))
-    check_identity('a' * 40, 'a' * 40, 'c' * 40, ['a' * 40, 'b' * 40])
+    rejects('unrelated CI revision', lambda: check_identity('a' * 40, 'b' * 40, []))
+    check_identity('a' * 40, 'c' * 40, ['a' * 40, 'b' * 40])
     output = (directory / 'commands/final-red.stdout.txt').read_text()
     check_red(output)
     rejects('setup failure as regression', lambda: check_red(output.replace("code: 'ERR_ASSERTION'", "code: 'ECONNREFUSED'")))
@@ -344,6 +424,8 @@ def selftest(directory):
             (temp / name).write_text('assert(true);\n')
         manifest = {'overrides': {'brace-expansion': '^1.1.21', 'js-yaml': '^4.3.2'}}
         write(temp / 'package.json', manifest)
+        (temp / 'src').mkdir()
+        (temp / 'src/server.js').write_text('server();\n')
         subprocess.run(['git', '-C', str(temp), 'add', '.'], check=True)
         subprocess.run(['git', '-C', str(temp), '-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid',
                         '-c', 'core.hooksPath=/dev/null', 'commit', '-qm', 'fixture'], check=True)
@@ -351,56 +433,155 @@ def selftest(directory):
         original_base = BASE
         BASE = git('rev-parse', 'HEAD', cwd=temp)
         try:
+            check_checkout(temp, BASE)
+            rejects('checkout at another head', lambda: check_checkout(temp, 'b' * 40))
+            write(temp / 'package.json', {**manifest, 'scripts': {'test': 'true'}})
+            rejects('dirty checkout', lambda: check_checkout(temp, BASE))
+            rejects('changed test script in tree', lambda: check_tree(temp))
+            # A valid in-scope manifest change, so each control below can fail only on the check it names.
+            manifest['overrides'].update(cookie=TARGETS['cookie'], send=TARGETS['send'])
+            write(temp / 'package.json', manifest)
             (temp / ORIGINALS[0]).write_text('assert(false);\n')
             rejects('altered original test', lambda: check_tree(temp))
             (temp / ORIGINALS[0]).write_text('assert(true);\n')
             (temp / 'unexpected.js').write_text('')
             rejects('outside allowed scope', lambda: check_tree(temp))
+            (temp / 'unexpected.js').unlink()
+            (temp / 'scripts').mkdir()
+            subprocess.run(['git', '-C', str(temp), 'mv', 'src/server.js', 'scripts/security-verification.py'], check=True)
+            rejects('rename out of scope', lambda: check_tree(temp))
         finally:
             BASE = original_base
     fixture = json.loads((directory / 'fixture-final.json').read_text())
-    original_hash = fixture['sha256']
-    fixture['sha256'] = '0' * 64
-    rejects('mismatched fixtures', lambda: require_equal(fixture['sha256'], original_hash))
+    check_fixture(fixture, fixture['sha256'])
+    rejects('mismatched fixtures', lambda: check_fixture({**fixture, 'sha256': '0' * 64}, fixture['baseline_sha256']))
     inv = json.loads((directory / 'candidate-inventory.json').read_text())
     malformed_inventory = copy.deepcopy(inv)
     malformed_inventory['copies'].pop()
-    rejects('incomplete installed inventory', lambda: require_equal(inv, malformed_inventory))
-    publication = {'baseline_sha': BASE, 'fixture_sha256': original_hash,
-                   'pr_url': 'https://github.com/truxt-ai/ops-dashboard/pull/1',
-                   'baseline_test_url': f'https://github.com/truxt-ai/ops-dashboard/tree/{BASE}/test',
-                   'candidate_test_url': f"https://github.com/truxt-ai/ops-dashboard/tree/{'a' * 40}/test",
-                   'head_sha': 'a' * 40, 'remote_head_sha': 'a' * 40,
-                   'ci': {'conclusion': 'success',
-                          'run_url': 'https://github.com/truxt-ai/ops-dashboard/actions/runs/1',
-                          'github_sha': 'a' * 40, 'parents': []},
-                   'qa': {'head_sha': 'a' * 40, 'evidence_url': 'https://github.com/truxt-ai/ops-dashboard/pull/1#issuecomment-1'},
+    check_inventory(inv, copy.deepcopy(inv))
+    rejects('incomplete installed inventory', lambda: check_inventory(malformed_inventory, inv))
+    base_manifest = {'scripts': {'test': 'node --test', 'lint': 'eslint .'},
+                     'overrides': {'brace-expansion': '^1.1.21', 'js-yaml': '^4.3.2'}}
+    head_manifest = copy.deepcopy(base_manifest)
+    head_manifest['overrides'].update(cookie=TARGETS['cookie'], send=TARGETS['send'])
+    check_manifest(head_manifest, base_manifest)
+    for name, mutate in [
+        ('neutralized npm test script', lambda m: m['scripts'].update(test='true')),
+        ('changed existing override', lambda m: m['overrides'].update({'js-yaml': '*'})),
+        ('missing selected override', lambda m: m['overrides'].pop('send')),
+    ]:
+        malformed = copy.deepcopy(head_manifest)
+        mutate(malformed)
+        rejects(name, lambda: check_manifest(malformed, base_manifest))
+    head, pr_path, run_path = 'a' * 40, f'repos/{REPO}/pulls/1', f'repos/{REPO}/actions/runs/1'
+    contents = lambda ref, path: f'repos/{REPO}/contents/{path}?ref={ref}'
+    encoded = lambda data: {'content': base64.b64encode(data).decode()}
+    fixture_bytes, locks = b'fixture bytes\n', {BASE: b'baseline lock\n', head: b'candidate lock\n'}
+    scanned = copy.deepcopy(comparison)
+    scanned['before']['lock_sha256'], scanned['after']['lock_sha256'] = (hashlib.sha256(locks[ref]).hexdigest() for ref in [BASE, head])
+    run = {'id': 1, 'event': 'push', 'path': WORKFLOW, 'head_sha': head, 'head_branch': 'candidate', 'run_attempt': 1,
+           'head_repository': {'full_name': REPO}, 'status': 'completed', 'conclusion': 'success',
+           'updated_at': '2026-10-29T19:00:00Z'}
+    comment_path = f'repos/{REPO}/issues/comments/2'
+    remote = {
+        contents(BASE, 'package.json'): encoded(json.dumps(base_manifest).encode()),
+        contents(head, 'package.json'): encoded(json.dumps(head_manifest).encode()),
+        contents(BASE, 'package-lock.json'): encoded(locks[BASE]),
+        contents(head, 'package-lock.json'): encoded(locks[head]),
+        pr_path: {'state': 'open', 'head': {'sha': head, 'ref': 'candidate', 'repo': {'full_name': REPO}},
+                  'base': {'repo': {'full_name': REPO}}},
+        f'repos/{REPO}/compare/{BASE}...{head}': {'status': 'ahead', 'merge_base_commit': {'sha': BASE},
+                                                  'files': [{'filename': 'package.json'}]},
+        f'repos/{REPO}/contents/{WORKFLOW}?ref={head}': {'sha': 'trusted'},
+        f'repos/{REPO}/contents/{WORKFLOW}?ref={BASE}': {'sha': 'trusted'},
+        contents(head, FIXTURE): encoded(fixture_bytes),
+        run_path: run,
+        f'repos/{REPO}/actions/runs?head_sha={head}&per_page=100': {'workflow_runs': [run]},
+        comment_path: {'issue_url': f'https://api.github.com/repos/{REPO}/issues/1',
+                       'body': f'Independent review notes\r\nAXM-721 QA: PASS {head}\r\n',
+                       'created_at': '2026-10-29T20:00:00Z', 'updated_at': '2026-10-29T20:00:00Z'},
+    }
+    publication = {'baseline_sha': BASE, 'fixture_sha256': hashlib.sha256(fixture_bytes).hexdigest(),
+                   'pr_url': f'https://github.com/{REPO}/pull/1',
+                   'baseline_test_url': f'https://github.com/{REPO}/tree/{BASE}/test',
+                   'candidate_test_url': f'https://github.com/{REPO}/tree/{head}/test',
+                   'head_sha': head, 'remote_head_sha': head,
+                   'ci': {'conclusion': 'success', 'run_url': f'https://github.com/{REPO}/actions/runs/1'},
+                   'qa': {'head_sha': head, 'evidence_url': f'https://github.com/{REPO}/pull/1#issuecomment-2'},
                    'usage': {'input_tokens': None, 'output_tokens': None, 'cached_input_tokens': None, 'cost_usd': None,
                              'scope': 'synthetic negative control', 'unrecorded_reason': 'synthetic'}}
-    check_publication(publication)
+
+    def fake(responses):
+        reads = []
+
+        def api(path):  # offline stand-in for github(); a callable value sees how often its path was read
+            reads.append(path)
+            value = responses[path]
+            return copy.deepcopy(value(reads.count(path)) if callable(value) else value)
+        return api
+
+    proof_fixture = {'sha256': hashlib.sha256(fixture_bytes).hexdigest(), 'baseline_sha256': hashlib.sha256(fixture_bytes).hexdigest()}
+    check_publication(publication, scanned, proof_fixture, fake(remote))
+    unreconciled = copy.deepcopy(scanned)
+    unreconciled['remaining'].pop()
+    rejects('unreconciled scanned comparison', lambda: check_publication(publication, unreconciled, proof_fixture, fake(remote)))
+    rejects('proof fixture differs from the live head', lambda: check_publication(
+        {**publication, 'fixture_sha256': '0' * 64}, scanned, {'sha256': '0' * 64, 'baseline_sha256': '0' * 64}, fake(remote)))
+    moved = lambda d, g: g.update({pr_path: lambda n, pr=g[pr_path]: pr if n == 1 else {**pr, 'head': {**pr['head'], 'sha': 'b' * 40}}})
     for name, mutate in [
-        ('missing CI run link', lambda d: d['ci'].pop('run_url')),
-        ('invalid CI run link', lambda d: d['ci'].update(run_url='synthetic')),
-        ('failed CI run', lambda d: d['ci'].update(conclusion='failure')),
-        ('stale independent QA', lambda d: d['qa'].update(head_sha='b' * 40)),
-        ('duplicate baseline and candidate links', lambda d: d.update(candidate_test_url=d['baseline_test_url'])),
-        ('candidate link for wrong revision', lambda d: d.update(candidate_test_url=d['candidate_test_url'].replace('a' * 40, 'b' * 40))),
-        ('baseline link for wrong revision', lambda d: d.update(baseline_test_url=d['candidate_test_url'])),
-        ('placeholder QA evidence', lambda d: d['qa'].update(evidence_url='https://example.com/todo')),
-        ('synthetic QA evidence', lambda d: d['qa'].update(evidence_url='synthetic')),
-        ('localhost QA evidence', lambda d: d['qa'].update(evidence_url='https://localhost/evidence')),
-        ('http QA evidence', lambda d: d['qa'].update(evidence_url='http://github.com/truxt-ai/ops-dashboard/pull/1')),
+        ('missing CI run link', lambda d, g: d['ci'].pop('run_url')),
+        ('invalid CI run link', lambda d, g: d['ci'].update(run_url='synthetic')),
+        ('failed CI claim', lambda d, g: d['ci'].update(conclusion='failure')),
+        ('stale report head', lambda d, g: g[pr_path]['head'].update(sha='b' * 40)),
+        ('stale remote head claim', lambda d, g: d.update(remote_head_sha='b' * 40)),
+        ('head moved during verification', moved),
+        ('closed pull request', lambda d, g: g[pr_path].update(state='closed')),
+        ('fork pull request', lambda d, g: g[pr_path]['head']['repo'].update(full_name='someone/fork')),
+        ('CI run for another head', lambda d, g: g[run_path].update(head_sha='b' * 40)),
+        ('failed remote CI run', lambda d, g: g[run_path].update(conclusion='failure')),
+        ('unfinished remote CI run', lambda d, g: g[run_path].update(status='in_progress', conclusion=None)),
+        ('pull_request merge-revision CI run', lambda d, g: g[run_path].update(event='pull_request')),
+        ('CI run of another workflow', lambda d, g: g[run_path].update(path='.github/workflows/other.yml')),
+        ('another failed run on the head', lambda d, g: g[f'repos/{REPO}/actions/runs?head_sha={head}&per_page=100'][
+            'workflow_runs'].append({**run, 'id': 3, 'conclusion': 'failure'})),
+        ('changed CI workflow', lambda d, g: g[f'repos/{REPO}/contents/{WORKFLOW}?ref={head}'].update(sha='edited')),
+        ('live diff outside scope', lambda d, g: g[f'repos/{REPO}/compare/{BASE}...{head}']['files'].append({'filename': 'src/server.js'})),
+        ('live rename out of scope', lambda d, g: g[f'repos/{REPO}/compare/{BASE}...{head}']['files'].append(
+            {'filename': 'scripts/security-verification.py', 'previous_filename': 'src/server.js'})),
+        ('head not descended from BASE', lambda d, g: g[f'repos/{REPO}/compare/{BASE}...{head}'].update(status='diverged')),
+        ('fixture hash not at live head', lambda d, g: d.update(fixture_sha256='0' * 64)),
+        ('stale independent QA', lambda d, g: d['qa'].update(head_sha='b' * 40)),
+        ('QA comment on another pull request', lambda d, g: g[comment_path].update(
+            issue_url=f'https://api.github.com/repos/{REPO}/issues/2')),
+        ('QA comment without the live head', lambda d, g: g[comment_path].update(body='AXM-721 QA: PASS')),
+        ('QA comment with a failing verdict', lambda d, g: g[comment_path].update(body=f'AXM-721 QA: FAIL {head}')),
+        ('status comment naming the head', lambda d, g: g[comment_path].update(body=f'Pushed {head}; QA: PASS pending')),
+        ('edited QA comment', lambda d, g: g[comment_path].update(updated_at='2026-10-29T21:00:00Z')),
+        ('QA comment before the CI result', lambda d, g: g[comment_path].update(
+            created_at='2026-10-29T18:00:00Z', updated_at='2026-10-29T18:00:00Z')),
+        ('rerun hiding a failed attempt', lambda d, g: g[run_path].update(run_attempt=2)),
+        ('neutralized npm test script at the live head', lambda d, g: g.update(
+            {contents(head, 'package.json'): encoded(json.dumps({**head_manifest, 'scripts': {'test': 'true'}}).encode())})),
+        ('lockfile differs from the scanned lock', lambda d, g: g.update({contents(head, 'package-lock.json'): encoded(b'other\n')})),
+        ('scanned baseline lock is not BASE', lambda d, g: g.update({contents(BASE, 'package-lock.json'): encoded(b'other\n')})),
+        ('QA comment with PASS and FAIL verdicts', lambda d, g: g[comment_path].update(
+            body=f'AXM-721 QA: PASS {head}\nAXM-721 QA: FAIL {head}')),
+        ('QA evidence outside this pull request', lambda d, g: d['qa'].update(evidence_url=f'https://github.com/{REPO}/blob/master/README.md')),
+        ('duplicate baseline and candidate links', lambda d, g: d.update(candidate_test_url=d['baseline_test_url'])),
+        ('candidate link for wrong revision', lambda d, g: d.update(candidate_test_url=d['candidate_test_url'].replace(head, 'b' * 40))),
+        ('baseline link for wrong revision', lambda d, g: d.update(baseline_test_url=d['candidate_test_url'])),
+        ('placeholder QA evidence', lambda d, g: d['qa'].update(evidence_url='https://example.com/todo')),
+        ('synthetic QA evidence', lambda d, g: d['qa'].update(evidence_url='synthetic')),
+        ('localhost QA evidence', lambda d, g: d['qa'].update(evidence_url='https://localhost/evidence')),
+        ('http QA evidence', lambda d, g: d['qa'].update(evidence_url=f'http://github.com/{REPO}/pull/1#issuecomment-2')),
+        ('boolean usage value', lambda d, g: d['usage'].update(cost_usd=True)),
     ]:
-        malformed = copy.deepcopy(publication)
-        mutate(malformed)
-        rejects(name, lambda: check_publication(malformed))
+        malformed, responses = copy.deepcopy(publication), copy.deepcopy(remote)
+        mutate(malformed, responses)
+        rejects(name, lambda: check_publication(malformed, scanned, proof_fixture, fake(responses)))
     publication.pop('candidate_test_url')
-    rejects('incomplete publication report', lambda: check_publication(publication))
+    rejects('incomplete publication report', lambda: check_publication(publication, scanned, proof_fixture, fake(remote)))
     return {'negative_controls_rejected': rejected, 'count': len(rejected), 'checked_utc': now()}
-
-
-def require_equal(left, right):
-    assert left == right
 
 
 def manifest(directory):
@@ -418,10 +599,11 @@ def ci_capture(directory):
     observed = os.environ['GITHUB_SHA']
     candidate = os.environ['CANDIDATE_SHA']
     parents = git('show', '-s', '--format=%P', head).split()
-    check_identity(candidate, candidate, observed, parents)
-    assert observed == head
+    check_identity(candidate, observed, parents)
+    assert observed == head, 'checkout is not GITHUB_SHA'
     write(directory / 'provenance.json', {'observed_github_sha': observed, 'checkout_sha': head,
           'candidate_sha': candidate, 'checkout_parents': parents, 'event_name': os.environ.get('GITHUB_EVENT_NAME'),
+          'remote_head': 'not read here; the publication check re-reads it from GitHub',
           'scanner': 'not run in CI; equivalent native OSV reports retained separately'})
     with tempfile.TemporaryDirectory(prefix='axm-721-baseline-') as temp:
         temp = Path(temp)
@@ -458,8 +640,10 @@ def main():
     p = sub.add_parser('selftest'); p.add_argument('directory'); p.add_argument('output')
     p = sub.add_parser('manifest'); p.add_argument('directory')
     p = sub.add_parser('ci-capture'); p.add_argument('directory')
-    p = sub.add_parser('publication'); p.add_argument('report')
+    p = sub.add_parser('publication'); p.add_argument('report'); p.add_argument('proof'); p.add_argument('checkout')
     args = parser.parse_args()
+    if not __debug__:
+        sys.exit('refusing to run with -O or PYTHONOPTIMIZE: every check is an assert')
     if args.action == 'record':
         sys.exit(record(args.directory, args.label, args.cwd, args.command))
     if args.action == 'inventory':
@@ -477,7 +661,7 @@ def main():
     if args.action == 'ci-capture':
         ci_capture(args.directory)
     if args.action == 'publication':
-        check_publication(json.loads(Path(args.report).read_text()))
+        print(json.dumps(publication(args.report, args.proof, args.checkout), indent=2))
 
 
 if __name__ == '__main__':
