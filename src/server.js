@@ -1,69 +1,11 @@
 'use strict';
 
-const path = require('path');
-const express = require('express');
-const axios = require('axios');
-const _ = require('lodash');
-const minimist = require('minimist');
+const { app } = require('./app');
+const { resolvePort } = require('./lib/cli-options');
+const { buildMetrics } = require('./lib/metrics');
 const { applyPromoCode, getActivePromoCodes } = require('./lib/promo-codes');
-const { presentHealthFreshness } = require('./lib/health-freshness');
-const { presentServices } = require('./lib/service-health');
 
-const args = minimist(process.argv.slice(2));
-const PORT = args.port || process.env.PORT || 3000;
-
-const app = express();
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, '..', 'views'));
-
-// Compute a few fake metrics for the dashboard. Kept deterministic so the demo
-// renders the same numbers every time.
-function buildMetrics(now = () => new Date()) {
-  const services = presentServices([
-    { name: 'api-gateway', requests: 18420, errors: 1000 },
-    { name: 'auth-service', requests: 9310, errors: 100 },
-    { name: 'billing', requests: 4502, errors: 0 },
-  ]);
-  const totalRequests = _.sumBy(services, 'requests');
-  const totalErrors = _.sumBy(services, 'errors');
-  const errorRate = _.round((totalErrors / totalRequests) * 100, 3);
-  const lastSuccessfulRefreshAt = now().toISOString();
-  return { services, totalRequests, totalErrors, errorRate, lastSuccessfulRefreshAt };
-}
-
-app.get('/', (req, res) => {
-  const metrics = buildMetrics();
-  const freshness = presentHealthFreshness(metrics.lastSuccessfulRefreshAt);
-  res.render('dashboard', { metrics, freshness });
-});
-
-// List the promo codes the billing page may offer (active codes only).
-app.get('/api/promo-codes', (req, res) => {
-  res.json(getActivePromoCodes());
-});
-
-app.get('/health/live', (req, res) => {
-  res.json({ status: 'ok' });
-});
-
-app.get('/health/ready', async (req, res) => {
-  try {
-    await axios.get('https://example.com', { timeout: 2000 });
-    res.json({ upstream: 'ok' });
-  } catch {
-    res.status(503).json({ upstream: 'unreachable' });
-  }
-});
-
-// Proxy a health probe through axios so the dependency is genuinely exercised.
-app.get('/health/upstream', async (req, res) => {
-  try {
-    const r = await axios.get('https://example.com', { timeout: 2000 });
-    res.json({ upstream: 'ok', status: r.status });
-  } catch (err) {
-    res.status(502).json({ upstream: 'unreachable', error: err.message });
-  }
-});
+const PORT = resolvePort(process.argv.slice(2));
 
 if (require.main === module) {
   app.listen(PORT, () => {

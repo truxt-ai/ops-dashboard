@@ -15,6 +15,14 @@ This report covers the approved plan revision
 | [GHSA-pxg6-pf52-xh8x / CVE-2024-47764](https://github.com/advisories/GHSA-pxg6-pf52-xh8x) | cookie 0.5.0 → 0.7.2 | Injected name, path and domain |
 | [GHSA-m6fv-jmcg-4jfg / CVE-2024-43799](https://github.com/advisories/GHSA-m6fv-jmcg-4jfg) | send 0.18.0 → 0.19.0 | Attacker-controlled directory redirect has no clickable link |
 
+**Merge with master `a84002d`.** Master's Axios upgrade (#117) and Express group
+upgrade (#118) already resolve every locked copy to cookie 0.7.2, send 0.19.2,
+proxy-addr 2.0.8 and follow-redirects 1.16.2, each at or above the version above.
+The merge keeps master's `package.json` and `package-lock.json`, so this PR no
+longer changes package inputs. The regression fixtures pass against master's
+versions: `npm ci`, lint and **107/107** tests on Node 24.15.0/npm 11.12.1. The
+counts and head bindings below describe the heads before this merge.
+
 The five [original tests](https://github.com/truxt-ai/ops-dashboard/tree/dff02375d83394d6f03ce2127e35e62fadc269ab/test)
 are byte-for-byte preserved. The [new fixtures](https://github.com/truxt-ai/ops-dashboard/blob/a48560d200e4932fc22f6b4035b1bb1b08495d28/test/security-dependencies.test.js)
 are immutable at the dependency commit; their bytes are checked again at the final

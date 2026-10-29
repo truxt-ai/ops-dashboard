@@ -5,12 +5,20 @@ const assert = require('node:assert/strict');
 const http = require('node:http');
 const { once } = require('node:events');
 const axios = require('axios');
-const { app } = require('../src/server');
 
 describe('health endpoints (AXM-666 / TD-84, UoW-1)', { concurrency: false }, () => {
   let server;
 
-  beforeEach(async () => {
+  beforeEach(async t => {
+    const previous = process.env.DASHBOARD_TOKEN;
+    process.env.DASHBOARD_TOKEN = 'synthetic-dashboard-fixture';
+    t.after(() => {
+      if (previous === undefined) delete process.env.DASHBOARD_TOKEN;
+      else process.env.DASHBOARD_TOKEN = previous;
+    });
+    t.mock.method(console, 'error', () => {});
+    delete require.cache[require.resolve('../src/app')];
+    const { app } = require('../src/app');
     server = app.listen(0, '127.0.0.1');
     await once(server, 'listening');
   });
@@ -23,7 +31,10 @@ describe('health endpoints (AXM-666 / TD-84, UoW-1)', { concurrency: false }, ()
 
   function request(path) {
     return new Promise((resolve, reject) => {
-      const req = http.get({ host: '127.0.0.1', port: server.address().port, path }, res => {
+      const req = http.get({
+        host: '127.0.0.1', port: server.address().port, path,
+        headers: path === '/health/upstream' ? { authorization: `Bearer ${process.env.DASHBOARD_TOKEN}` } : {},
+      }, res => {
         let body = '';
         res.setEncoding('utf8');
         res.on('data', chunk => { body += chunk; });
@@ -48,11 +59,11 @@ describe('health endpoints (AXM-666 / TD-84, UoW-1)', { concurrency: false }, ()
     });
   }
 
-  test('TC-03: readiness probes upstream with the existing timeout', async t => {
+  test('TC-03: authenticated upstream probe retains the existing timeout', async t => {
     const probe = t.mock.method(axios, 'get', async () => ({ status: 204 }));
-    const response = await request('/health/ready');
+    const response = await request('/health/upstream');
     assert.equal(response.status, 200);
-    assert.deepEqual(JSON.parse(response.body), { upstream: 'ok' });
+    assert.deepEqual(JSON.parse(response.body), { upstream: 'ok', status: 204 });
     assert.equal(probe.mock.callCount(), 1);
     assert.deepEqual(probe.mock.calls[0].arguments, ['https://example.com', { timeout: 2000 }]);
   });
@@ -62,15 +73,17 @@ describe('health endpoints (AXM-666 / TD-84, UoW-1)', { concurrency: false }, ()
     ['connection error', Object.assign(new Error('connect ECONNREFUSED'), { code: 'ECONNREFUSED' })],
     ['timeout', Object.assign(new Error('timeout of 2000ms exceeded'), { code: 'ECONNABORTED' })],
   ]) {
-    test(`TC-04: readiness identifies upstream on ${kind}`, async t => {
+    test(`TC-04: authenticated upstream probe identifies ${kind}`, async t => {
       t.mock.method(axios, 'get', async () => { throw error; });
-      const response = await request('/health/ready');
-      assert.equal(response.status, 503);
-      assert.deepEqual(JSON.parse(response.body), { upstream: 'unreachable' });
+      const response = await request('/health/upstream');
+      assert.equal(response.status, 502);
+      assert.deepEqual(JSON.parse(response.body), { upstream: 'unreachable', error: 'upstream unavailable' });
     });
   }
 
-  test('TC-05: pending and repeated failures leave liveness available, then readiness recovers', async t => {
+  test('TC-05: pending and repeated failures leave local probes available, then upstream recovers', async t => {
+    let now = 100000;
+    t.mock.method(Date, 'now', () => now);
     let rejectProbe;
     let markStarted;
     const started = new Promise(resolve => { markStarted = resolve; });
@@ -78,28 +91,37 @@ describe('health endpoints (AXM-666 / TD-84, UoW-1)', { concurrency: false }, ()
       rejectProbe = reject;
       markStarted();
     }));
-    const pending = request('/health/ready');
+    const pending = request('/health/upstream');
+    let duplicate;
     try {
       await Promise.race([
         started,
-        pending.then(() => assert.fail('readiness responded without probing upstream')),
+        pending.then(() => assert.fail('upstream responded without probing')),
       ]);
+      const received = once(server, 'request');
+      duplicate = request('/health/upstream');
+      await received;
       const live = await request('/health/live');
       assert.equal(live.status, 200);
       assert.deepEqual(JSON.parse(live.body), { status: 'ok' });
+      const ready = await request('/health/ready');
+      assert.equal(ready.status, 200);
+      assert.deepEqual(JSON.parse(ready.body), { status: 'ok' });
       assert.equal(probe.mock.callCount(), 1);
     } finally {
       if (rejectProbe) rejectProbe(new Error('upstream failed'));
     }
     const failed = await pending;
-    assert.equal(failed.status, 503);
-    assert.deepEqual(JSON.parse(failed.body), { upstream: 'unreachable' });
+    assert.deepEqual(await duplicate, failed);
+    assert.equal(failed.status, 502);
+    assert.deepEqual(JSON.parse(failed.body), { upstream: 'unreachable', error: 'upstream unavailable' });
 
     probe.mock.mockImplementation(async () => { throw new Error('still unavailable'); });
     for (let i = 0; i < 3; i++) {
-      const ready = await request('/health/ready');
-      assert.equal(ready.status, 503);
-      assert.deepEqual(JSON.parse(ready.body), { upstream: 'unreachable' });
+      now += 15000;
+      const upstream = await request('/health/upstream');
+      assert.equal(upstream.status, 502);
+      assert.deepEqual(JSON.parse(upstream.body), { upstream: 'unreachable', error: 'upstream unavailable' });
       const calls = probe.mock.callCount();
       const live = await request('/health/live');
       assert.equal(live.status, 200);
@@ -108,9 +130,10 @@ describe('health endpoints (AXM-666 / TD-84, UoW-1)', { concurrency: false }, ()
     }
 
     probe.mock.mockImplementation(async () => ({ status: 200 }));
-    const recovered = await request('/health/ready');
+    now += 15000;
+    const recovered = await request('/health/upstream');
     assert.equal(recovered.status, 200);
-    assert.deepEqual(JSON.parse(recovered.body), { upstream: 'ok' });
+    assert.deepEqual(JSON.parse(recovered.body), { upstream: 'ok', status: 200 });
   });
 
   test('TC-06: legacy upstream success preserves the upstream status', async t => {
@@ -124,6 +147,6 @@ describe('health endpoints (AXM-666 / TD-84, UoW-1)', { concurrency: false }, ()
     t.mock.method(axios, 'get', async () => { throw new Error('upstream failed'); });
     const response = await request('/health/upstream');
     assert.equal(response.status, 502);
-    assert.deepEqual(JSON.parse(response.body), { upstream: 'unreachable', error: 'upstream failed' });
+    assert.deepEqual(JSON.parse(response.body), { upstream: 'unreachable', error: 'upstream unavailable' });
   });
 });

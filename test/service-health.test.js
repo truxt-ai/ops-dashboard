@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
 const path = require('node:path');
 const { once } = require('node:events');
 const ejs = require('ejs');
-const { app, buildMetrics } = require('../src/server');
+const { app } = require('../src/app');
 
 // AXM-684 / TD-86, UoW-1: independent fixtures for TC-01 through TC-04.
 for (const [requests, errors, expected] of [
@@ -66,7 +66,7 @@ function serviceRows(html) {
 
 test('TC-03: EJS renders independent mixed fixtures in health/name order with adjacent status', async () => {
   const { presentServices } = require('../src/lib/service-health');
-  const metrics = { ...buildMetrics(), services: presentServices(fixtures) };
+  const metrics = { totalRequests: 32232, totalErrors: 1100, errorRate: 3.413, services: presentServices(fixtures) };
   const freshness = { stale: false, isoTimestamp: '2026-10-22T08:20:00.000Z', label: 'Last updated 08:20 UTC' };
   const html = await ejs.renderFile(path.join(__dirname, '..', 'views', 'dashboard.ejs'), { metrics, freshness });
   assert.deepEqual(serviceRows(html).map(row => row.slice(0, 2)), expectedRows);
@@ -77,12 +77,20 @@ test('TC-03: EJS renders independent mixed fixtures in health/name order with ad
 });
 
 test('TC-03: repeated GET / requests preserve service row and cell order', async t => {
+  const previous = process.env.DASHBOARD_TOKEN;
+  process.env.DASHBOARD_TOKEN = 'synthetic-dashboard-fixture';
+  t.after(() => {
+    if (previous === undefined) delete process.env.DASHBOARD_TOKEN;
+    else process.env.DASHBOARD_TOKEN = previous;
+  });
   const server = app.listen(0, '127.0.0.1');
   t.after(() => new Promise((resolve, reject) => server.close(err => err ? reject(err) : resolve())));
   await once(server, 'listening');
   let firstRows;
   for (let refresh = 0; refresh < 3; refresh++) {
-    const response = await fetch(`http://127.0.0.1:${server.address().port}/`);
+    const response = await fetch(`http://127.0.0.1:${server.address().port}/`, {
+      headers: { authorization: `Bearer ${process.env.DASHBOARD_TOKEN}` },
+    });
     assert.equal(response.status, 200);
     const html = await response.text();
     const rows = serviceRows(html);
@@ -96,18 +104,4 @@ test('TC-03: repeated GET / requests preserve service row and cell order', async
     assert.match(html, /class="service-status service-status--failing">Failing<\/span>/);
     assert.doesNotMatch(html, /<script\b/);
   }
-});
-
-test('TC-04: shipped metrics show all states and retain consistent aggregates', () => {
-  const metrics = buildMetrics();
-  assert.deepEqual(metrics.services.map(({ name, requests, errors, status }) => ({ name, requests, errors, status })), [
-    { name: 'api-gateway', requests: 18420, errors: 1000, status: 'failing' },
-    { name: 'auth-service', requests: 9310, errors: 100, status: 'degraded' },
-    { name: 'billing', requests: 4502, errors: 0, status: 'healthy' },
-  ]);
-  assert.equal(metrics.totalRequests, 32232);
-  assert.equal(metrics.totalErrors, 1100);
-  assert.equal(metrics.totalRequests, metrics.services.reduce((sum, s) => sum + s.requests, 0));
-  assert.equal(metrics.totalErrors, metrics.services.reduce((sum, s) => sum + s.errors, 0));
-  assert.equal(metrics.errorRate, 3.413);
 });
