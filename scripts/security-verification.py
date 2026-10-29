@@ -178,8 +178,7 @@ def check_tree(root, installed=None):
     paths.update(git('ls-files', '--others', '--exclude-standard', cwd=root).splitlines())
     hashes, altered = {}, []
     for name in ORIGINALS:
-        # Master legitimately changed some originals after BASE; this PR must only leave them as upstream has them.
-        original = subprocess.check_output(['git', 'show', f'{UPSTREAM}:{name}'], cwd=root)
+        original = subprocess.check_output(['git', 'show', f'{BASE}:{name}'], cwd=root)
         if (Path(root) / name).read_bytes() != original:
             altered.append(name)
         hashes[name] = hashlib.sha256(original).hexdigest()
@@ -192,7 +191,7 @@ def check_tree(root, installed=None):
     for item in inv['copies']:
         assert meets_floor(item['locked'], TARGETS[item['name']]), f'below fixed floor: {item}'
         assert item['parents'], f'missing parent edges: {item}'
-    assert not altered, f'original tests changed from pinned upstream: {altered}'
+    assert not altered, f'original tests changed from frozen BASE: {altered}'
     return {'checked_utc': now(), 'checkout_sha': git('rev-parse', 'HEAD', cwd=root), 'upstream_sha': UPSTREAM,
             'changed_paths': sorted(paths), 'original_test_hashes': hashes, 'inventory': inv}
 
@@ -671,6 +670,13 @@ def selftest(directory):
             (temp / name).write_text('assert(true);\n')
         manifest = {'overrides': {'brace-expansion': '^1.1.21', 'js-yaml': '^4.3.2'}}
         write(temp / 'package.json', manifest)
+        # A complete valid inventory ensures preservation controls fail at the intended assertion.
+        lock = {'lockfileVersion': 3, 'packages': {'': {'dependencies': dict(TARGETS)}}}
+        for name, version in TARGETS.items():
+            lock['packages'][f'node_modules/{name}'] = {'version': version}
+            write(temp / f'node_modules/{name}/package.json', {'version': version})
+        write(temp / 'package-lock.json', lock)
+        (temp / '.gitignore').write_text('node_modules/\n')
         (temp / 'src').mkdir()
         (temp / 'src/server.js').write_text('server();\n')
         subprocess.run(['git', '-C', str(temp), 'add', '.'], check=True)
@@ -680,6 +686,7 @@ def selftest(directory):
         original_base, original_upstream = BASE, UPSTREAM
         BASE = UPSTREAM = git('rev-parse', 'HEAD', cwd=temp)
         try:
+            check_tree(temp)
             check_checkout(temp, BASE)
             rejects('checkout at another head', lambda: check_checkout(temp, 'b' * 40))
             with tempfile.TemporaryDirectory(prefix='axm-721-tree-') as tree:
@@ -701,6 +708,13 @@ def selftest(directory):
             (temp / 'scripts').mkdir()
             subprocess.run(['git', '-C', str(temp), 'mv', 'src/server.js', 'scripts/security-verification.py'], check=True)
             rejects('rename out of scope', lambda: check_tree(temp))
+            subprocess.run(['git', '-C', str(temp), 'mv', 'scripts/security-verification.py', 'src/server.js'], check=True)
+            (temp / ORIGINALS[0]).write_text('assert(false);\n')
+            subprocess.run(['git', '-C', str(temp), 'add', '.'], check=True)
+            subprocess.run(['git', '-C', str(temp), '-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid',
+                            '-c', 'core.hooksPath=/dev/null', 'commit', '-qm', 'upstream changed a frozen test'], check=True)
+            UPSTREAM = git('rev-parse', 'HEAD', cwd=temp)
+            rejects('upstream drift does not redefine frozen originals', lambda: check_tree(temp))
         finally:
             BASE, UPSTREAM = original_base, original_upstream
     package = lambda name, version: {'version': version, 'resolved': f'https://registry.npmjs.org/{name}/-/{name}-{version}.tgz',
