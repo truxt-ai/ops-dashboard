@@ -25,15 +25,15 @@ WORKFLOW = '.github/workflows/ci.yml'
 FIXTURE = 'test/security-dependencies.test.js'
 SHA = re.compile('[0-9a-f]{40}')
 # Exactly the files this PR changes. The trusted CI workflow is deliberately absent.
-SCOPE = {'package.json', 'package-lock.json', FIXTURE, 'docs/security-verification.md',
-         'scripts/security-verification.py'}
+SCOPE = {FIXTURE, 'docs/security-verification.md', 'scripts/security-verification.py'}
 PR_URL = f'https://github.com/{REPO}/pull/110'
 NODE_TEST, NPM_TEST = ['node', '--test', '--test-reporter=tap', FIXTURE], ['npm', 'test', '--', '--test-reporter=tap']
 SCANNER_SHA256 = '2c71403eb443d05891c4f268c3ad771cf4f16e5443463fd7851ef8f454d3c7e4'  # osv-scanner 2.6.0 linux-arm64
 SCANNER_VERSION = '2.6.0'
+SCANNER_CONFIG = Path('/data/tmp/vuln-demo-scan-20261026/empty-osv-scanner.toml')
 SCAN_FIELDS = ['argv', 'cwd', 'started_utc', 'ended_utc', 'scanner', 'exit_status', 'stdout_sha256', 'stderr_sha256', 'inputs']
 FIXTURE_SHA256 = 'f578923f51cd99aee74ab676730926b6c9b57fbc1013205723443940bee4890c'  # reviewed fixture, immutable since a48560d
-REPORT_KEYS = {'baseline_sha', 'fixture_sha256', 'pr_url', 'baseline_test_url', 'candidate_test_url', 'head_sha',
+REPORT_KEYS = {'baseline_sha', 'preservation_sha', 'fixture_sha256', 'pr_url', 'baseline_test_url', 'preservation_test_url', 'candidate_test_url', 'head_sha',
                'remote_head_sha', 'ci', 'usage'}
 # Fixed by BASE's original suite and the reviewed fixture: 49 original tests; 24 fixture tests, 14 failing before the fix.
 EXPECTED = {'original': 49, 'fixture': 24, 'fixture_failures': 14}
@@ -90,7 +90,8 @@ def record(directory, label, cwd, argv, repo='.', env=None, tools=None):
     tools = tools or {'node': ['node', '--version'], 'npm': ['npm', '--version']}
     meta = {'argv': argv, 'cwd': str(Path(cwd).resolve()), 'started_utc': now(),
             **{name: subprocess.check_output(command, text=True, env=env, cwd=cwd).strip() for name, command in tools.items()},
-            'checkout_sha': git('rev-parse', 'HEAD', cwd=repo), 'inputs': {}}
+            'checkout_sha': git('rev-parse', 'HEAD', cwd=repo),
+            'branch': git('branch', '--show-current', cwd=repo), 'inputs': {}}
     for name in ['package.json', 'package-lock.json', FIXTURE]:
         path = Path(cwd) / name
         if path.exists():
@@ -153,8 +154,7 @@ def inventory(root):
 
 
 def allowed(path):
-    # Reviewer-authorized restoration is accepted only with the BASE-byte checks below.
-    return path in SCOPE or path in ORIGINALS
+    return path in SCOPE
 
 
 def check_manifest(manifest, original):
@@ -178,8 +178,10 @@ def check_tree(root, installed=None):
     paths = set(git('diff', '--no-renames', '--name-only', UPSTREAM, cwd=root).splitlines())
     paths.update(git('ls-files', '--others', '--exclude-standard', cwd=root).splitlines())
     hashes, altered = {}, []
-    for name in ORIGINALS:
-        original = subprocess.check_output(['git', 'show', f'{BASE}:{name}'], cwd=root)
+    originals = git('ls-tree', '-r', '--name-only', UPSTREAM, 'test', cwd=root).splitlines()
+    assert set(ORIGINALS) <= set(originals), 'preservation base lacks the five named tests'
+    for name in ['package.json', 'package-lock.json', WORKFLOW, *originals]:
+        original = subprocess.check_output(['git', 'show', f'{UPSTREAM}:{name}'], cwd=root)
         if (Path(root) / name).read_bytes() != original:
             altered.append(name)
         hashes[name] = hashlib.sha256(original).hexdigest()
@@ -192,9 +194,9 @@ def check_tree(root, installed=None):
     for item in inv['copies']:
         assert meets_floor(item['locked'], TARGETS[item['name']]), f'below fixed floor: {item}'
         assert item['parents'], f'missing parent edges: {item}'
-    assert not altered, f'original tests changed from frozen BASE: {altered}'
-    return {'checked_utc': now(), 'checkout_sha': git('rev-parse', 'HEAD', cwd=root), 'upstream_sha': UPSTREAM,
-            'changed_paths': sorted(paths), 'original_test_hashes': hashes, 'inventory': inv}
+    assert not altered, f'preserved files changed from UPSTREAM: {altered}'
+    return {'checked_utc': now(), 'checkout_sha': git('rev-parse', 'HEAD', cwd=root), 'preservation_sha': UPSTREAM,
+            'changed_paths': sorted(paths), 'preserved_file_hashes': hashes, 'inventory': inv}
 
 
 def findings(scan, lock):
@@ -322,6 +324,7 @@ def check_publication(report, comparison, fixture, api=github):
     assert set(report) == REPORT_KEYS and set(report['ci']) == {'conclusion', 'run_url'} and set(report['usage']) == USAGE_KEYS, \
         'report fields differ from the publication schema'
     assert report['baseline_sha'] == BASE, 'report baseline is not BASE'
+    assert report['preservation_sha'] == UPSTREAM, 'report preservation base is not UPSTREAM'
     validate_comparison(comparison)
     assert report['pr_url'] == PR_URL, 'pr_url is not the AXM-721 pull request'
     number = PR_URL.rsplit('/', 1)[1]
@@ -334,6 +337,7 @@ def check_publication(report, comparison, fixture, api=github):
     assert SHA.fullmatch(head) and report['head_sha'] == report['remote_head_sha'] == head, 'stale report: live PR head differs'
     tree = f'https://github.com/{REPO}/tree/'
     assert report['baseline_test_url'] == f'{tree}{BASE}/test', 'baseline test link must identify BASE'
+    assert report['preservation_test_url'] == f'{tree}{UPSTREAM}/test', 'preservation test link must identify UPSTREAM'
     assert report['candidate_test_url'] == f'{tree}{head}/test', 'candidate test link must identify the live head'
     inherited = api(f'repos/{REPO}/compare/{BASE}...{UPSTREAM}')
     assert inherited['status'] == 'ahead' and inherited['merge_base_commit']['sha'] == BASE, 'upstream does not descend from BASE'
@@ -347,9 +351,12 @@ def check_publication(report, comparison, fixture, api=github):
     blob = lambda ref, path: api(f'repos/{REPO}/contents/{path}?ref={ref}')
     content = lambda ref, path: base64.b64decode(blob(ref, path)['content'])
     sha256 = lambda ref, path: hashlib.sha256(content(ref, path)).hexdigest()
-    for name in ORIGINALS:
-        assert content(head, name) == content(BASE, name), f'original test differs from frozen BASE: {name}'
-    assert blob(head, WORKFLOW)['sha'] == blob(BASE, WORKFLOW)['sha'], 'CI workflow differs from the trusted baseline'
+    originals = api(f'repos/{REPO}/git/trees/{UPSTREAM}?recursive=1')
+    assert not originals.get('truncated'), 'preservation tree listing is truncated'
+    paths = [p['path'] for p in originals['tree'] if p['type'] == 'blob' and p['path'].startswith('test/')]
+    assert set(ORIGINALS) <= set(paths), 'preservation tree lacks the five named tests'
+    for name in ['package.json', 'package-lock.json', WORKFLOW, *paths]:
+        assert content(head, name) == content(UPSTREAM, name), f'file differs from preservation base: {name}'
     check_manifest(json.loads(content(head, 'package.json')), json.loads(content(UPSTREAM, 'package.json')))
     check_lock(json.loads(content(head, 'package-lock.json')), json.loads(content(UPSTREAM, 'package-lock.json')))
     assert report['fixture_sha256'] == fixture == sha256(head, FIXTURE) == FIXTURE_SHA256, \
@@ -395,9 +402,8 @@ def check_checkout(checkout, head):
 
 
 def scan_argv(scanner, lock, output):
-    config = Path(output).parent / 'empty-osv-scanner.toml'
     return [str(scanner), 'scan', 'source', '--lockfile', str(lock), '--no-ignore', '--no-call-analysis=all', '--no-resolve',
-            '--config', str(config), '--all-packages', '--all-vulns', '--format', 'json', '--output-file', str(output)]
+            '--config', str(SCANNER_CONFIG), '--all-packages', '--all-vulns', '--format', 'json', '--output-file', str(output)]
 
 
 def scan(tree, output, label, repo):
@@ -405,7 +411,11 @@ def scan(tree, output, label, repo):
     recording it like every other run, with the scanner's own version, beside the raw output."""
     scanner = Path(os.environ['OSV_SCANNER']).resolve(strict=True)  # hash and execute the same absolute file
     assert digest(scanner) == SCANNER_SHA256, 'OSV_SCANNER is not the pinned osv-scanner binary'
-    (Path(output).parent / 'empty-osv-scanner.toml').write_text('')
+    assert SCANNER_CONFIG.read_bytes() == b'', 'recorded scanner configuration is not empty'
+    write(Path(output).parent / f'{label}-scanner.json', {
+        'scanner_path': str(scanner), 'scanner_sha256': digest(scanner),
+        'config_path': str(SCANNER_CONFIG), 'config_sha256': digest(SCANNER_CONFIG),
+        'database': 'Live OSV API; no immutable database snapshot exposed; raw advisory modification times retained.'})
     commands = Path(output).parent / 'commands'
     run = record(commands, label, tree, scan_argv(scanner, Path(tree) / 'package-lock.json', output), repo=repo,
                  env=clean_env(Path(output).parent / 'home' / label), tools={'scanner': [str(scanner), '--version']})
@@ -520,8 +530,11 @@ def check_evidence(directory, checkout):
     directory.mkdir(parents=True)
     trees = {'baseline': directory / 'baseline', 'candidate': directory / 'candidate'}
     sources = {'baseline': materialize(BASE, trees['baseline'], checkout), 'candidate': materialize(head, trees['candidate'], checkout)}
+    preservation = {name: hashlib.sha256(subprocess.check_output(['git', 'show', f'{UPSTREAM}:{name}'], cwd=checkout)).hexdigest()
+                    for name in ['package.json', 'package-lock.json', WORKFLOW,
+                                 *git('ls-tree', '-r', '--name-only', UPSTREAM, 'test', cwd=checkout).splitlines()]}
     write(directory / 'source-revisions.json', {'baseline_sha': BASE, 'head_sha': head, 'upstream_sha': UPSTREAM,
-                                               'source_sha256': sources})
+                                               'preservation_sha256': preservation, 'source_sha256': sources})
     assert sources['candidate'][FIXTURE] == FIXTURE_SHA256, 'head fixture is not the reviewed fixture'
     for root in trees.values():
         scripts = json.loads((root / 'package.json').read_text()).get('scripts', {})
@@ -636,6 +649,7 @@ def selftest(directory):
     scan_meta = json.loads((directory / 'commands/baseline-scan.meta.json').read_text())
     check_scan_record(scan_meta, directory / 'commands', 'baseline-scan', directory / 'baseline.osv.json')
     for name, change in [
+        ('scan record without an exit', {'exit_status': None}),
         ('scan record without a version', {'scanner': None}), ('scan by another scanner version', {'scanner': 'osv-scanner version: 2.5.0'}),
         ('scan exit contradicting findings', {'exit_status': 0}), ('scan with changed stderr', {'stderr_sha256': '0' * 64}),
         ('scan with other flags', {'argv': [a for a in scan_meta['argv'] if a != '--all-vulns']}),
@@ -671,6 +685,9 @@ def selftest(directory):
         for name in ORIGINALS:
             (temp / name).parent.mkdir(parents=True, exist_ok=True)
             (temp / name).write_text('assert(true);\n')
+        (temp / WORKFLOW).parent.mkdir(parents=True, exist_ok=True)
+        (temp / WORKFLOW).write_text('trusted workflow\n')
+        (temp / 'test/inherited.test.js').write_text('assert(true);\n')
         manifest = {'overrides': {'brace-expansion': '^1.1.21', 'js-yaml': '^4.3.2'}}
         write(temp / 'package.json', manifest)
         # A complete valid inventory ensures preservation controls fail at the intended assertion.
@@ -705,6 +722,9 @@ def selftest(directory):
             (temp / ORIGINALS[0]).write_text('assert(false);\n')
             rejects('altered original test', lambda: check_tree(temp))
             (temp / ORIGINALS[0]).write_text('assert(true);\n')
+            (temp / 'test/inherited.test.js').write_text('assert(false);\n')
+            rejects('altered additional inherited test', lambda: check_tree(temp))
+            (temp / 'test/inherited.test.js').write_text('assert(true);\n')
             (temp / 'unexpected.js').write_text('')
             rejects('outside allowed scope', lambda: check_tree(temp))
             (temp / 'unexpected.js').unlink()
@@ -717,9 +737,25 @@ def selftest(directory):
             subprocess.run(['git', '-C', str(temp), '-c', 'user.name=Fixture', '-c', 'user.email=fixture@example.invalid',
                             '-c', 'core.hooksPath=/dev/null', 'commit', '-qm', 'upstream changed a frozen test'], check=True)
             UPSTREAM = git('rev-parse', 'HEAD', cwd=temp)
-            rejects('upstream drift does not redefine frozen originals', lambda: check_tree(temp))
+            check_tree(temp)
             (temp / ORIGINALS[0]).write_text('assert(true);\n')
-            check_tree(temp)  # Exact restoration is in scope even when upstream changed the original.
+            rejects('historical BASE cannot replace preservation-base originals', lambda: check_tree(temp))
+            (temp / ORIGINALS[0]).write_text('assert(false);\n')
+            (temp / 'package.json').write_text(json.dumps(manifest, separators=(',', ':')))
+            rejects('byte-only manifest change', lambda: check_tree(temp))
+            write(temp / 'package.json', manifest)
+            (temp / 'package-lock.json').write_text(json.dumps(lock, separators=(',', ':')))
+            rejects('byte-only lockfile change', lambda: check_tree(temp))
+            write(temp / 'package-lock.json', lock)
+            check_tree(temp)
+            incomplete = copy.deepcopy(lock)
+            incomplete['packages'].pop('node_modules/cookie')
+            write(temp / 'package-lock.json', incomplete)
+            rejects('incomplete copy inventory', lambda: inventory(temp))
+            write(temp / 'package-lock.json', lock)
+            write(temp / 'node_modules/cookie/package.json', {'version': '0.5.0'})
+            rejects('installed copy differs from lock', lambda: inventory(temp))
+            write(temp / 'node_modules/cookie/package.json', {'version': TARGETS['cookie']})
         finally:
             BASE, UPSTREAM = original_base, original_upstream
     package = lambda name, version: {'version': version, 'resolved': f'https://registry.npmjs.org/{name}/-/{name}-{version}.tgz',
@@ -772,32 +808,35 @@ def selftest(directory):
         contents(head, 'package-lock.json'): encoded(locks[head]),
         contents(UPSTREAM, 'package-lock.json'): encoded(locks[UPSTREAM]),
         pr_path: {'state': 'open', 'user': {'login': 'implementer'}, 'head': {'sha': head, 'ref': 'candidate', 'repo': {'full_name': REPO}},
-                  'base': {'ref': 'master', 'sha': BASE, 'repo': {'full_name': REPO}}},
-        f'repos/{REPO}/pulls/110/files?per_page=100': [{'filename': 'package.json'}],
+                  'base': {'ref': 'master', 'sha': UPSTREAM, 'repo': {'full_name': REPO}}},
+        f'repos/{REPO}/pulls/110/files?per_page=100': [{'filename': FIXTURE}],
         f'repos/{REPO}/actions/runs/1/jobs?per_page=100': {'total_count': 1, 'jobs': [{'conclusion': 'success', 'steps': [
             {'name': step, 'conclusion': 'success'} for step in ['Set up job', 'Install dependencies', 'Lint', 'Test']]}]},
         f'repos/{REPO}/compare/{BASE}...{UPSTREAM}': {'status': 'ahead', 'merge_base_commit': {'sha': BASE}},
         f'repos/{REPO}/compare/{UPSTREAM}...{head}': {'status': 'ahead', 'merge_base_commit': {'sha': UPSTREAM},
-                                                  'files': [{'filename': 'package.json'}]},
-        f'repos/{REPO}/contents/{WORKFLOW}?ref={head}': {'sha': 'trusted'},
-        f'repos/{REPO}/contents/{WORKFLOW}?ref={BASE}': {'sha': 'trusted'},
+                                                  'files': [{'filename': FIXTURE}]},
+        contents(head, WORKFLOW): encoded(b'trusted workflow\n'),
+        contents(UPSTREAM, WORKFLOW): encoded(b'trusted workflow\n'),
+        f'repos/{REPO}/git/trees/{UPSTREAM}?recursive=1': {'truncated': False, 'tree': [
+            {'path': name, 'type': 'blob'} for name in [*ORIGINALS, 'test/inherited.test.js']]},
         contents(head, FIXTURE): encoded(fixture_bytes),
         run_path: run,
         f'repos/{REPO}/actions/runs?head_sha={head}&per_page=100': {'total_count': 1, 'workflow_runs': [run]},
     }
-    publication = {'baseline_sha': BASE, 'fixture_sha256': hashlib.sha256(fixture_bytes).hexdigest(),
+    publication = {'baseline_sha': BASE, 'preservation_sha': UPSTREAM, 'fixture_sha256': hashlib.sha256(fixture_bytes).hexdigest(),
                    'pr_url': PR_URL,
                    'baseline_test_url': f'https://github.com/{REPO}/tree/{BASE}/test',
+                   'preservation_test_url': f'https://github.com/{REPO}/tree/{UPSTREAM}/test',
                    'candidate_test_url': f'https://github.com/{REPO}/tree/{head}/test',
                    'head_sha': head, 'remote_head_sha': head,
                    'ci': {'conclusion': 'success', 'run_url': f'https://github.com/{REPO}/actions/runs/1'},
                    'usage': {'input_tokens': None, 'output_tokens': None, 'cached_input_tokens': None, 'cost_usd': None,
                              'scope': 'synthetic negative control', 'unrecorded_reason': 'synthetic'}}
 
-    for name in ORIGINALS:
-        for ref in [BASE, head]:
+    for name in [*ORIGINALS, 'test/inherited.test.js']:
+        remote[contents(BASE, name)] = encoded(b'historical test bytes\n')
+        for ref in [UPSTREAM, head]:
             remote[contents(ref, name)] = encoded(b'assert(true);\n')
-    remote[f'repos/{REPO}/pulls/110/files?per_page=100'].append({'filename': ORIGINALS[0]})
 
     runs_path = f'repos/{REPO}/actions/runs?head_sha={head}&per_page=100'
 
@@ -825,6 +864,15 @@ def selftest(directory):
         {**publication, 'fixture_sha256': '0' * 64}, scanned, '0' * 64, fake(remote)))
     moved = lambda d, g: g.update({pr_path: lambda n, pr=g[pr_path]: pr if n == 1 else {**pr, 'head': {**pr['head'], 'sha': 'b' * 40}}})
     for name, mutate in [
+        ('wrong preservation base', lambda d, g: d.update(preservation_sha=BASE)),
+        ('historical preservation link', lambda d, g: d.update(preservation_test_url=d['baseline_test_url'])),
+        ('historical test substituted at live head', lambda d, g: g.update(
+            {contents(head, ORIGINALS[0]): g[contents(BASE, ORIGINALS[0])]})),
+        ('altered additional inherited test at live head', lambda d, g: g.update(
+            {contents(head, 'test/inherited.test.js'): encoded(b'assert(false);\n')})),
+        ('incomplete preservation tree', lambda d, g: g[f'repos/{REPO}/git/trees/{UPSTREAM}?recursive=1'].update(truncated=True)),
+        ('package file in PR diff', lambda d, g: g[f'repos/{REPO}/pulls/110/files?per_page=100'].append({'filename': 'package.json'})),
+        ('original test in PR diff', lambda d, g: g[f'repos/{REPO}/pulls/110/files?per_page=100'].append({'filename': ORIGINALS[0]})),
         ('missing CI run link', lambda d, g: d['ci'].pop('run_url')),
         ('invalid CI run link', lambda d, g: d['ci'].update(run_url='synthetic')),
         ('failed CI claim', lambda d, g: d['ci'].update(conclusion='failure')),
@@ -858,7 +906,7 @@ def selftest(directory):
         ('PR base moved during verification', lambda d, g: g.update({pr_path: lambda n, pr=g[pr_path]: pr if n == 1 else {
             **pr, 'base': {**pr['base'], 'sha': 'c' * 40}}})),
         ('cited run missing from the run list', lambda d, g: g[runs_path].update(total_count=0, workflow_runs=[])),
-        ('changed CI workflow', lambda d, g: g[f'repos/{REPO}/contents/{WORKFLOW}?ref={head}'].update(sha='edited')),
+        ('changed CI workflow', lambda d, g: g.update({contents(head, WORKFLOW): encoded(b'edited workflow\n')})),
         ('live diff outside scope', lambda d, g: g[f'repos/{REPO}/compare/{UPSTREAM}...{head}']['files'].append({'filename': 'src/server.js'})),
         ('live rename out of scope', lambda d, g: g[f'repos/{REPO}/compare/{UPSTREAM}...{head}']['files'].append(
             {'filename': 'scripts/security-verification.py', 'previous_filename': 'src/server.js'})),
