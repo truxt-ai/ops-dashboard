@@ -200,6 +200,7 @@ def check_tree(root, installed=None):
 
 
 def findings(scan, lock):
+    lock_path = Path(lock).resolve()
     lock_hash = digest(lock)
     lock = json.loads(Path(lock).read_text())['packages']
     paths = {}
@@ -207,7 +208,12 @@ def findings(scan, lock):
         if path:
             paths.setdefault((path.rsplit('node_modules/', 1)[-1], item['version']), []).append(path)
     report = json.loads(Path(scan).read_text())
+    for result in report['results']:
+        source = result['source']
+        assert source['type'] == 'lockfile' and Path(source['path']).is_absolute() \
+            and Path(source['path']).resolve() == lock_path, 'scan source is not the supplied lockfile'
     packages = [p for result in report['results'] for p in result['packages']]
+    assert all(p['package']['ecosystem'] == 'npm' for p in packages), 'scan package ecosystem is not npm'
     observed = {(p['package']['name'], p['package']['version']) for p in packages}
     assert observed == set(paths) and len(observed) == len(packages), 'scan does not cover every locked name/version once'
     raw = []
@@ -624,6 +630,26 @@ def selftest(directory):
             rejected.append(name)
         else:
             raise AssertionError(f'negative control accepted: {name}')
+
+    scan_report = json.loads((directory / 'candidate.osv.json').read_text())
+    scan_lock = directory / 'candidate/package-lock.json'
+    with tempfile.TemporaryDirectory(prefix='axm-721-scan-') as temp:
+        scan_file = Path(temp) / 'scan.json'
+        write(scan_file, scan_report)
+        findings(scan_file, scan_lock)
+        for name, mutate in [
+            ('scan package in another ecosystem', lambda d: d['results'][0]['packages'][0]['package'].update(ecosystem='PyPI')),
+            ('scan package missing ecosystem', lambda d: d['results'][0]['packages'][0]['package'].pop('ecosystem')),
+            ('scan from another lockfile', lambda d: d['results'][0]['source'].update(path=str(scan_lock.parent / 'other-lock.json'))),
+            ('scan from another source type', lambda d: d['results'][0]['source'].update(type='directory')),
+            ('scan without source provenance', lambda d: d['results'][0].pop('source')),
+            ('scan with mixed source provenance', lambda d: d['results'].append({
+                'source': {'path': str(scan_lock.parent / 'other-lock.json'), 'type': 'lockfile'}, 'packages': []})),
+        ]:
+            malformed = copy.deepcopy(scan_report)
+            mutate(malformed)
+            write(scan_file, malformed)
+            rejects(name, lambda: findings(scan_file, scan_lock))
 
     for name, mutate in [
         ('missing selected aliases', lambda d: d['selected'].pop(next(iter(SELECTED)))),

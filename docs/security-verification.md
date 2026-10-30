@@ -63,6 +63,17 @@ locked/installed copies and parent paths, and checks source/package integrity.
 It rejects missing scan exits, incomplete aliases/inventories, changed package or
 test bytes, wrong preservation bases, mismatched fixtures and stale heads.
 
+The remediation round after `e59a1c9` also binds each scan result to the supplied
+absolute lockfile path and requires npm ecosystem records. Six new controls reject
+wrong/missing ecosystems and wrong/missing/mixed source provenance. Before the
+parser repair, the new ecosystem control failed because the malformed report was
+accepted; afterward all 108 helper controls pass against attributed prior proof.
+Fresh committed-head proof is retained under
+`/data/work-root/qa-evidence/atlas/overnight-20261026/AXM-721-20261030T010539Z-dc3076-0eeb04/`;
+the ticket records its measured results and final external verification links.
+The review request reported unavailable inspection tooling and no source defect;
+this is a concrete scan-provenance improvement, not a claim to repair that tooling.
+
 Paired OSV 2.6.0 scans use the historical executable/config paths with
 `scan source --lockfile <input> --no-ignore --no-call-analysis=all --no-resolve
 --config <recorded-empty-config> --all-packages --all-vulns --format json
