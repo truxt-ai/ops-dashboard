@@ -9,9 +9,12 @@ Three identities are deliberately separate:
 
 - [Historical vulnerable tests, dff02375](https://github.com/truxt-ai/ops-dashboard/tree/dff02375d83394d6f03ce2127e35e62fadc269ab/test): disposable reproduction only.
 - [Preserved master tests, a84002d5](https://github.com/truxt-ai/ops-dashboard/tree/a84002d5c256a3e7182849012f08276b35abffb3/test): every original test, both package inputs and CI must match byte for byte.
-- Final candidate: immutable source, CI and independent QA links are published on
-  [AXM-721](https://axiom-stage.truxt.ai/b560f8c8/atlas/issues/AXM-721) after pushing,
-  avoiding report-only commits that invalidate verification.
+- Final candidate: the PR description and
+  [AXM-721](https://axiom-stage.truxt.ai/b560f8c8/atlas/issues/AXM-721) identify the
+  pushed SHA, immutable tests, measured native results and CI/independent QA state.
+  Every evidence table names its tested revision. Any later commit, including a
+  report correction, requires fresh exact-head verification; older results remain
+  historical evidence and never establish that a newer head passed.
 
 Only this report, `scripts/security-verification.py` and
 `test/security-dependencies.test.js` differ from the preservation base. Existing
@@ -36,20 +39,35 @@ Proxy trust remains disabled. Current axios callers supply no affected header
 shapes; the app sets no cookies and adds no redirect route. These demonstrate
 library behavior without claiming current application exploitability.
 
-| Evidence before this commit, Node 24.15.0 / npm 11.12.1 | Result |
-| --- | --- |
-| Fresh install, lint, full candidate suite | Pass; 107/107 tests, no skips/cancellations |
-| Preservation and three-path scope | Pass |
-| Helper synthetic negative controls | 102 rejected, valid records accepted |
-| Earlier historical reproduction, retained as reference | 49 original tests pass; identical fixture has 14 intended failures and 10 passing controls |
-| Earlier paired OSV scans, retained as reference | 52 raw / 51 canonical → 0 / 0; 51 removed, none remaining/added |
+The following retained measurements belong specifically to
+[5acae8aeea844dddd1a79ad8e09828b545fcbf55](https://github.com/truxt-ai/ops-dashboard/commit/5acae8aeea844dddd1a79ad8e09828b545fcbf55),
+checked at `2026-10-30T01:07:14.657250+00:00`. They supersede the earlier
+`e59a1c9` proof and do **not** certify this report correction's new head.
+Immutable sources for that measured revision:
+[all tests](https://github.com/truxt-ai/ops-dashboard/tree/5acae8aeea844dddd1a79ad8e09828b545fcbf55/test),
+[advisory fixture](https://github.com/truxt-ai/ops-dashboard/blob/5acae8aeea844dddd1a79ad8e09828b545fcbf55/test/security-dependencies.test.js),
+[verification helper](https://github.com/truxt-ai/ops-dashboard/blob/5acae8aeea844dddd1a79ad8e09828b545fcbf55/scripts/security-verification.py).
 
-Final committed-head commands, measured counts, fresh paired scans and hashes are
-retained beneath
-`/data/work-root/qa-evidence/atlas/overnight-20261026/AXM-721-20261030T005334Z-acf573-6bc977/`.
-Precommit negative controls use attributed earlier proof solely as synthetic data;
-final verification runs them again against fresh proof. No separate build or
-integration script is configured; existing HTTP/EJS tests mock upstream services.
+| Retained proof for 5acae8a, Node 24.15.0 / npm 11.12.1 | Measured result |
+| --- | --- |
+| Historical dff02375 install/lint/suite | Pass; 49/49 original tests |
+| Identical advisory fixture, red / green | 14 intended assertion failures + 10 passing controls / 24 passing tests |
+| Candidate install/lint, inherited / full suite | Pass; 83/83 inherited and 107/107 total tests; no skips/cancellations |
+| Preservation and three-path scope | Both package inputs, all 16 original test files and CI match a84002d5 |
+| Helper synthetic negative controls | 108 rejected, valid records accepted |
+| Equivalent paired OSV scans | 52 raw / 51 canonical → 0 / 0; 51 removed, none remaining/added |
+| Node 20 push CI, 5acae8a | [40983873910](https://github.com/truxt-ai/ops-dashboard/actions/runs/40983873910): success, 107/107 tests |
+| Node 20 PR merge CI, 5acae8a into a84002d5 | [40983881884](https://github.com/truxt-ai/ops-dashboard/actions/runs/40983881884): success, 107/107 tests |
+
+Those raw commands, UTC times, exits, versions, source hashes, inventories, paired
+scans and reconciliation are retained locally beneath
+`/data/work-root/qa-evidence/atlas/overnight-20261026/AXM-721-20261030T010539Z-dc3076-0eeb04/`.
+Push CI checks out `5acae8a`; PR CI checks out merge revision
+`db45d5d0c1d07833a4e8fbdf1bb24f748408ebb4`. Both report 107 passing tests;
+neither uploaded artifacts nor explicitly emitted `GITHUB_SHA`. Checkout hashes
+are observed log data, not a substitute for that missing publication metadata.
+No separate build or integration script is configured; existing HTTP/EJS tests
+mock upstream services.
 
 ```sh
 export OSV_SCANNER=/data/tmp/vuln-demo-scan-20261026/bin/osv-scanner_linux_arm64
@@ -68,11 +86,10 @@ absolute lockfile path and requires npm ecosystem records. Six new controls reje
 wrong/missing ecosystems and wrong/missing/mixed source provenance. Before the
 parser repair, the new ecosystem control failed because the malformed report was
 accepted; afterward all 108 helper controls pass against attributed prior proof.
-Fresh committed-head proof is retained under
-`/data/work-root/qa-evidence/atlas/overnight-20261026/AXM-721-20261030T010539Z-dc3076-0eeb04/`;
-the ticket records its measured results and final external verification links.
-The review request reported unavailable inspection tooling and no source defect;
-this is a concrete scan-provenance improvement, not a claim to repair that tooling.
+The table above records the subsequent fresh 5acae8a verification. The current
+review finding, comment `4719b0b0-2b2b-48e8-b7e4-d5fef638d4c4`, concerns stale
+PR-report attribution. This correction pins retained proof to its actual SHA and
+requires a separately labelled final-candidate report on the PR and ticket.
 
 Paired OSV 2.6.0 scans use the historical executable/config paths with
 `scan source --lockfile <input> --no-ignore --no-call-analysis=all --no-resolve
