@@ -9,6 +9,8 @@ on:
   pull_request:
     types: [closed]
 
+permissions: {}
+
 jobs:
   notify-axiom:
     runs-on: ubuntu-latest
@@ -26,9 +28,9 @@ jobs:
           fi
           curl -sS -X POST "$AXIOM_WEBHOOK" \
             -H 'Content-Type: application/json' \
-            -d '{
-              "repo": "${{ github.repository }}",
-              "pr_number": ${{ github.event.pull_request.number }},
-              "merge_commit_sha": "${{ github.event.pull_request.merge_commit_sha }}",
-              "base_ref": "${{ github.event.pull_request.base.ref }}"
-            }'
+            -d "$(jq -c '{
+              repo: .repository.full_name,
+              pr_number: .pull_request.number,
+              merge_commit_sha: .pull_request.merge_commit_sha,
+              base_ref: .pull_request.base.ref
+            }' "$GITHUB_EVENT_PATH")"
