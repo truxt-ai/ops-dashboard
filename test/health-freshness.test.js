@@ -81,5 +81,6 @@ test('TC-05: GET / wires the build timestamp into the actual dashboard', async (
   const html = await response.text();
   assert.match(html, /<time[^>]*datetime="2026-10-22T08:20:00.000Z"[^>]*>Last updated 08:20 UTC<\/time>/);
   assert.match(html, /name="viewport"/);
-  assert.doesNotMatch(html, /<script\b/);
+  assert.equal([...html.matchAll(/<script>/g)].length, 1);
+  assert.match(html, /search\.addEventListener\('input'/);
 });

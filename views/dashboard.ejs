@@ -10,6 +10,9 @@
     .sub { color: #6b7280; margin-top: 0; }
     table { border-collapse: collapse; margin-top: 0.5rem; min-width: 480px; }
     .services-table { overflow-x: auto; }
+    .service-search { margin-top: 1rem; }
+    .service-search label { display: block; margin-bottom: 0.25rem; }
+    .service-search input { box-sizing: border-box; width: 100%; max-width: 24rem; padding: 0.5rem; font: inherit; }
     .health-freshness { display: inline-block; padding: 0.35rem 0.6rem; border: 1px solid #bbf7d0; border-radius: 0.25rem; background: #f0fdf4; color: #166534; }
     .health-freshness--stale { border-color: #f59e0b; background: #fffbeb; color: #92400e; font-weight: 600; }
     th, td { text-align: left; padding: 0.5rem 1rem; border-bottom: 1px solid #e5e7eb; }
@@ -32,6 +35,10 @@
   </p>
 
   <time class="health-freshness<%= freshness.stale ? ' health-freshness--stale' : '' %>" datetime="<%= freshness.isoTimestamp %>"><%= freshness.label %></time>
+  <div class="service-search">
+    <label for="service-search">Search services</label>
+    <input id="service-search" type="search">
+  </div>
   <div class="services-table">
   <table>
     <thead>
@@ -39,7 +46,7 @@
     </thead>
     <tbody>
       <% metrics.services.forEach(function (s) { %>
-        <tr>
+        <tr data-service-row>
           <td><%= s.name %></td>
           <td><span class="service-status service-status--<%= s.status %>"><%= s.statusLabel %></span></td>
           <td><%= s.requests.toLocaleString() %></td>
@@ -47,8 +54,26 @@
           <td><%= s.errorRate %>%</td>
         </tr>
       <% }); %>
+      <tr id="no-matching-services" hidden>
+        <td colspan="5">No matching services</td>
+      </tr>
     </tbody>
   </table>
   </div>
+  <script>
+    const search = document.getElementById('service-search');
+    const rows = document.querySelectorAll('[data-service-row]');
+    const noMatches = document.getElementById('no-matching-services');
+    search.addEventListener('input', function () {
+      const query = search.value.toLowerCase();
+      let matches = 0;
+      rows.forEach(function (row) {
+        const matchesName = row.querySelector('td').textContent.toLowerCase().includes(query);
+        row.hidden = !matchesName;
+        if (matchesName) matches++;
+      });
+      noMatches.hidden = query === '' || matches > 0;
+    });
+  </script>
 </body>
 </html>
