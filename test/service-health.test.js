@@ -59,7 +59,7 @@ test('TC-02: severity and English name order are deterministic without mutating 
 
 function serviceRows(html) {
   const body = html.match(/<tbody>([\s\S]*?)<\/tbody>/)[1];
-  return [...body.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/g)].map(([, row]) =>
+  return [...body.matchAll(/<tr data-service-row>([\s\S]*?)<\/tr>/g)].map(([, row]) =>
     [...row.matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/g)].map(([, cell]) =>
       cell.replace(/<[^>]*>/g, '').trim()));
 }
@@ -73,7 +73,8 @@ test('TC-03: EJS renders independent mixed fixtures in health/name order with ad
   assert.match(html, /<th>Service<\/th>\s*<th>Status<\/th>/);
   assert.match(html, /class="service-status service-status--failing">Failing<\/span>/);
   assert.match(html, /\.service-status--failing\s*\{[^}]*background:[^}]*color:/);
-  assert.doesNotMatch(html, /<script\b/);
+  assert.equal([...html.matchAll(/<script>/g)].length, 1);
+  assert.match(html, /search\.addEventListener\('input'/);
 });
 
 test('TC-03: repeated GET / requests preserve service row and cell order', async t => {
@@ -103,7 +104,8 @@ test('TC-03: repeated GET / requests preserve service row and cell order', async
     firstRows = rows;
     assert.match(html, /Error rate: 3.413%/);
     assert.match(html, /class="service-status service-status--failing">Failing<\/span>/);
-    assert.doesNotMatch(html, /<script\b/);
+    assert.equal([...html.matchAll(/<script>/g)].length, 1);
+    assert.match(html, /search\.addEventListener\('input'/);
   }
 });
 
