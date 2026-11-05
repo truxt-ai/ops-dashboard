@@ -21,3 +21,29 @@ test('dashboard renders an empty services table without rows', async () => {
   const html = await ejs.renderFile(template, { metrics, freshness });
   assert.match(html, /<tbody>\s*<\/tbody>/);
 });
+
+test('AXM-905 TC-01/02: each service renders an adjacent Error rate cell without trailing zeros', async () => {
+  const { presentServices } = require('../src/lib/service-health');
+  const fixtures = [
+    ['gateway', 18420, 1000, '5.429%'], ['auth', 9310, 100, '1.074%'],
+    ['billing', 4502, 0, '0%'],
+    ['third', 3, 1, '33.333%'], ['eighth', 8, 1, '12.5%'],
+    ['no-errors', 100, 0, '0%'], ['tiny', 1000000, 1, '0%'],
+    ['idle', 0, 0, '0%'], ['idle-errors', 0, 5, '0%'],
+  ];
+  const services = presentServices(fixtures.map(([name, requests, errors]) => ({ name, requests, errors })));
+  const metrics = { services, totalRequests: 0, totalErrors: 0, errorRate: 0 };
+  const html = await ejs.renderFile(template, { metrics, freshness });
+  const headers = [...html.matchAll(/<th>(.*?)<\/th>/g)].map(([, header]) => header);
+  assert.deepEqual(headers, ['Service', 'Status', 'Requests', 'Errors', 'Error rate']);
+  const body = html.match(/<tbody>([\s\S]*?)<\/tbody>/)[1];
+  const rows = [...body.matchAll(/<tr>([\s\S]*?)<\/tr>/g)].map(([, row]) =>
+    [...row.matchAll(/<td>([\s\S]*?)<\/td>/g)].map(([, cell]) => cell.replace(/<[^>]*>/g, '').trim()));
+  assert.equal(rows.length, fixtures.length);
+  for (const [name, , , expected] of fixtures) {
+    const row = rows.find(cells => cells[0] === name);
+    assert.equal(row.length, headers.length);
+    assert.equal(row[4], expected);
+  }
+  assert.doesNotMatch(body, /NaN|Infinity/);
+});
