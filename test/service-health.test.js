@@ -95,13 +95,25 @@ test('TC-03: repeated GET / requests preserve service row and cell order', async
     const html = await response.text();
     const rows = serviceRows(html);
     assert.deepEqual(rows, [
-      ['api-gateway', 'Failing', '18,420', '1000'],
-      ['auth-service', 'Degraded', '9,310', '100'],
-      ['billing', 'Healthy', '4,502', '0'],
+      ['api-gateway', 'Failing', '5.429%', '18,420', '1000'],
+      ['auth-service', 'Degraded', '1.074%', '9,310', '100'],
+      ['billing', 'Healthy', '0%', '4,502', '0'],
     ]);
     if (firstRows) assert.deepEqual(rows, firstRows);
     firstRows = rows;
+    assert.match(html, /Error rate: 3.413%/);
     assert.match(html, /class="service-status service-status--failing">Failing<\/span>/);
     assert.doesNotMatch(html, /<script\b/);
+  }
+});
+
+test('AXM-905 TC-01/02: service rates round to three decimals and guard zero requests', () => {
+  const { presentServices } = require('../src/lib/service-health');
+  for (const [requests, errors, expected] of [
+    [3, 1, 33.333], [8, 1, 12.5], [100, 0, 0],
+    [1000000, 1, 0], [0, 0, 0], [0, 5, 0],
+  ]) {
+    const [service] = presentServices([{ name: 'fixture', requests, errors }]);
+    assert.equal(service.errorRate, expected, `${errors}/${requests}`);
   }
 });

@@ -35,13 +35,14 @@
   <div class="services-table">
   <table>
     <thead>
-      <tr><th>Service</th><th>Status</th><th>Requests</th><th>Errors</th></tr>
+      <tr><th>Service</th><th>Status</th><th>Error rate</th><th>Requests</th><th>Errors</th></tr>
     </thead>
     <tbody>
       <% metrics.services.forEach(function (s) { %>
         <tr>
           <td><%= s.name %></td>
           <td><span class="service-status service-status--<%= s.status %>"><%= s.statusLabel %></span></td>
+          <td><%= s.errorRate %>%</td>
           <td><%= s.requests.toLocaleString() %></td>
           <td><%= s.errors %></td>
         </tr>
