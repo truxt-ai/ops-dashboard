@@ -65,7 +65,7 @@ describe('health endpoints (AXM-666 / TD-84, UoW-1)', { concurrency: false }, ()
     assert.equal(response.status, 200);
     assert.deepEqual(JSON.parse(response.body), { upstream: 'ok', status: 204 });
     assert.equal(probe.mock.callCount(), 1);
-    assert.deepEqual(probe.mock.calls[0].arguments, ['https://example.com', { timeout: 2000 }]);
+    assert.deepEqual(probe.mock.calls[0].arguments, ['https://example.com', { timeout: 2000, maxRedirects: 0 }]);
   });
 
   for (const [kind, error] of [
