@@ -58,7 +58,7 @@ async function searchFixture(names) {
   assert.ok(html.indexOf('id="service-search"') < html.indexOf('<div class="services-table">'));
   const rows = [...html.matchAll(/<tr data-service-row([^>]*)>([\s\S]*?)<\/tr>/g)].map(([, attrs, cells]) => ({
     hidden: false, cells,
-    dataset: Object.fromEntries([...attrs.matchAll(/data-(requests|errors|error-rate)="([^"]*)"/g)].map(([, key, value]) => [key === 'error-rate' ? 'errorRate' : key, value])),
+    dataset: Object.fromEntries([...attrs.matchAll(/data-(status|requests|errors|error-rate)="([^"]*)"/g)].map(([, key, value]) => [key === 'error-rate' ? 'errorRate' : key, value])),
     querySelector(selector) {
       assert.equal(selector, 'td');
       return { textContent: cells.match(/<td>(.*?)<\/td>/)[1] };
@@ -75,19 +75,21 @@ async function searchFixture(names) {
     querySelector() { return this.indicator; },
     addEventListener(event, handler) { assert.equal(event, 'click'); this.click = handler; },
   }));
+  let onChange;
+  const status = { value: 'all', addEventListener(event, handler) { assert.equal(event, 'change'); onChange = handler; } };
   let onInput;
   const input = { value: '', addEventListener(event, handler) { assert.equal(event, 'input'); onInput = handler; } };
   const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
   assert.equal(scripts.length, 1);
   vm.runInNewContext(scripts[0][1], { document: {
     getElementById(id) {
-      assert.ok(['service-search', 'no-matching-services'].includes(id));
-      return id === 'service-search' ? input : message;
+      assert.ok(['service-search', 'service-status', 'no-matching-services'].includes(id));
+      return id === 'service-search' ? input : id === 'service-status' ? status : message;
     },
     querySelectorAll(selector) { if (selector === '[data-sort]') return buttons; assert.equal(selector, '[data-service-row]'); return rows; },
   } });
   assert.equal(typeof onInput, 'function');
-  return { rows, message, buttons, order() { return order.filter(row => row !== message).map(row => row.querySelector('td').textContent); }, click(key) { const button = buttons.find(button => button.dataset.sort === key); assert.ok(button, `Missing ${key} sort button`); button.click(); }, search(value) { input.value = value; onInput(); }, visible() { return order.filter(row => row !== message && !row.hidden); } };
+  return { html, input, status, select(value) { status.value = value; assert.equal(typeof onChange, 'function'); onChange(); }, rows, message, buttons, order() { return order.filter(row => row !== message).map(row => row.querySelector('td').textContent); }, click(key) { const button = buttons.find(button => button.dataset.sort === key); assert.ok(button, `Missing ${key} sort button`); button.click(); }, search(value) { input.value = value; onInput(); }, visible() { return order.filter(row => row !== message && !row.hidden); } };
 }
 
 test('AXM-911: input events match only literal service-name substrings, ignoring case', async () => {
@@ -168,4 +170,76 @@ test('AXM-926: direction, column switching and search compose without losing row
   empty.click('errorRate');
   empty.click('errorRate');
   assert.deepEqual(empty.order(), []);
+});
+
+
+test('AXM-928 TC-01/02/03: labeled statuses compose with literal name search and empty states', async () => {
+  const services = ['healthy', 'degraded', 'failing'].flatMap(status =>
+    ['Auth.[1]', 'billing'].map(name => ({ name: `${name}-${status}`, status, statusLabel: status, requests: 10, errors: 0, errorRate: 0 })));
+  const fixture = await searchFixture(services);
+  assert.match(fixture.html, /<label for="service-status">Status<\/label>/);
+  const select = fixture.html.match(/<select id="service-status">([\s\S]*?)<\/select>/)[1];
+  assert.deepEqual([...select.matchAll(/<option value="([^"]*)">([^<]*)<\/option>/g)].map(([, value, label]) => [value, label]),
+    [['all', 'All'], ['healthy', 'Healthy'], ['degraded', 'Degraded'], ['failing', 'Failing']]);
+  assert.ok(fixture.html.indexOf('id="service-status"') < fixture.html.indexOf('<table>'));
+  assert.equal(fixture.visible().length, 6);
+  for (const status of ['healthy', 'degraded', 'failing']) {
+    fixture.select(status);
+    assert.equal(fixture.visible().length, 2);
+    assert.ok(fixture.visible().every(row => row.dataset.status === status));
+    fixture.search('AUTH.[1]');
+    assert.equal(fixture.visible().length, 1);
+    fixture.select('all');
+    assert.equal(fixture.input.value, 'AUTH.[1]');
+    assert.equal(fixture.visible().length, 3);
+    fixture.select(status);
+    fixture.search('');
+    assert.equal(fixture.status.value, status);
+    assert.equal(fixture.visible().length, 2);
+    fixture.search('missing');
+    assert.equal(fixture.message.hidden, false);
+    fixture.search('');
+  }
+  fixture.select('all');
+  assert.equal(fixture.visible().length, 6);
+  for (const names of [[], ['healthy-only']]) {
+    const empty = await searchFixture(names);
+    empty.select('failing');
+    assert.equal(empty.visible().length, 0);
+    assert.equal(empty.message.hidden, false);
+    empty.select('all');
+    assert.equal(empty.visible().length, names.length);
+    assert.equal(empty.message.hidden, true);
+  }
+});
+
+test('AXM-928 TC-04: both filters preserve every numeric sort direction and stable ties', async () => {
+  for (const key of ['requests', 'errors', 'errorRate']) {
+    const fixture = await searchFixture(sortingServices);
+    fixture.select('healthy');
+    fixture.search('auth');
+    for (const direction of ['descending', 'ascending']) {
+      fixture.click(key);
+      const expected = sortingServices.map((service, index) => ({ service, index }))
+        .sort((a, b) => (direction === 'descending' ? -1 : 1) * (a.service[key] - b.service[key]) || a.index - b.index)
+        .map(({ service }) => service.name);
+      assert.deepEqual(fixture.order(), expected);
+      fixture.select('failing');
+      assert.equal(fixture.message.hidden, false);
+      assert.equal(fixture.visible().length, 0);
+      fixture.select('healthy');
+      assert.equal(fixture.visible().length, 2);
+      fixture.search('missing');
+      fixture.select('all');
+      assert.equal(fixture.message.hidden, false);
+      fixture.search('');
+      assert.deepEqual(fixture.order(), expected);
+      for (const button of fixture.buttons) {
+        assert.equal(button.parentNode.attributes['aria-sort'], button.dataset.sort === key ? direction : undefined);
+        assert.equal(button.indicator.textContent, button.dataset.sort === key ? (direction === 'descending' ? ' ↓' : ' ↑') : '');
+      }
+      fixture.search('auth');
+      fixture.select('healthy');
+    }
+  }
 });
