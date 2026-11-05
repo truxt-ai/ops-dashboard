@@ -59,7 +59,7 @@ test('TC-02: severity and English name order are deterministic without mutating 
 
 function serviceRows(html) {
   const body = html.match(/<tbody>([\s\S]*?)<\/tbody>/)[1];
-  return [...body.matchAll(/<tr data-service-row>([\s\S]*?)<\/tr>/g)].map(([, row]) =>
+  return [...body.matchAll(/<tr data-service-row[^>]*>([\s\S]*?)<\/tr>/g)].map(([, row]) =>
     [...row.matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/g)].map(([, cell]) =>
       cell.replace(/<[^>]*>/g, '').trim()));
 }

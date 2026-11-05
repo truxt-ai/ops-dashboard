@@ -20,7 +20,7 @@ test('dashboard renders the totals pills with locale grouping', async () => {
 test('dashboard renders an empty services table without service rows', async () => {
   const metrics = { services: [], totalRequests: 0, totalErrors: 0, errorRate: 0 };
   const html = await ejs.renderFile(template, { metrics, freshness });
-  assert.doesNotMatch(html, /<tr data-service-row>/);
+  assert.doesNotMatch(html, /<tr data-service-row\b/);
   assert.match(html, /<tr id="no-matching-services" hidden>\s*<td colspan="5">No matching services<\/td>\s*<\/tr>/);
 });
 
@@ -36,10 +36,10 @@ test('AXM-905 TC-01/02: each service renders an adjacent Error rate cell without
   const services = presentServices(fixtures.map(([name, requests, errors]) => ({ name, requests, errors })));
   const metrics = { services, totalRequests: 0, totalErrors: 0, errorRate: 0 };
   const html = await ejs.renderFile(template, { metrics, freshness });
-  const headers = [...html.matchAll(/<th>(.*?)<\/th>/g)].map(([, header]) => header);
+  const headers = [...html.matchAll(/<th(?: [^>]*)?>(.*?)<\/th>/g)].map(([, header]) => header.replace(/<span[^>]*>[\s\S]*?<\/span>/g, '').replace(/<[^>]*>/g, '').trim());
   assert.deepEqual(headers, ['Service', 'Status', 'Requests', 'Errors', 'Error rate']);
   const body = html.match(/<tbody>([\s\S]*?)<\/tbody>/)[1];
-  const rows = [...body.matchAll(/<tr data-service-row>([\s\S]*?)<\/tr>/g)].map(([, row]) =>
+  const rows = [...body.matchAll(/<tr data-service-row[^>]*>([\s\S]*?)<\/tr>/g)].map(([, row]) =>
     [...row.matchAll(/<td>([\s\S]*?)<\/td>/g)].map(([, cell]) => cell.replace(/<[^>]*>/g, '').trim()));
   assert.equal(rows.length, fixtures.length);
   for (const [name, , , expected] of fixtures) {
@@ -51,13 +51,14 @@ test('AXM-905 TC-01/02: each service renders an adjacent Error rate cell without
 });
 
 async function searchFixture(names) {
-  const services = names.map(name => ({ name, status: 'healthy', statusLabel: 'Healthy', requests: 10, errors: 0, errorRate: 0 }));
+  const services = names.map(name => typeof name === 'object' ? name : ({ name, status: 'healthy', statusLabel: 'Healthy', requests: 10, errors: 0, errorRate: 0 }));
   const html = await ejs.renderFile(template, { metrics: { services, totalRequests: 0, totalErrors: 0, errorRate: 0 }, freshness });
   assert.match(html, /<label for="service-search">Search services<\/label>/);
   assert.match(html, /<input id="service-search" type="search"/);
   assert.ok(html.indexOf('id="service-search"') < html.indexOf('<div class="services-table">'));
-  const rows = [...html.matchAll(/<tr data-service-row>([\s\S]*?)<\/tr>/g)].map(([, cells]) => ({
+  const rows = [...html.matchAll(/<tr data-service-row([^>]*)>([\s\S]*?)<\/tr>/g)].map(([, attrs, cells]) => ({
     hidden: false, cells,
+    dataset: Object.fromEntries([...attrs.matchAll(/data-(requests|errors|error-rate)="([^"]*)"/g)].map(([, key, value]) => [key === 'error-rate' ? 'errorRate' : key, value])),
     querySelector(selector) {
       assert.equal(selector, 'td');
       return { textContent: cells.match(/<td>(.*?)<\/td>/)[1] };
@@ -65,6 +66,15 @@ async function searchFixture(names) {
   }));
   assert.equal(rows.length, names.length);
   const message = { hidden: true };
+  const order = [...rows, message];
+  const tbody = { insertBefore(row, before) { order.splice(order.indexOf(row), 1); order.splice(order.indexOf(before), 0, row); } };
+  message.parentNode = tbody;
+  const buttons = [...html.matchAll(/<button[^>]*data-sort="([^"]+)"[^>]*>/g)].map(([, key]) => ({
+    dataset: { sort: key }, indicator: { textContent: '' }, attributes: {},
+    parentNode: { attributes: {}, setAttribute(key, value) { this.attributes[key] = value; }, removeAttribute(key) { delete this.attributes[key]; } },
+    querySelector() { return this.indicator; },
+    addEventListener(event, handler) { assert.equal(event, 'click'); this.click = handler; },
+  }));
   let onInput;
   const input = { value: '', addEventListener(event, handler) { assert.equal(event, 'input'); onInput = handler; } };
   const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
@@ -74,10 +84,10 @@ async function searchFixture(names) {
       assert.ok(['service-search', 'no-matching-services'].includes(id));
       return id === 'service-search' ? input : message;
     },
-    querySelectorAll(selector) { assert.equal(selector, '[data-service-row]'); return rows; },
+    querySelectorAll(selector) { if (selector === '[data-sort]') return buttons; assert.equal(selector, '[data-service-row]'); return rows; },
   } });
   assert.equal(typeof onInput, 'function');
-  return { rows, message, search(value) { input.value = value; onInput(); }, visible() { return rows.filter(row => !row.hidden); } };
+  return { rows, message, buttons, order() { return order.filter(row => row !== message).map(row => row.querySelector('td').textContent); }, click(key) { const button = buttons.find(button => button.dataset.sort === key); assert.ok(button, `Missing ${key} sort button`); button.click(); }, search(value) { input.value = value; onInput(); }, visible() { return order.filter(row => row !== message && !row.hidden); } };
 }
 
 test('AXM-911: input events match only literal service-name substrings, ignoring case', async () => {
@@ -110,4 +120,52 @@ test('AXM-911: empty service data shows a message only for a nonempty query', as
     assert.equal(fixture.visible().length, 0);
     assert.equal(fixture.message.hidden, query === '');
   }
+});
+
+const sortingServices = [
+  { name: 'Auth-A', requests: 1200, errors: 0, errorRate: 0 },
+  { name: 'billing', requests: 9, errors: 3, errorRate: 12.5 },
+  { name: 'auth-B', requests: 100, errors: 20, errorRate: 0.125 },
+  { name: 'idle', requests: 0, errors: 0, errorRate: 0 },
+].map(service => ({ ...service, status: 'healthy', statusLabel: 'Healthy' }));
+
+test('AXM-926: each metric sorts numerically in both directions with stable ties', async () => {
+  for (const [key, descending, ascending] of [
+    ['requests', ['Auth-A', 'auth-B', 'billing', 'idle'], ['idle', 'billing', 'auth-B', 'Auth-A']],
+    ['errors', ['auth-B', 'billing', 'Auth-A', 'idle'], ['Auth-A', 'idle', 'billing', 'auth-B']],
+    ['errorRate', ['billing', 'auth-B', 'Auth-A', 'idle'], ['Auth-A', 'idle', 'auth-B', 'billing']],
+  ]) {
+    const fixture = await searchFixture(sortingServices);
+    assert.deepEqual(fixture.order(), sortingServices.map(service => service.name));
+    fixture.click(key);
+    assert.deepEqual(fixture.order(), descending);
+    fixture.click(key);
+    assert.deepEqual(fixture.order(), ascending);
+  }
+});
+
+test('AXM-926: direction, column switching and search compose without losing rows', async () => {
+  const fixture = await searchFixture(sortingServices);
+  fixture.click('requests');
+  fixture.click('requests');
+  fixture.search('AUTH');
+  fixture.click('errorRate');
+  assert.deepEqual(fixture.order(), ['billing', 'auth-B', 'Auth-A', 'idle']);
+  assert.deepEqual(fixture.visible().map(row => row.querySelector('td').textContent), ['auth-B', 'Auth-A']);
+  for (const button of fixture.buttons) {
+    assert.equal(button.parentNode.attributes['aria-sort'], button.dataset.sort === 'errorRate' ? 'descending' : undefined);
+    assert.equal(button.indicator.textContent, button.dataset.sort === 'errorRate' ? ' ↓' : '');
+  }
+  fixture.search('');
+  assert.equal(fixture.visible().length, 4);
+  fixture.search('missing');
+  fixture.click('errors');
+  assert.equal(fixture.visible().length, 0);
+  assert.equal(fixture.message.hidden, false);
+  fixture.search('');
+  assert.deepEqual(fixture.order(), ['auth-B', 'billing', 'Auth-A', 'idle']);
+  const empty = await searchFixture([]);
+  empty.click('errorRate');
+  empty.click('errorRate');
+  assert.deepEqual(empty.order(), []);
 });

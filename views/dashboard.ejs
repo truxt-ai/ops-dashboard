@@ -17,6 +17,9 @@
     .health-freshness--stale { border-color: #f59e0b; background: #fffbeb; color: #92400e; font-weight: 600; }
     th, td { text-align: left; padding: 0.5rem 1rem; border-bottom: 1px solid #e5e7eb; }
     th { background: #f3f4f6; }
+    .sort-button { border: 0; background: transparent; color: inherit; font: inherit; font-weight: inherit; padding: 0; cursor: pointer; white-space: nowrap; }
+    .sort-button:focus-visible { outline: 2px solid #4338ca; outline-offset: 4px; }
+    th[aria-sort] { color: #4338ca; }
     .pill { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px; background: #eef2ff; color: #4338ca; font-size: 0.85rem; }
     .service-status { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 0.25rem; }
     .service-status--failing { background: #fee2e2; color: #991b1b; font-weight: 700; }
@@ -42,11 +45,11 @@
   <div class="services-table">
   <table>
     <thead>
-      <tr><th>Service</th><th>Status</th><th>Requests</th><th>Errors</th><th>Error rate</th></tr>
+      <tr><th>Service</th><th>Status</th><th><button type="button" class="sort-button" data-sort="requests">Requests<span aria-hidden="true"></span></button></th><th><button type="button" class="sort-button" data-sort="errors">Errors<span aria-hidden="true"></span></button></th><th><button type="button" class="sort-button" data-sort="errorRate">Error rate<span aria-hidden="true"></span></button></th></tr>
     </thead>
     <tbody>
       <% metrics.services.forEach(function (s) { %>
-        <tr data-service-row>
+        <tr data-service-row data-requests="<%= s.requests %>" data-errors="<%= s.errors %>" data-error-rate="<%= s.errorRate %>">
           <td><%= s.name %></td>
           <td><span class="service-status service-status--<%= s.status %>"><%= s.statusLabel %></span></td>
           <td><%= s.requests.toLocaleString() %></td>
@@ -64,6 +67,30 @@
     const search = document.getElementById('service-search');
     const rows = document.querySelectorAll('[data-service-row]');
     const noMatches = document.getElementById('no-matching-services');
+    const sortButtons = document.querySelectorAll('[data-sort]');
+    const originalRows = Array.from(rows);
+    let activeKey;
+    let direction;
+    sortButtons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        const key = button.dataset.sort;
+        direction = activeKey === key && direction === 'descending' ? 'ascending' : 'descending';
+        activeKey = key;
+        originalRows.map(function (row, index) { return { row, index }; })
+          .sort(function (a, b) {
+            const difference = Number(a.row.dataset[key]) - Number(b.row.dataset[key]);
+            return (direction === 'descending' ? -difference : difference) || a.index - b.index;
+          }).forEach(function (entry) {
+            noMatches.parentNode.insertBefore(entry.row, noMatches);
+          });
+        sortButtons.forEach(function (headerButton) {
+          const active = headerButton.dataset.sort === activeKey;
+          if (active) headerButton.parentNode.setAttribute('aria-sort', direction);
+          else headerButton.parentNode.removeAttribute('aria-sort');
+          headerButton.querySelector('span').textContent = active ? (direction === 'descending' ? ' ↓' : ' ↑') : '';
+        });
+      });
+    });
     search.addEventListener('input', function () {
       const query = search.value.toLowerCase();
       let matches = 0;
